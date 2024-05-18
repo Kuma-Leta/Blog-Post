@@ -1,4 +1,4 @@
-import express,{ Express ,Router} from "express";
+import { Router } from "express";
 import { createUsers } from "../Controllers/signupController";
 import { loginUsers } from "../Controllers/loginController";
 import { getAllPosts } from "../Controllers/allPostsController";
@@ -6,13 +6,15 @@ import { addPost } from "../Controllers/profileController/addPostController";
 import { deletePost } from "../Controllers/profileController/deletePostController";
 import { editPost } from "../Controllers/profileController/editPostController";
 import { getPreviousPost } from "../Controllers/profileController/previousPostDisplayController";
-import router=Router();
-router.post('/signup',createUsers )
-router.post('/login',loginUsers )
-router.get('/getAllposts',getAllPosts )
-router.post('/addPosts',addPost)
-router.delete('/deletePost',deletePost)
-router.put('/editPost',editPost)
-router.get('/previousPosts',getPreviousPost)
+import { searchForPost } from "../Controllers/searchForPostController";
+const router = Router();
+router.post("/signup", createUsers);
+router.post("/login", loginUsers);
+router.get("/getAllposts", getAllPosts);
+router.post("/addPosts", addPost);
+router.delete("/deletePost", deletePost);
+router.put("/editPost", editPost);
+router.get("/previousPosts", getPreviousPost);
+router.get("/searchForPost", searchForPost);
 
-export default router
+export default router;
