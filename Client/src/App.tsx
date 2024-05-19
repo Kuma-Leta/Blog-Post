@@ -8,6 +8,7 @@ import PreviousPosts from "./Components/Profile/PreviousPosts";
 import AllPosts from "./Components/allPosts";
 import Login from "./Components/login";
 import Signup from "./Components/signup";
+// import Signup from "./Components/signup";
 import SystemOverview from "./Components/systemOverview";
 import { PrivateRoutes } from "./privateRoutes";
 const App: React.FC = () => {
