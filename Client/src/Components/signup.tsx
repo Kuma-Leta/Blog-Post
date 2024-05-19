@@ -1,4 +1,4 @@
-import "../styles/signUp.css";
+import "../styles/signup.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
@@ -17,11 +17,14 @@ const SignUp: React.FC = () => {
       return;
     }
     try {
-      const signUpResult = await axios.post("http://localhost:5000/signup", {
-        name,
-        email,
-        password,
-      });
+      const signUpResult = await axios.post(
+        "http://localhost:5000/api/signup",
+        {
+          name,
+          email,
+          password,
+        }
+      );
       setSignupSuccess(true);
       // After successful login/signup
       localStorage.setItem("authToken", signUpResult.data.token);

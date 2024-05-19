@@ -33,7 +33,7 @@ const Login: React.FC = () => {
         // After successful login/signup
         localStorage.setItem("authToken", userCredential.data.token);
 
-        setTimeout(() => navigate("/profile/previousPosts"), 2000);
+        setTimeout(() => navigate("/home"), 2000);
       }
     } catch (error: any) {
       // console.log(error);

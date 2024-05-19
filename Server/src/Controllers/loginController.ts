@@ -8,44 +8,23 @@ const generateToken = (id: string) => {
 export const loginUsers = async (req: Request, res: Response) => {
   try {
     console.log(req.body);
-    const { name, email, password } = req.body;
-    const userAlreadyExists = await SignupModel.findOne({ email: email });
-    if (userAlreadyExists) {
-      return res.status(400).json({ message: "user already exists" });
-    }
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const userAccount = new SignupModel({
-      email: email,
-      password: hashedPassword,
-      name: name,
-    });
-    await userAccount.save();
-    if (userAccount) {
-      res.status(201).json({
-        id: userAccount.id,
-        name: userAccount.name,
+    const { email, password } = req.body;
+    const userAccount = await SignupModel.findOne({ email });
+    if (userAccount && (await bcrypt.compare(password, userAccount.password))) {
+      res.status(200).json({
+        id: userAccount._id,
         email: userAccount.email,
+        name: userAccount.name,
         token: generateToken(userAccount.id),
       });
+    } else {
+      res.status(400).json({ message: "invalid user credential" });
     }
   } catch (error: any) {
-    console.log(error);
-    let statusCode = 500;
-    let message = "Internal server error";
-
-    if (error.code === 11000) {
-      // Handling MongoDB duplicate key error
-      message = "Email already exists";
-      statusCode = 400;
-    } else if (error.name === "ValidationError") {
-      statusCode = 400;
-      message = "Validation error";
-    }
-
-    res.status(statusCode).json({
-      message,
-      status: statusCode,
+    res.status(500).json({
+      status: "error",
+      message: "Internal server error",
+      error: error.message,
     });
   }
 };
