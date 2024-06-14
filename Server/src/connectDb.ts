@@ -1,16 +1,22 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
 dotenv.config();
-export const connectDB = async () => {
+
+export const connectDB = async (): Promise<void> => {
   try {
-    const connenction_string = process.env.CONNECTION_STRING?.replace(
-      "<password>",
-      process.env.PASSWORD as string
-    );
-    const connection = await mongoose.connect(connenction_string || "");
-    console.log("db connected successfully");
+    const connectionString = process.env.CONNECTION_STRING;
+
+    if (!connectionString) {
+      throw new Error('MongoDB connection string is not defined in environment variables');
+    }
+
+    await mongoose.connect(connectionString);
+
+    console.log('DB connected successfully');
   } catch (error: any) {
     console.error(`Error: ${error.message}`);
     process.exit(1);
   }
 };
+
