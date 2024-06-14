@@ -1,39 +1,49 @@
+// App.tsx
+
 import React from "react";
 import "./styles/index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AddPost from "./Components/Profile/addPost";
+import AddPost from "./Components/Profile/AddPost";
 // import DeletePost from "./Components/Profile/deletePost";
-import EditPost from "./Components/Profile/editPost";
+import EditPost from "./Components/Profile/EditPost";
 import PreviousPosts from "./Components/Profile/PreviousPosts";
-import AllPosts from "./Components/allPosts";
-import Login from "./Components/login";
-import Signup from "./Components/signup";
-import NotFound from "./Components/notFound";
-import HomePage from "./Components/home";
-import SystemOverview from "./Components/systemOverview";
+import AllPosts from "./Components/AllPosts";
+import Login from "./Components/Login";
+import Signup from "./Components/Signup";
+import NotFound from "./Components/NotFound";
+import HomePage from "./Components/Home";
+import SystemOverview from "./Components/SystemOverview";
+import ForgotPassword from "./Components/ForgotPassword";
+import PostDetail from "./Components/Posts/PostDetail";
+
 import { PrivateRoutes } from "./privateRoutes";
+import UserProfile from "./Components/Profile/UserProfile";
+
 const App: React.FC = () => {
   return (
     <>
       <Router>
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<SystemOverview />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
 
-          <Route
-            path="/profile/addPost"
-            element={
-              <PrivateRoutes>
-                <AddPost />
-              </PrivateRoutes>
-            }
-          />
+          {/* Private routes requiring authentication */}
           <Route
             path="/home"
             element={
               <PrivateRoutes>
                 <HomePage />
+              </PrivateRoutes>
+            }
+          />
+          <Route
+            path="/profile/addPost"
+            element={
+              <PrivateRoutes>
+                <AddPost />
               </PrivateRoutes>
             }
           />
@@ -46,14 +56,6 @@ const App: React.FC = () => {
             }
           />
           <Route
-            path="/allPosts"
-            element={
-              <PrivateRoutes>
-                <AllPosts />
-              </PrivateRoutes>
-            }
-          />
-          <Route
             path="/profile/previousPosts"
             element={
               <PrivateRoutes>
@@ -61,6 +63,28 @@ const App: React.FC = () => {
               </PrivateRoutes>
             }
           />
+          <Route
+            path="/allPosts"
+            element={
+              <PrivateRoutes>
+                <AllPosts />
+              </PrivateRoutes>
+            }
+          />
+
+          <Route
+            path="/profile/userProfile"
+            element={
+              <PrivateRoutes>
+                <UserProfile />
+              </PrivateRoutes>
+            }
+          />
+
+          {/* Route for post detail */}
+          <Route path="/post/:postId" element={<PostDetail />} />
+
+          {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
