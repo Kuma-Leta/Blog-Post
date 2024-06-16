@@ -30,7 +30,7 @@ export const addPost = asyncWrapper(
 
     if (files.image && files.image.length > 0) {
       const imagePath = files.image[0].path.replace(
-        path.join(__dirname, "public"),
+        path.join(__dirname, "../../public"),
         ""
       );
       req.body.imagePath = imagePath;
@@ -38,7 +38,7 @@ export const addPost = asyncWrapper(
 
     if (files.video && files.video.length > 0) {
       const videoPath = files.video[0].path.replace(
-        path.join(__dirname, "public"),
+        path.join(__dirname, "../../public"),
         ""
       );
       req.body.videoContent = videoPath;

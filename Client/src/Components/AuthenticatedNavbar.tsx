@@ -81,7 +81,7 @@ const NavbarLoggedIn: React.FC = () => {
               } transition-all duration-300`}
             >
               <img
-                src={user?.photo || "../../public/defaultAvatar.png"}
+                src={`http://localhost:5000/${user?.photo}`}
                 alt="User Avatar"
                 className="h-8 w-8 rounded-full mr-2"
               />

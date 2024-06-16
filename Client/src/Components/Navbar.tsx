@@ -179,11 +179,11 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
   );
 };
 
-const NavLink: React.FC<{ onClick: () => void; textColor: string }> = ({
-  children,
-  onClick,
-  textColor,
-}) => (
+const NavLink: React.FC<{
+  onClick: () => void;
+  textColor: string;
+  children: React.ReactNode; // Add this line
+}> = ({ children, onClick, textColor }) => (
   <Link
     to="/"
     className={`block px-3 py-2 text-sm ${textColor} hover:text-gray-900 hover:bg-gray-100 rounded-md mx-2 transition duration-300 ease-in-out`}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PostCard from "../PostCard";
 
 interface Post {
@@ -8,6 +8,11 @@ interface Post {
   textContent: string;
   imagePath: string;
   postedAt: string;
+  createdAt: string;
+  category: string;
+  authorImage: string;
+  ratingQuantity: number;
+  averageRating: number;
 }
 
 interface PostsListProps {
@@ -21,15 +26,7 @@ const PostsList: React.FC<PostsListProps> = ({ selectedCategory }) => {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const limit = 6; // Posts per page
 
-  useEffect(() => {
-    fetchPosts();
-  }, [currentPage, selectedCategory]);
-
-  useEffect(() => {
-    setCurrentPage(1); // Reset page when selected category changes
-  }, [selectedCategory]);
-
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     setLoading(true);
     try {
       let url = `http://localhost:5000/api/v1/post/getAllposts?page=${currentPage}&limit=${limit}`;
@@ -53,7 +50,15 @@ const PostsList: React.FC<PostsListProps> = ({ selectedCategory }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, selectedCategory]);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [currentPage, selectedCategory, fetchPosts]);
+
+  useEffect(() => {
+    setCurrentPage(1); // Reset page when selected category changes
+  }, [selectedCategory]);
 
   const loadPreviousPosts = () => {
     if (currentPage > 1) {

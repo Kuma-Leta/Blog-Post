@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import Navbar from "./AuthenticatedNavbar";
 import PostsList from "./Posts/PostsList";
@@ -8,8 +9,8 @@ import WelcomeSection from "./WelcomeSection";
 import Footer from "./Footer";
 
 const Homepage: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true); // Replace with actual authentication state
-  const [username, setUsername] = useState("John Doe"); // Replace with actual username if authenticated
+  // const [isAuthenticated, setIsAuthenticated] = useState(true); // Replace with actual authentication state
+  // const [username, setUsername] = useState("John Doe"); // Replace with actual username if authenticated
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // State to store selected category
 
   const categories = [
@@ -31,7 +32,7 @@ const Homepage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Navbar isAuthenticated={isAuthenticated} username={username} />
+      <Navbar />
 
       <div className="container mx-auto py-8 px-4 md:px-0">
         <WelcomeSection />
@@ -45,13 +46,13 @@ const Homepage: React.FC = () => {
 
           <main className="w-full md:w-4/5">
             <SearchBar />
-            <CreatePostButton isAuthenticated={isAuthenticated} />
+            <CreatePostButton />
             <PostsList selectedCategory={selectedCategory} />
           </main>
         </div>
       </div>
 
-      <Footer />
+      <Footer id={""} />
     </div>
   );
 };

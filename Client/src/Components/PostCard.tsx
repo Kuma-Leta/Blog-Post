@@ -11,7 +11,7 @@ interface Post {
   textContent: string;
   imagePath?: string;
   videoContent?: string;
-  postedAt: string;
+  createdAt: string;
   category: string;
   authorImage: string;
   ratingQuantity: number;

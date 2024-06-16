@@ -47,8 +47,9 @@ const PostDetail: React.FC = () => {
     fetchPost();
   }, [postId]);
 
+  // If you plan to use handleRatingUpdate later, uncomment and use it appropriately
+  /*
   const handleRatingUpdate = () => {
-    // Function to update ratings after a new rating is submitted
     axios
       .get(`http://localhost:5000/api/v1/rating?post=${postId}`)
       .then((response) => {
@@ -58,13 +59,17 @@ const PostDetail: React.FC = () => {
           totalRatings > 0
             ? ratings.reduce((acc, curr) => acc + curr.rating, 0) / totalRatings
             : 0;
-        setPost((prevPost) => ({
-          ...prevPost,
-          ratingQuantity: totalRatings,
-          averageRating,
-        }));
+        setPost((prevPost) => {
+          if (!prevPost) return prevPost;
+          return {
+            ...prevPost,
+            ratingQuantity: totalRatings,
+            averageRating,
+          };
+        });
       });
   };
+  */
 
   if (loading) {
     return <p className="text-center mt-8 text-gray-600">Loading...</p>;
@@ -83,8 +88,7 @@ const PostDetail: React.FC = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <Navbar isAuthenticated={true} username="John Doe" />{" "}
-      {/* Example username */}
+      <Navbar />
       <div className="container mx-auto py-8 px-4 max-w-4xl">
         <Link to="/home" className="flex items-center text-blue-500 mb-4">
           <svg
@@ -123,7 +127,7 @@ const PostDetail: React.FC = () => {
             <div>
               <p className="text-gray-700 font-semibold">{post.author}</p>
               <p className="text-gray-500">
-                {moment(post.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                {moment(post.postedAt).format("MMMM Do YYYY, h:mm:ss a")}
               </p>
             </div>
           </div>

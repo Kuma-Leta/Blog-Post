@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios, { AxiosResponse, AxiosError } from "axios";
+import axios, { AxiosProgressEvent } from "axios";
 import Navbar from "../AuthenticatedNavbar";
 
 const CreatePost: React.FC = () => {
@@ -42,9 +42,9 @@ const CreatePost: React.FC = () => {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${authToken}`,
         },
-        onUploadProgress: (progressEvent: ProgressEvent) => {
+        onUploadProgress: (progressEvent: AxiosProgressEvent) => {
           const progress = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
+            (progressEvent.loaded * 100) / (progressEvent.total ?? 1)
           );
           setUploadProgress(progress);
         },
@@ -67,8 +67,8 @@ const CreatePost: React.FC = () => {
       setVideoFile(null);
 
       setLoading(false);
-    } catch (error: AxiosError) {
-      console.error("Error adding post front-end:", error.message);
+    } catch (error: unknown) {
+      console.error("Error adding post front-end:", (error as Error).message);
       setLoading(false);
       setError("Failed to add post. Please try again.");
     }

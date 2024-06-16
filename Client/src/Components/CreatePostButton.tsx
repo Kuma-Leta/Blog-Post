@@ -1,14 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-interface CreatePostButtonProps {
-  isAuthenticated: boolean;
-}
-
-const CreatePostButton: React.FC<CreatePostButtonProps> = ({
-  isAuthenticated,
-}) => {
-  return isAuthenticated ? (
+const CreatePostButton: React.FC = () => {
+  return (
     <div className="text-center mb-6">
       <Link
         to="/profile/addPost"
@@ -17,7 +11,6 @@ const CreatePostButton: React.FC<CreatePostButtonProps> = ({
         Create New Post
       </Link>
     </div>
-  ) : null;
+  );
 };
-
 export default CreatePostButton;

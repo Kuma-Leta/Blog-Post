@@ -21,7 +21,7 @@ app.use(express.json());
 app.use(cors());
 
 // Configure Express to serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, "Controllers/public")));
+app.use(express.static(path.join(__dirname, "../public")));
 
 // Mount other routes
 app.use("/api/v1/users", userRoutes);

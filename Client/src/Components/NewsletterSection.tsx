@@ -24,7 +24,7 @@ const NewsletterSection: React.FC<Props> = ({ id }) => {
           Stay up-to-date with our latest articles and industry insights.
         </p>
         <form onSubmit={handleSubmit} className="max-w-lg mx-auto mb-8">
-          <div className="flex items-center border-b border-b-2 border-white py-2">
+          <div className="flex items-center border-b-2 border-white py-2">
             <input
               type="email"
               placeholder="Your Email"

@@ -31,6 +31,7 @@ const Login: React.FC = () => {
         localStorage.setItem("authToken", userCredential.data.token);
         const userData = userCredential.data.data.user;
         setUser(userData);
+        console.log(userData);
         localStorage.setItem("user", JSON.stringify(userData));
         console.log(userCredential.data);
         console.log(userCredential.data.data.user);
