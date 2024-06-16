@@ -15,6 +15,7 @@ import {
   protect,
   updatePassword,
   restrictTo,
+  upload,
 } from "../Controllers/authController";
 
 import {
@@ -31,7 +32,7 @@ const router: Router = express.Router();
 
 router.use("/:userId/post", postRouter);
 
-router.post("/signup", signup);
+router.post("/signup", upload.single("photo"), signup);
 router.post("/login", login);
 router.post("/forgotpassword", forgotPassword);
 router.patch("/resetpassword/:token", resetPassword);

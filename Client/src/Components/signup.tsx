@@ -9,6 +9,7 @@ const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [photo, setPhoto] = useState<File | null>(null); // State for profile picture
   const [error, setError] = useState<string | null>(null);
   const [signUpSuccess, setSignupSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -61,13 +62,22 @@ const SignUp: React.FC = () => {
     setLoading(true); // Start loading
 
     try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("passwordConfirm", passwordConfirm);
+      if (photo) {
+        formData.append("photo", photo); // Append photo to form data
+      }
+
       const signUpResult = await axios.post(
         "http://localhost:5000/api/v1/users/signup",
+        formData,
         {
-          name,
-          email,
-          password,
-          passwordConfirm,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
       setSignupSuccess(true);
@@ -75,7 +85,8 @@ const SignUp: React.FC = () => {
       setTimeout(() => {
         navigate("/login");
       }, 1000);
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as { response?: { data?: { message?: string } } }; // Specify the type of error
       if (
         error.response &&
         error.response.data &&
@@ -141,6 +152,22 @@ const SignUp: React.FC = () => {
                   value={passwordConfirm}
                   onChange={(e) => setPasswordConfirm(e.target.value)}
                   required
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="photo"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Profile Picture
+                </label>
+                <input
+                  id="photo"
+                  name="photo"
+                  type="file"
+                  onChange={(e) => setPhoto(e.target.files?.[0] || null)}
+                  accept="image/*"
                   className="w-full p-2 border border-gray-300 rounded"
                 />
               </div>

@@ -41,7 +41,12 @@ export const signup = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
       console.log("Request Body:", req.body);
-      const newUser = await User.create(req.body);
+      console.log(req.file);
+
+      const newUser = await User.create({
+        ...req.body,
+        photo: req.file?.path.replace(path.join(__dirname, "public"), ""), // Assuming 'photo' is the fieldname for profile picture
+      });
       createSendToken(newUser, 201, res);
     } catch (error: any) {
       // console.error("Signup Error:", error);
@@ -234,7 +239,7 @@ export const updatePassword = asyncWrapper(
   }
 );
 
-const uploadDirectory = path.join(__dirname, "public/uploads");
+const uploadDirectory = path.join(__dirname, "../../public/uploads");
 if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });
 }
