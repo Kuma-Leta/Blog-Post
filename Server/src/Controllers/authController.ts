@@ -45,7 +45,7 @@ export const signup = asyncWrapper(
 
       const newUser = await User.create({
         ...req.body,
-        photo: req.file?.path.replace(path.join(__dirname, "public"), ""), // Assuming 'photo' is the fieldname for profile picture
+        photo: req.file?.path.replace(path.join(__dirname, "../../public"), ""), // Assuming 'photo' is the fieldname for profile picture
       });
       createSendToken(newUser, 201, res);
     } catch (error: any) {

@@ -7,6 +7,7 @@ import UserProfilePhoto from "./UserProfile/UserProfilePhoto";
 import UserPosts from "./UserProfile/UserPosts";
 import SuccessMessage from "./UserProfile/SuccessMessage";
 import PasswordChangeForm from "./UserProfile/PasswordChangeForm";
+import { FaUser, FaEnvelope, FaLock, FaCamera } from "react-icons/fa";
 
 const UserProfile: React.FC = () => {
   const { user: currentUser, setUser: setCurrentUser } = useUser();
@@ -21,8 +22,6 @@ const UserProfile: React.FC = () => {
       passwordConfirm: null,
     }
   );
-
-  console.log(currentUser);
 
   useEffect(() => {
     fetchUserData();
@@ -186,11 +185,13 @@ const UserProfile: React.FC = () => {
     <div className="min-h-screen bg-gray-100">
       <NavbarLoggedIn />
       <div className="container mx-auto px-4 py-8 lg:px-8">
-        <h2 className="text-3xl font-bold mb-4 text-center">User Profile</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+          User Profile
+        </h2>
         {loading ? (
-          <p>Loading user data...</p>
+          <p className="text-center text-gray-600">Loading user data...</p>
         ) : error ? (
-          <p className="text-red-500">{error}</p>
+          <p className="text-center text-red-500">{error}</p>
         ) : currentUser ? (
           <div className="max-w-4xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
             {successMessage && (
@@ -203,6 +204,7 @@ const UserProfile: React.FC = () => {
               label="Name"
               field="name"
               type="text"
+              icon={FaUser}
               currentUser={currentUser}
               editField={editField}
               formData={formData}
@@ -215,6 +217,7 @@ const UserProfile: React.FC = () => {
               label="Email"
               field="email"
               type="email"
+              icon={FaEnvelope}
               currentUser={currentUser}
               editField={editField}
               formData={formData}
@@ -238,6 +241,7 @@ const UserProfile: React.FC = () => {
                 label="Password"
                 field="password"
                 type="password"
+                icon={FaLock}
                 currentUser={currentUser}
                 editField={editField}
                 formData={formData}
@@ -253,6 +257,7 @@ const UserProfile: React.FC = () => {
               handleEdit={handleEdit}
               handlePhotoChange={handlePhotoChange}
               handleSubmit={handleSubmit}
+              icon={FaCamera} // Add this line
             />
             <UserPosts posts={currentUser.posts} />
           </div>

@@ -38,7 +38,7 @@ const NavbarLoggedIn: React.FC = () => {
     <nav
       className={`bg-gray-800 p-4 transition-all duration-300 ${
         isSticky ? "fixed top-0 left-0 right-0 bg-white shadow-md" : ""
-      }`}
+      } z-50`}
     >
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/home" className="flex items-center">

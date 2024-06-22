@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import Navbar from "./AuthenticatedNavbar";
 import PostsList from "./Posts/PostsList";
@@ -9,9 +8,7 @@ import WelcomeSection from "./WelcomeSection";
 import Footer from "./Footer";
 
 const Homepage: React.FC = () => {
-  // const [isAuthenticated, setIsAuthenticated] = useState(true); // Replace with actual authentication state
-  // const [username, setUsername] = useState("John Doe"); // Replace with actual username if authenticated
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // State to store selected category
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const categories = [
     "All",
@@ -27,7 +24,7 @@ const Homepage: React.FC = () => {
   ];
 
   const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category === "All" ? null : category); // Update selected category state
+    setSelectedCategory(category === "All" ? null : category);
   };
 
   return (
@@ -37,17 +34,22 @@ const Homepage: React.FC = () => {
       <div className="container mx-auto py-8 px-4 md:px-0">
         <WelcomeSection />
 
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row mt-8">
           <CategorySidebar
             categories={categories}
             selectedCategory={selectedCategory}
             handleCategoryClick={handleCategoryClick}
+            className="mb-4 md:mb-0 md:mr-4 w-full md:w-1/4"
           />
 
-          <main className="w-full md:w-4/5">
-            <SearchBar />
-            <CreatePostButton />
-            <PostsList selectedCategory={selectedCategory} />
+          <main className="w-full md:w-3/4">
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <SearchBar />
+              <CreatePostButton />
+            </div>
+            <div className="mt-8">
+              <PostsList selectedCategory={selectedCategory} />
+            </div>
           </main>
         </div>
       </div>
