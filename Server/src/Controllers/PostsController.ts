@@ -166,6 +166,8 @@ export const getPost: RequestHandler = asyncWrapper(async (req, res, next) => {
 
 export const deletePost: RequestHandler = asyncWrapper(
   async (req, res, next) => {
+    console.log("request: " + req.params.postId);
+
     const post = await Post.findByIdAndDelete(req.params.postId);
 
     if (!post) {

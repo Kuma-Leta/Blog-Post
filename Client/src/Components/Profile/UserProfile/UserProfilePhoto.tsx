@@ -26,7 +26,6 @@ const UserProfilePhoto: React.FC<UserProfilePhotoProps> = ({
         <label className="block text-gray-700 text-sm font-bold mb-2 flex items-center justify-between">
           <span className="flex items-center text-white">
             <Icon className="mr-2 text-white" />
-            Profile Picture
           </span>
           {editField !== "photo" && (
             <button

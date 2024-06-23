@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios, { AxiosProgressEvent } from "axios";
 import Navbar from "../AuthenticatedNavbar";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -12,6 +13,7 @@ const CreatePost: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const navigate = useNavigate(); // Get the navigate function from useNavigate
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -74,6 +76,10 @@ const CreatePost: React.FC = () => {
     }
   };
 
+  const handleGoBack = () => {
+    navigate(-1); // Go back to the previous location in history
+  };
+
   return (
     <div>
       <Navbar />
@@ -82,6 +88,12 @@ const CreatePost: React.FC = () => {
           onSubmit={handleSubmit}
           className="max-w-lg mx-auto bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"
         >
+          <button
+            onClick={handleGoBack}
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
+          >
+            Go Back
+          </button>
           <h2 className="text-3xl font-bold mb-4 text-center">
             Create a New Post
           </h2>

@@ -14,7 +14,7 @@ const UserProfile: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editField, setEditField] = useState<string | null>(null);
-  const [formData, setFormData] = useState<Partial<User>>({});
+  const [formData, setFormData] = useState<Partial<User> | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string | null>>(
     {
@@ -22,6 +22,9 @@ const UserProfile: React.FC = () => {
       passwordConfirm: null,
     }
   );
+
+  // State for posts
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     fetchUserData();
@@ -45,6 +48,7 @@ const UserProfile: React.FC = () => {
       );
 
       setCurrentUser(response.data.data.data); // Update user context
+      setPosts(response.data.data.data.posts); // Set posts state
       setLoading(false);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -60,7 +64,10 @@ const UserProfile: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
 
     // Clear field error when user starts typing
     setFieldErrors((prevErrors) => ({
@@ -72,7 +79,10 @@ const UserProfile: React.FC = () => {
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
-      setFormData({ ...formData, photo: URL.createObjectURL(file) });
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        photo: URL.createObjectURL(file),
+      }));
     }
   };
 
@@ -81,7 +91,10 @@ const UserProfile: React.FC = () => {
     setError(null);
 
     if (field === "password") {
-      const { newPassword, passwordConfirm } = formData;
+      const { newPassword, passwordConfirm } = formData as {
+        newPassword: string;
+        passwordConfirm: string;
+      };
       if (!newPassword || newPassword.length < 8) {
         setFieldErrors((prevErrors) => ({
           ...prevErrors,
@@ -153,24 +166,24 @@ const UserProfile: React.FC = () => {
     switch (field) {
       case "name":
         endpoint += "changeName";
-        data = { name: formData.name };
+        data = { name: formData?.name };
         break;
       case "email":
         endpoint += "updateEmail";
-        data = { email: formData.email };
+        data = { email: formData?.email };
         break;
       case "password":
         endpoint += "updatePassword";
         data = {
-          oldPassword: formData.oldPassword,
-          newPassword: formData.newPassword,
-          passwordConfirm: formData.passwordConfirm,
+          oldPassword: formData?.oldPassword,
+          newPassword: formData?.newPassword,
+          passwordConfirm: formData?.passwordConfirm,
         };
         break;
       case "photo":
         endpoint += "changePhoto";
         data = new FormData();
-        data.append("photo", formData.photo);
+        data.append("photo", formData?.photo as Blob);
         break;
       default:
         throw new Error("Invalid field");
@@ -181,87 +194,107 @@ const UserProfile: React.FC = () => {
 
   const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-100">
       <NavbarLoggedIn />
-      <div className="container mx-auto px-4 py-8 lg:px-8">
-        <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">
-          User Profile
-        </h2>
-        {loading ? (
-          <p className="text-center text-gray-600">Loading user data...</p>
-        ) : error ? (
-          <p className="text-center text-red-500">{error}</p>
-        ) : currentUser ? (
-          <div className="max-w-4xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg border border-gray-300">
+      <div className="container mx-auto px-4 py-8 lg:px-8 flex flex-col lg:flex-row gap-8">
+        <div className="max-w-md">
+          <div className="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-300">
+            <h2 className="text-3xl font-bold px-6 py-4 bg-gray-100 border-b border-gray-300">
+              User Information
+            </h2>
+            <div className="px-4 py-2">
+              <UserProfilePhoto
+                currentUser={currentUser}
+                editField={editField}
+                handleEdit={handleEdit}
+                handlePhotoChange={handlePhotoChange}
+                handleSubmit={handleSubmit}
+                icon={FaCamera}
+              />
+
+              <UserProfileField
+                label="Name"
+                field="name"
+                type="text"
+                icon={FaUser}
+                currentUser={currentUser}
+                editField={editField}
+                formData={formData}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                handleEdit={handleEdit}
+                error={null} // Replace with actual error handling if needed
+              />
+              <UserProfileField
+                label="Email"
+                field="email"
+                type="email"
+                icon={FaEnvelope}
+                currentUser={currentUser}
+                editField={editField}
+                formData={formData}
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
+                handleEdit={handleEdit}
+                error={null} // Replace with actual error handling if needed
+              />
+              {editField === "password" ? (
+                <PasswordChangeForm
+                  currentUser={currentUser}
+                  editField={editField}
+                  handleEdit={handleEdit}
+                  handleChange={handleChange}
+                  handleSubmit={handleSubmit}
+                  formData={
+                    formData as {
+                      oldPassword: string;
+                      newPassword: string;
+                      passwordConfirm: string;
+                    }
+                  }
+                  fieldErrors={fieldErrors}
+                />
+              ) : (
+                <UserProfileField
+                  label="Password"
+                  field="password"
+                  type="password"
+                  icon={FaLock}
+                  currentUser={currentUser}
+                  editField={editField}
+                  formData={formData}
+                  handleChange={handleChange}
+                  handleSubmit={handleSubmit}
+                  handleEdit={handleEdit}
+                  error={fieldErrors.newPassword || fieldErrors.passwordConfirm}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="flex-1">
+          <h2 className="text-3xl font-bold mb-8 text-center lg:text-left text-gray-800">
+            User Posts
+          </h2>
+          <div className="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-300">
             {successMessage && (
               <SuccessMessage
                 message={successMessage}
                 onClose={() => setSuccessMessage(null)}
               />
             )}
-            <UserProfileField
-              label="Name"
-              field="name"
-              type="text"
-              icon={FaUser}
-              currentUser={currentUser}
-              editField={editField}
-              formData={formData}
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
-              handleEdit={handleEdit}
-              error={null} // Replace with actual error handling if needed
-            />
-            <UserProfileField
-              label="Email"
-              field="email"
-              type="email"
-              icon={FaEnvelope}
-              currentUser={currentUser}
-              editField={editField}
-              formData={formData}
-              handleChange={handleChange}
-              handleSubmit={handleSubmit}
-              handleEdit={handleEdit}
-              error={null} // Replace with actual error handling if needed
-            />
-            {editField === "password" ? (
-              <PasswordChangeForm
-                currentUser={currentUser}
-                editField={editField}
-                handleEdit={handleEdit}
-                handleChange={handleChange}
-                handleSubmit={handleSubmit}
-                formData={formData}
-                fieldErrors={fieldErrors}
-              />
-            ) : (
-              <UserProfileField
-                label="Password"
-                field="password"
-                type="password"
-                icon={FaLock}
-                currentUser={currentUser}
-                editField={editField}
-                formData={formData}
-                handleChange={handleChange}
-                handleSubmit={handleSubmit}
-                handleEdit={handleEdit}
-                error={fieldErrors.newPassword || fieldErrors.passwordConfirm}
-              />
-            )}
-            <UserProfilePhoto
-              currentUser={currentUser}
-              editField={editField}
-              handleEdit={handleEdit}
-              handlePhotoChange={handlePhotoChange}
-              handleSubmit={handleSubmit}
-              icon={FaCamera} // Add this line
-            />
-            <UserPosts posts={currentUser.posts} />
+            <UserPosts posts={posts} setPosts={setPosts} />
           </div>
-        ) : null}
+        </div>
       </div>
     </div>
   );
