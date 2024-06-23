@@ -28,7 +28,7 @@ const Homepage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-100">
       <Navbar />
 
       <div className="container mx-auto py-8 px-4 md:px-0">
@@ -54,7 +54,7 @@ const Homepage: React.FC = () => {
         </div>
       </div>
 
-      <Footer id={""} />
+      <Footer />
     </div>
   );
 };

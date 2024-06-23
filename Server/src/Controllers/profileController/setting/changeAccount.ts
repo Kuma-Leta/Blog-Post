@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import User from "./../../../models/userModel";
+import Post from "../../../models/postModel";
 import AppError from "./../../../utils/appError";
 import asyncWrapper from "../../../utils/asyncWrapper";
 import { AuthenticatedRequest } from "./../../authController";
@@ -66,6 +67,12 @@ export const changeName = asyncWrapper(
     if (!user) {
       return next(new AppError("No user found with that ID", 404));
     }
+
+    // Update the user's name in all their posts
+    await Post.updateMany(
+      { user: req.user.id },
+      { $set: { author: req.body.name } }
+    );
 
     res.status(200).json({
       status: "success",

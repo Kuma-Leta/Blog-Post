@@ -12,6 +12,7 @@ import {
   faEye,
   faCoffee,
 } from "@fortawesome/free-solid-svg-icons";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import your desired arrow icons
 
 interface Post {
   _id: string;
@@ -112,7 +113,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         <video
           controls
           autoPlay
-          className="w-full h-full object-cover rounded-md outline-none"
+          className="w-full h-full object-contain rounded-md outline-none"
         >
           <source src={popupMedia} type="video/mp4" />
           Your browser does not support the video tag.
@@ -142,9 +143,28 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     }
   };
 
+  // Custom arrow components
+  const CustomLeftArrow = ({ onClick }: { onClick?: () => void }) => (
+    <button
+      onClick={onClick}
+      className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full z-10"
+    >
+      <FaArrowLeft />
+    </button>
+  );
+
+  const CustomRightArrow = ({ onClick }: { onClick?: () => void }) => (
+    <button
+      onClick={onClick}
+      className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full z-10"
+    >
+      <FaArrowRight />
+    </button>
+  );
+
   return (
     <div className="relative">
-      <div className="bg-white p-6 rounded-lg shadow-md transition-shadow duration-300 cursor-pointer hover:shadow-xl">
+      <div className="bg-white p-6 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center">
             <span
@@ -172,7 +192,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
               {post.textContent.substring(0, 100)}...
               <Link
                 to={`/post/${post._id}`}
-                className="text-blue-500 ml-1 flex items-center"
+                className="text-blue-500 ml-1 flex items-center cursor-pointer"
               >
                 <FontAwesomeIcon icon={faEye} className="mr-1" />
                 See more
@@ -205,7 +225,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
           <img
             src={`http://localhost:5000/${post.imagePath}`}
             alt={post.title}
-            className="w-full h-48 object-cover rounded-md mb-4"
+            className="w-full h-48 object-contain rounded-md mb-4 cursor-pointer"
             onClick={() =>
               openMediaPopup(`http://localhost:5000/${post.imagePath}`, "image")
             }
@@ -214,7 +234,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
 
         {post.videoContent && !post.imagePath && (
           <div
-            className="relative h-48 mb-4"
+            className="relative h-48 mb-4 cursor-pointer"
             onClick={(e) =>
               handleVideoBodyClick(
                 e,
@@ -222,7 +242,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
               )
             }
           >
-            <video className="w-full h-full object-cover rounded-md" controls>
+            <video className="w-full h-full object-contain rounded-md" controls>
               <source
                 src={`http://localhost:5000/${post.videoContent}`}
                 type="video/mp4"
@@ -248,12 +268,14 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
             removeArrowOnDeviceType={["tablet", "mobile"]}
             dotListClass="custom-dot-list-style"
             itemClass="carousel-item-padding-40-px"
+            customLeftArrow={<CustomLeftArrow />}
+            customRightArrow={<CustomRightArrow />}
           >
             <div>
               <img
                 src={`http://localhost:5000/${post.imagePath}`}
                 alt={post.title}
-                className="w-full h-48 object-cover rounded-md mb-4"
+                className="w-full h-48 object-contain rounded-md mb-4 cursor-pointer"
                 onClick={() =>
                   openMediaPopup(
                     `http://localhost:5000/${post.imagePath}`,
@@ -264,7 +286,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
             </div>
             <div>
               <div
-                className="relative h-48 mb-4"
+                className="relative h-48 mb-4 cursor-pointer"
                 onClick={(e) =>
                   handleVideoBodyClick(
                     e,
@@ -273,7 +295,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                 }
               >
                 <video
-                  className="w-full h-full object-cover rounded-md"
+                  className="w-full h-full object-contain rounded-md"
                   controls
                 >
                   <source

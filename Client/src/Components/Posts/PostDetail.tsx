@@ -6,6 +6,8 @@ import Navbar from "../AuthenticatedNavbar";
 import { useUser } from "../../UserContext";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { FaArrowLeft, FaEdit, FaTrash } from "react-icons/fa";
+import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 
 interface Post {
   _id: string;
@@ -63,7 +65,6 @@ const PostDetail: React.FC = () => {
         const data = await response.json();
 
         if (response.ok) {
-          console.log(data.data.data);
           setRelatedPosts(data.data.data);
         } else {
           console.error("Error fetching related posts:", data.message);
@@ -88,6 +89,10 @@ const PostDetail: React.FC = () => {
     );
   }
 
+  const handleEdit = (postId: string) => {
+    navigate(`/profile/editPost/${postId}`);
+  };
+
   const isAuthor = user && user.name === post.author;
 
   const useCarousel =
@@ -95,28 +100,37 @@ const PostDetail: React.FC = () => {
     (post.imagePath && post.imagePath.includes(",")) ||
     (post.videoContent && post.imagePath);
 
+  const renderStars = (rating: number) => {
+    const fullStars = Math.floor(rating);
+    const halfStars = rating % 1 >= 0.5 ? 1 : 0;
+    const emptyStars = 5 - fullStars - halfStars;
+
+    return (
+      <>
+        {Array(fullStars)
+          .fill(0)
+          .map((_, i) => (
+            <BsStarFill key={i} className="text-yellow-400" />
+          ))}
+        {halfStars === 1 && <BsStarHalf className="text-yellow-400" />}
+        {Array(emptyStars)
+          .fill(0)
+          .map((_, i) => (
+            <BsStar key={i} className="text-yellow-400" />
+          ))}
+      </>
+    );
+  };
+
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gradient-to-r from-blue-50 to-blue-100 min-h-screen">
       <Navbar />
       <div className="container mx-auto py-8 px-4 max-w-4xl">
         <button
           onClick={() => navigate(-1)}
           className="flex items-center text-blue-500 mb-4"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 mr-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
+          <FaArrowLeft className="h-6 w-6 mr-2" />
           Go Back
         </button>
         <div className="bg-white shadow-md rounded-lg p-6">
@@ -127,21 +141,20 @@ const PostDetail: React.FC = () => {
             <Carousel showThumbs={false} showStatus={false}>
               {post.imagePath &&
                 post.imagePath.split(",").map((image, index) => (
-                  <div key={index}>
+                  <div key={index} className="relative w-full h-80">
                     <img
                       src={`http://localhost:5000/${image.trim()}`}
                       alt={post.title}
-                      className="w-full rounded-lg mb-4 shadow-lg object-cover"
-                      style={{ maxHeight: "20rem" }}
+                      className="absolute inset-0 w-full h-full object-contain rounded-lg mb-4 shadow-lg"
                     />
                   </div>
                 ))}
               {post.videoContent && (
-                <div>
+                <div className="relative w-full h-80">
                   <video
                     controls
-                    className="w-full rounded-lg mb-4 shadow-lg object-cover"
-                    style={{ outline: "none", maxHeight: "20rem" }}
+                    className="absolute inset-0 w-full h-full object-contain rounded-lg mb-4 shadow-lg"
+                    style={{ outline: "none" }}
                   >
                     <source
                       src={`http://localhost:5000/${post.videoContent}`}
@@ -153,20 +166,19 @@ const PostDetail: React.FC = () => {
               )}
             </Carousel>
           ) : (
-            <div className="flex items-center mb-4">
+            <div className="relative w-full h-80 mb-4">
               {post.imagePath && (
                 <img
                   src={`http://localhost:5000/${post.imagePath}`}
                   alt={post.title}
-                  className="w-full rounded-lg mb-4 shadow-lg object-cover"
-                  style={{ maxHeight: "20rem" }}
+                  className="absolute inset-0 w-full h-full object-contain rounded-lg shadow-lg"
                 />
               )}
               {post.videoContent && (
                 <video
                   controls
-                  className="w-full rounded-lg mb-4 shadow-lg object-cover"
-                  style={{ outline: "none", maxHeight: "20rem" }}
+                  className="absolute inset-0 w-full h-full object-contain rounded-lg shadow-lg"
+                  style={{ outline: "none" }}
                 >
                   <source
                     src={`http://localhost:5000/${post.videoContent}`}
@@ -200,19 +212,22 @@ const PostDetail: React.FC = () => {
             </span>
           </div>
           <div className="flex items-center mt-4">
-            <p className="text-gray-600 mr-2">{post.ratingQuantity} ratings</p>
-            <p className="text-gray-600">
-              Average rating: {post.averageRating.toFixed(1)}
-            </p>
+            <div className="flex items-center mr-2">
+              {renderStars(post.averageRating)}
+            </div>
+            <p className="text-gray-600">{post.ratingQuantity} ratings</p>
           </div>
 
           {isAuthor && (
-            <div className="mt-4">
-              <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mr-2">
-                Edit
+            <div className="mt-4 flex">
+              <button
+                onClick={() => handleEdit(post._id)}
+                className="flex items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mr-2"
+              >
+                <FaEdit className="mr-2" /> Edit
               </button>
-              <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md">
-                Delete
+              <button className="flex items-center bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md">
+                <FaTrash className="mr-2" /> Delete
               </button>
             </div>
           )}

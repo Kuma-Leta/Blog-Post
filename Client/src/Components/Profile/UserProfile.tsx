@@ -182,10 +182,10 @@ const UserProfile: React.FC = () => {
   const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-100">
       <NavbarLoggedIn />
       <div className="container mx-auto px-4 py-8 lg:px-8">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+        <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">
           User Profile
         </h2>
         {loading ? (
@@ -193,7 +193,7 @@ const UserProfile: React.FC = () => {
         ) : error ? (
           <p className="text-center text-red-500">{error}</p>
         ) : currentUser ? (
-          <div className="max-w-4xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
+          <div className="max-w-4xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg border border-gray-300">
             {successMessage && (
               <SuccessMessage
                 message={successMessage}

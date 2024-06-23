@@ -48,7 +48,7 @@ const App: React.FC = () => {
             }
           />
           <Route
-            path="/profile/editPost"
+            path="/profile/editPost/:id"
             element={
               <PrivateRoutes>
                 <EditPost />

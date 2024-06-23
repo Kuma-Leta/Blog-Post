@@ -27,7 +27,15 @@ router.post(
 );
 router.get("/getAllposts", getAllPosts);
 //router.post("/addPosts", protect, addPost);
-router.patch("/update/:id", protect, upload.single("file"), updatePost);
+router.patch(
+  "/update/:id",
+  protect,
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "video", maxCount: 1 },
+  ]),
+  updatePost
+);
 router.get("/getMyPost", protect, getMyPost);
 router.get("/getPost/:postId", protect, getPost);
 router.delete("/deletePost/:postId", protect, deletePost);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
@@ -21,12 +21,16 @@ interface UserPostsProps {
 
 const UserPosts: React.FC<UserPostsProps> = ({ posts }) => {
   const [visiblePostsCount, setVisiblePostsCount] = useState(3);
+  const navigate = useNavigate();
 
   const handleLoadMore = () => {
     setVisiblePostsCount((prevCount) => prevCount + 3);
   };
 
-  // Sort posts by createdAt date in descending order
+  const handleEdit = (postId: string) => {
+    navigate(`/profile/editPost/${postId}`);
+  };
+
   const sortedPosts = posts.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
@@ -124,20 +128,28 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts }) => {
               <p className="text-gray-700 mb-4 truncate-content">
                 {post.textContent.substring(0, 100)}...
               </p>
-              <Link to={`/post/${post._id}`}>
-                <button className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                  Read More
+              <div className="flex justify-between">
+                <Link to={`/post/${post._id}`}>
+                  <button className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    Read More
+                  </button>
+                </Link>
+                <button
+                  onClick={() => handleEdit(post._id)}
+                  className="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                >
+                  Edit
                 </button>
-              </Link>
+              </div>
             </div>
           </div>
         ))}
       </div>
-      {visiblePostsCount < sortedPosts.length && (
+      {visiblePostsCount < posts.length && (
         <div className="flex justify-center mt-6">
           <button
             onClick={handleLoadMore}
-            className="bg-blue-500 text-white py-2 px-6 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
           >
             Load More
           </button>

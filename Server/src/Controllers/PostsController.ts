@@ -62,6 +62,8 @@ export const addPost = asyncWrapper(
 export const updatePost = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const postId = req.params.id;
+    console.log(req.body);
+    console.log(req.files);
 
     // Find the existing post
     const post = await Post.findById(postId);
@@ -73,10 +75,25 @@ export const updatePost = asyncWrapper(
       });
     }
 
-    // If a file is uploaded, update the imagePath
-    if (req.file) {
-      const imagePath = req.file.path.replace("/uploads", "");
+    const files = req.files as {
+      image?: Express.Multer.File[];
+      video?: Express.Multer.File[];
+    };
+
+    if (files.image && files.image.length > 0) {
+      const imagePath = files.image[0].path.replace(
+        path.join(__dirname, "../../public"),
+        ""
+      );
       req.body.imagePath = imagePath;
+    }
+
+    if (files.video && files.video.length > 0) {
+      const videoPath = files.video[0].path.replace(
+        path.join(__dirname, "../../public"),
+        ""
+      );
+      req.body.videoContent = videoPath;
     }
 
     // Ensure the user updating the post is the author

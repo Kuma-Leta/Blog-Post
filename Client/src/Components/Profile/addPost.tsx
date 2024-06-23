@@ -77,7 +77,7 @@ const CreatePost: React.FC = () => {
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-8 bg-gradient-to-r from-blue-50 to-blue-100">
         <form
           onSubmit={handleSubmit}
           className="max-w-lg mx-auto bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4"

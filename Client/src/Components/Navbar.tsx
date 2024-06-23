@@ -45,7 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
 
   return (
     <nav
-      className={`${bgColor} fixed w-full top-0 z-50 transition duration-300`}
+      className={`${bgColor} fixed w-full top-0 z-100 transition duration-300`}
     >
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <Link
