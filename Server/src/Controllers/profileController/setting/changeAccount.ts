@@ -86,11 +86,19 @@ export const changeName = asyncWrapper(
 export const deleteUserAccount = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const userId = req.user._id;
+
+    // Delete the user
     const user = await User.findByIdAndDelete(userId);
     if (!user) {
       return next(new AppError("User not found", 404));
     }
-    res.status(200).json({ message: "Account deleted successfully" });
+
+    // Delete the user's posts
+    await Post.deleteMany({ user: userId });
+
+    res
+      .status(200)
+      .json({ message: "Account and associated posts deleted successfully" });
   }
 );
 

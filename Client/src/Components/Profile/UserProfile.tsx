@@ -22,6 +22,7 @@ const UserProfile: React.FC = () => {
       passwordConfirm: null,
     }
   );
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // State for posts
   const [posts, setPosts] = useState<Post[]>([]);
@@ -194,6 +195,34 @@ const UserProfile: React.FC = () => {
 
   const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
+  const handleDeleteAccount = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        throw new Error("Authentication token not found");
+      }
+
+      // Hide the modal immediately after confirming
+      setShowDeleteModal(false);
+
+      await axios.delete("http://localhost:5000/api/v1/users/deleteMe", {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      localStorage.removeItem("authToken");
+      setSuccessMessage("Account deleted successfully!");
+      setTimeout(() => {
+        window.location.href = "/"; // Redirect to home page or login page
+      }, 3000);
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      setError("Failed to delete account");
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -278,6 +307,14 @@ const UserProfile: React.FC = () => {
                   error={fieldErrors.newPassword || fieldErrors.passwordConfirm}
                 />
               )}
+              <div className="mt-4">
+                <button
+                  onClick={() => setShowDeleteModal(true)}
+                  className="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                >
+                  Delete Account
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -296,6 +333,32 @@ const UserProfile: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
+            <p className="mb-4">
+              Are you sure you want to delete your account? This action cannot
+              be undone.
+            </p>
+            <div className="flex justify-between">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteAccount}
+                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+              >
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
