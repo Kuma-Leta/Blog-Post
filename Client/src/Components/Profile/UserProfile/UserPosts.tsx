@@ -26,6 +26,7 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
   const [visiblePostsCount, setVisiblePostsCount] = useState(2);
   const [postToDelete, setPostToDelete] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [confirmDeleteAll, setConfirmDeleteAll] = useState(false);
   const navigate = useNavigate();
 
   const handleLoadMore = () => {
@@ -62,13 +63,14 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
   const handleDeleteAllPosts = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      await axios.delete("http://localhost:5000/api/v1/post/deleteAllPosts", {
+      await axios.delete("http://localhost:5000/api/v1/post/deleteAllMyPost", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       setPosts([]);
       setSuccessMessage("All posts deleted successfully!");
+      setConfirmDeleteAll(false);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         console.error("Error deleting all posts:", error.response.data);
@@ -102,7 +104,7 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
           </button>
         </Link>
         <button
-          onClick={handleDeleteAllPosts}
+          onClick={() => setConfirmDeleteAll(true)}
           className="bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
         >
           Delete All Posts
@@ -252,6 +254,29 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
                 className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
               >
                 Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmDeleteAll && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
+            <p className="mb-4">Are you sure you want to delete all posts?</p>
+            <div className="flex justify-between">
+              <button
+                onClick={() => setConfirmDeleteAll(false)}
+                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteAllPosts}
+                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+              >
+                Yes, Delete All
               </button>
             </div>
           </div>

@@ -38,7 +38,7 @@ const PostsList: React.FC<PostsListProps> = ({ selectedCategory }) => {
       const data = await response.json();
 
       if (response.ok) {
-        console.log(data.data.data);
+        // console.log(data.data.data);
         setPosts(data.data.data);
         setHasMore(data.data.data.length === limit);
         window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to top

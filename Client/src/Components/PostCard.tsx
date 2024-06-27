@@ -13,6 +13,7 @@ import {
   faCoffee,
 } from "@fortawesome/free-solid-svg-icons";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import your desired arrow icons
+import RatingComponent from "./RatingComponent";
 
 interface Post {
   _id: string;
