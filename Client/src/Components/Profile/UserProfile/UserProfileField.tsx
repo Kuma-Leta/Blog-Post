@@ -47,7 +47,8 @@ const UserProfileField: React.FC<UserProfileFieldProps> = ({
           </div>
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2"
+            className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-1 px-3 mt-2 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+            style={{ minWidth: "100px" }}
           >
             Save
           </button>
@@ -61,7 +62,8 @@ const UserProfileField: React.FC<UserProfileFieldProps> = ({
           <button
             type="button"
             onClick={() => handleEdit(field)}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+            style={{ minWidth: "100px" }}
           >
             Edit
           </button>

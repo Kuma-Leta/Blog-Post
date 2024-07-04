@@ -31,8 +31,8 @@ const UserProfilePhoto: React.FC<UserProfilePhotoProps> = ({
             <button
               type="button"
               onClick={() => handleEdit("photo")}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              style={{ zIndex: 10 }} // Ensure button is above other elements for correct hover detection
+              className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+              style={{ minWidth: "100px", zIndex: 10 }}
             >
               Change Photo
             </button>
@@ -61,8 +61,8 @@ const UserProfilePhoto: React.FC<UserProfilePhotoProps> = ({
             />
             <button
               type="submit"
-              className="bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2 absolute top-0 right-0 mr-4 mt-2"
-              style={{ zIndex: 10 }} // Ensure button is above other elements for correct hover detection
+              className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-1 px-3 mt-2 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+              style={{ minWidth: "100px", zIndex: 10 }}
             >
               Save
             </button>

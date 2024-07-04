@@ -8,6 +8,7 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FaArrowLeft, FaEdit, FaTrash } from "react-icons/fa";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
+import SuccessMessage from "../Profile/UserProfile/SuccessMessage";
 
 interface Post {
   _id: string;
@@ -30,6 +31,8 @@ const PostDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const { user } = useUser();
   const navigate = useNavigate();
+  const [postToDelete, setPostToDelete] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -93,6 +96,33 @@ const PostDetail: React.FC = () => {
     navigate(`/profile/editPost/${postId}`);
   };
 
+  const handleDelete = async (postId: string) => {
+    try {
+      const token = localStorage.getItem("authToken");
+      await axios.delete(
+        `http://localhost:5000/api/v1/post/deletePost/${postId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setPostToDelete(null);
+      setSuccessMessage("Post deleted successfully!");
+      setTimeout(() => {
+        navigate(-1);
+        // Set loading to false after the delay
+      }, 3000);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.error("Error deleting post:", error.response.data);
+      } else {
+        console.error("Error deleting post:", error);
+      }
+    }
+  };
+
   const isAuthor = user && user.name === post.author;
 
   const useCarousel =
@@ -126,6 +156,13 @@ const PostDetail: React.FC = () => {
     <div className="bg-gradient-to-r from-blue-50 to-blue-100 min-h-screen">
       <Navbar />
       <div className="container mx-auto py-8 px-4 max-w-4xl">
+        {successMessage && (
+          <SuccessMessage
+            message={successMessage}
+            onClose={() => setSuccessMessage(null)}
+          />
+        )}
+
         <button
           onClick={() => navigate(-1)}
           className="flex items-center text-blue-500 mb-4"
@@ -219,15 +256,21 @@ const PostDetail: React.FC = () => {
           </div>
 
           {isAuthor && (
-            <div className="mt-4 flex">
+            <div className="mt-4 flex gap-1">
               <button
                 onClick={() => handleEdit(post._id)}
-                className="flex items-center bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mr-2"
+                className="flex items-center justify-center bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+                style={{ minWidth: "100px" }}
               >
                 <FaEdit className="mr-2" /> Edit
               </button>
-              <button className="flex items-center bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-md">
-                <FaTrash className="mr-2" /> Delete
+              <button
+                onClick={() => setPostToDelete(post._id)}
+                className="flex items-center bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-2 px-4 rounded-full"
+                style={{ minWidth: "100px" }}
+              >
+                <FaTrash className="mr-2" />
+                Delete
               </button>
             </div>
           )}
@@ -266,6 +309,29 @@ const PostDetail: React.FC = () => {
             ))}
           </ul>
         </div>
+
+        {postToDelete && (
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded shadow-lg">
+              <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
+              <p className="mb-4">Are you sure you want to delete this post?</p>
+              <div className="flex justify-between">
+                <button
+                  onClick={() => setPostToDelete(null)}
+                  className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleDelete(postToDelete)}
+                  className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                >
+                  Yes, Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

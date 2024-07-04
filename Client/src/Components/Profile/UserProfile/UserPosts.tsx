@@ -99,7 +99,10 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
 
       <div className="flex justify-between items-center mb-4">
         <Link to="/profile/addPost">
-          <button className="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+          <button
+            className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-2 px-6 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+            style={{ minWidth: "120px" }}
+          >
             Create Post
           </button>
         </Link>
@@ -206,16 +209,18 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
                 >
                   Read More
                 </Link>
-                <div>
+                <div className="flex gap-1">
                   <button
                     onClick={() => handleEdit(post._id)}
-                    className="bg-green-500 text-white py-1 px-3 rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 mr-2"
+                    className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+                    style={{ minWidth: "100px" }}
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => setPostToDelete(post._id)}
                     className="bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                    style={{ minWidth: "100px" }}
                   >
                     Delete
                   </button>
@@ -230,7 +235,8 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
         <div className="flex justify-center mt-6">
           <button
             onClick={handleLoadMore}
-            className="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-2 px-6 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+            style={{ minWidth: "120px" }}
           >
             Load More
           </button>
@@ -245,13 +251,13 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
             <div className="flex justify-between">
               <button
                 onClick={() => setPostToDelete(null)}
-                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+                className="bg-gradient-to-r from-gray-500 to-gray-600 text-white py-2 px-4 rounded-full hover:from-gray-600 hover:to-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleDelete(postToDelete)}
-                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                className="bg-gradient-to-r from-red-500 to-red-600 text-white py-2 px-4 rounded-full hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
               >
                 Yes, Delete
               </button>
@@ -268,13 +274,13 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
             <div className="flex justify-between">
               <button
                 onClick={() => setConfirmDeleteAll(false)}
-                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+                className="bg-gradient-to-r from-gray-500 to-gray-600 text-white py-2 px-4 rounded-full hover:from-gray-600 hover:to-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDeleteAllPosts}
-                className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                className="bg-gradient-to-r from-red-500 to-red-600 text-white py-2 px-4 rounded-full hover:from-red-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
               >
                 Yes, Delete All
               </button>

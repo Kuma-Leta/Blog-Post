@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import HeroSection from "./HeroSection";
 import AboutSection from "./AboutSection";
@@ -8,7 +8,7 @@ import TestimonialsSection from "./TestimonialsSection";
 import AuthorsSection from "./AuthorsSection";
 import NewsletterSection from "./NewsletterSection";
 import Footer from "./Footer";
-import LoadingSpinner from "./LoadingSpinner"; // Import LoadingSpinner component
+// import LoadingSpinner from "./LoadingSpinner"; // Import LoadingSpinner component
 
 const articles = [
   {
@@ -75,25 +75,25 @@ const testimonials = [
 ];
 
 const SystemOverview: React.FC = () => {
-  const [loading, setLoading] = useState(true); // State for loading spinner
+  // const [loading, setLoading] = useState(true); // State for loading spinner
 
   // Simulate a delay to showcase the loading spinner
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false); // Set loading to false after the delay
-    }, 2000); // Simulating 2 seconds delay
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false); // Set loading to false after the delay
+  //   }, 2000); // Simulating 2 seconds delay
 
-    return () => clearTimeout(timer);
-  }, []);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   return (
     <div className="bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen text-white relative">
       {/* Loading Spinner */}
-      {loading && <LoadingSpinner loading={loading} />}
+      {/* {loading && <LoadingSpinner loading={loading} />} */}
 
       {/* Content */}
       <div
-        style={{ opacity: loading ? 0 : 1, transition: "opacity 0.5s ease" }}
+      // style={{ opacity: loading ? 0 : 1, transition: "opacity 0.5s ease" }}
       >
         <Navbar theme="dark" />
 

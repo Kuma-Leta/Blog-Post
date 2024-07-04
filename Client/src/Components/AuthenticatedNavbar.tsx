@@ -44,11 +44,7 @@ const NavbarLoggedIn: React.FC = () => {
   };
 
   return (
-    <nav
-      className={`bg-gray-800 p-4 transition-all duration-300 ${
-        isSticky ? "fixed top-0 left-0 right-0 shadow-md" : ""
-      } z-50 bg-opacity-95`}
-    >
+    <nav className={`bg-gray-900 p-4 transition-all duration-300 z-50`}>
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/home" className="flex items-center">
           <img
@@ -90,13 +86,13 @@ const NavbarLoggedIn: React.FC = () => {
           <div className={`hidden md:flex space-x-4`}>
             <Link
               to="/home"
-              className={`hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
+              className={`hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
             >
               Home
             </Link>
             <Link
               to="/profile/userProfile"
-              className={`hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
+              className={`hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
             >
               Profile
             </Link>
@@ -105,19 +101,19 @@ const NavbarLoggedIn: React.FC = () => {
           <div
             className={`${
               isMobileMenuOpen ? "block" : "hidden"
-            } md:hidden absolute top-16 left-0 right-0 bg-gray-800 z-50`}
+            } md:hidden absolute top-16 left-0 right-0 bg-gray-900 z-50`}
           >
             <div className="flex flex-col items-center space-y-2 py-4">
               <Link
                 to="/home"
-                className={`hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
+                className={`hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
                 onClick={closeMobileMenu} // Close mobile menu when link is clicked
               >
                 Home
               </Link>
               <Link
                 to="/profile/userProfile"
-                className={`hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
+                className={`hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
                 onClick={closeMobileMenu} // Close mobile menu when link is clicked
               >
                 Profile
@@ -128,7 +124,7 @@ const NavbarLoggedIn: React.FC = () => {
           <div className="relative md:hidden">
             <button
               onClick={toggleDropdown}
-              className={`flex items-center hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
+              className={`flex items-center hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
             >
               <img
                 src={`http://localhost:5000/${user?.photo}`}
@@ -156,7 +152,7 @@ const NavbarLoggedIn: React.FC = () => {
           <div className="relative hidden md:block">
             <button
               onClick={toggleDropdown}
-              className={`flex items-center hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
+              className={`flex items-center hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
             >
               <img
                 src={`http://localhost:5000/${user?.photo}`}

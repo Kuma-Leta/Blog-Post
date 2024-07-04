@@ -310,7 +310,7 @@ const UserProfile: React.FC = () => {
               <div className="mt-4">
                 <button
                   onClick={() => setShowDeleteModal(true)}
-                  className="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                  className="w-full bg-red-500 text-white py-2 px-4 rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
                 >
                   Delete Account
                 </button>

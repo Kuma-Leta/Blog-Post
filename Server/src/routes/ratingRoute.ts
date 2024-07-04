@@ -9,13 +9,11 @@ import {
 
 const router = express.Router({ mergeParams: true });
 
-router
-  .route("/")
-  .get(protect, getAllRating)
-  .post(protect, restrictTo("user"), addRating);
+router.route("/").post(protect, restrictTo("user"), addRating);
 
 router
   .route("/:id")
+  .get(protect, getAllRating)
   .patch(protect, restrictTo("user"), updateRating)
   .delete(protect, deleteRating);
 

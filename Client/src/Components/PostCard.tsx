@@ -1,19 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import moment from "moment";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import { MdClose } from "react-icons/md";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faStar,
-  faClock,
-  faUser,
-  faEye,
-  faCoffee,
-} from "@fortawesome/free-solid-svg-icons";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Import your desired arrow icons
-import RatingComponent from "./RatingComponent";
+import PostHeader from "./PostCard/PostHeader";
+import PostContent from "./PostCard/PostContent";
+import AuthorInfo from "./PostCard/AuthorInfo";
+import MediaContent from "./PostCard/MediaContent";
+import MediaPopup from "./PostCard/MediaPopup";
+import CategoryBadge from "./PostCard/CategoryBadge";
 
 interface Post {
   _id: string;
@@ -27,7 +18,6 @@ interface Post {
   authorImage: string;
   ratingQuantity: number;
   averageRating: number;
-  currentUserRating?: number;
 }
 
 interface PostCardProps {
@@ -106,6 +96,14 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     setPopupMediaType(null);
   };
 
+  const handleVideoBodyClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    mediaUrl: string
+  ) => {
+    e.stopPropagation();
+    openMediaPopup(mediaUrl, "video");
+  };
+
   const renderMediaContent = () => {
     if (!popupMedia) return null;
 
@@ -114,7 +112,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         <video
           controls
           autoPlay
-          className="w-full h-full object-contain rounded-md outline-none"
+          className="w-full h-full object-cover rounded-t-lg outline-none"
         >
           <source src={popupMedia} type="video/mp4" />
           Your browser does not support the video tag.
@@ -125,211 +123,53 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         <img
           src={popupMedia}
           alt="Popup Media"
-          className="w-full h-full object-contain rounded-md"
+          className="w-full h-full object-cover rounded-t-lg"
         />
       );
     }
   };
 
-  const handleVideoBodyClick = (
-    e: React.MouseEvent<HTMLDivElement>,
-    mediaUrl: string
-  ) => {
-    if (
-      e.target.tagName !== "VIDEO" &&
-      e.target.tagName !== "SOURCE" &&
-      e.target.tagName !== "BUTTON"
-    ) {
-      openMediaPopup(mediaUrl, "video");
-    }
-  };
-
-  // Custom arrow components
-  const CustomLeftArrow = ({ onClick }: { onClick?: () => void }) => (
-    <button
-      onClick={onClick}
-      className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full z-10"
-    >
-      <FaArrowLeft />
-    </button>
-  );
-
-  const CustomRightArrow = ({ onClick }: { onClick?: () => void }) => (
-    <button
-      onClick={onClick}
-      className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full z-10"
-    >
-      <FaArrowRight />
-    </button>
-  );
-
   return (
     <div className="relative">
-      <div className="bg-white p-6 rounded-lg shadow-md transition-shadow duration-300 hover:shadow-xl">
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center">
-            <span
-              className={
-                categoryStyles[post.category] +
-                " rounded-full px-3 py-1 text-sm font-semibold inline-block"
-              }
-            >
-              <FontAwesomeIcon icon={faCoffee} className="mr-2" />
-              {post.category}
-            </span>
-          </div>
-
-          <div className="flex items-center text-sm text-gray-600">
-            <FontAwesomeIcon icon={faStar} className="mr-1 text-yellow-500" />
-            <span className="mr-2">{post.ratingQuantity} ratings</span>
-            <FontAwesomeIcon icon={faStar} className="mr-1 text-yellow-500" />
-            <span>Average rating: {post.averageRating.toFixed(1)}</span>
+      <div className="bg-white  rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105">
+        <div className="relative">
+          <MediaContent
+            imagePath={post.imagePath}
+            videoContent={post.videoContent}
+            openMediaPopup={openMediaPopup}
+            handleVideoBodyClick={handleVideoBodyClick}
+            showMediaPopup={showMediaPopup}
+            responsiveCarousel={responsiveCarousel}
+          />
+          {/* Category badge in the top right corner of the media */}
+          <div className="absolute top-0 right-0 m-2">
+            <CategoryBadge
+              category={post.category}
+              categoryStyles={categoryStyles}
+            />
           </div>
         </div>
-        <h3 className="text-2xl font-bold mb-2">{post.title}</h3>
-        <p className="text-gray-800 mb-4">
-          {post.textContent.length > 100 ? (
-            <>
-              {post.textContent.substring(0, 100)}...
-              <Link
-                to={`/post/${post._id}`}
-                className="text-blue-500 ml-1 flex items-center cursor-pointer"
-              >
-                <FontAwesomeIcon icon={faEye} className="mr-1" />
-                See more
-              </Link>
-            </>
-          ) : (
-            post.textContent
-          )}
-        </p>
-        <div className="flex items-center mb-4">
-          <img
-            src={`http://localhost:5000/uploads/${post.authorImage}`}
-            alt={post.author}
-            className="w-10 h-10 rounded-full mr-4"
-          />
-          <div className="text-sm">
-            <p className="text-gray-900 leading-none flex items-center">
-              <FontAwesomeIcon icon={faUser} className="mr-1" />
-              {post.author}
-            </p>
-            <p className="text-gray-600 flex items-center">
-              <FontAwesomeIcon icon={faClock} className="mr-1" />
-              {moment(post.createdAt).fromNow()}
-            </p>
-          </div>
-        </div>
-
-        {/* Media Content Rendering */}
-        {post.imagePath && !post.videoContent && (
-          <img
-            src={`http://localhost:5000/${post.imagePath}`}
-            alt={post.title}
-            className="w-full h-48 object-contain rounded-md mb-4 cursor-pointer"
-            onClick={() =>
-              openMediaPopup(`http://localhost:5000/${post.imagePath}`, "image")
-            }
-          />
-        )}
-
-        {post.videoContent && !post.imagePath && (
-          <div
-            className="relative h-48 mb-4 cursor-pointer"
-            onClick={(e) =>
-              handleVideoBodyClick(
-                e,
-                `http://localhost:5000/${post.videoContent}`
-              )
-            }
-          >
-            <video className="w-full h-full object-contain rounded-md" controls>
-              <source
-                src={`http://localhost:5000/${post.videoContent}`}
-                type="video/mp4"
-              />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        )}
-
-        {post.imagePath && post.videoContent && (
-          <Carousel
-            responsive={responsiveCarousel}
-            swipeable
-            draggable
-            showDots={!showMediaPopup} // Hide dots when media popup is shown
-            infinite
-            autoPlay
-            autoPlaySpeed={5000}
-            keyBoardControl
-            customTransition="all .5"
-            transitionDuration={500}
-            containerClass="carousel-container"
-            removeArrowOnDeviceType={["tablet", "mobile"]}
-            dotListClass="custom-dot-list-style"
-            itemClass="carousel-item-padding-40-px"
-            customLeftArrow={<CustomLeftArrow />}
-            customRightArrow={<CustomRightArrow />}
-          >
-            <div>
-              <img
-                src={`http://localhost:5000/${post.imagePath}`}
-                alt={post.title}
-                className="w-full h-48 object-contain rounded-md mb-4 cursor-pointer"
-                onClick={() =>
-                  openMediaPopup(
-                    `http://localhost:5000/${post.imagePath}`,
-                    "image"
-                  )
-                }
-              />
-            </div>
-            <div>
-              <div
-                className="relative h-48 mb-4 cursor-pointer"
-                onClick={(e) =>
-                  handleVideoBodyClick(
-                    e,
-                    `http://localhost:5000/${post.videoContent}`
-                  )
-                }
-              >
-                <video
-                  className="w-full h-full object-contain rounded-md"
-                  controls
-                >
-                  <source
-                    src={`http://localhost:5000/${post.videoContent}`}
-                    type="video/mp4"
-                  />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            </div>
-          </Carousel>
-        )}
+        <PostHeader
+          ratingQuantity={post.ratingQuantity}
+          averageRating={post.averageRating}
+        />
+        <PostContent
+          _id={post._id}
+          title={post.title}
+          textContent={post.textContent}
+        />
+        <AuthorInfo
+          author={post.author}
+          authorImage={post.authorImage}
+          createdAt={post.createdAt}
+        />
       </div>
-
-      {/* Media Popup */}
-      {showMediaPopup && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div
-            ref={popupRef}
-            className="relative max-w-screen-lg max-h-screen mx-auto"
-          >
-            <div
-              className="absolute top-0 right-0 m-4 cursor-pointer text-white text-3xl"
-              onClick={closeMediaPopup}
-            >
-              <MdClose />
-            </div>
-            <div className="w-full h-full flex items-center justify-center">
-              {renderMediaContent()}
-            </div>
-          </div>
-        </div>
-      )}
+      <MediaPopup
+        showMediaPopup={showMediaPopup}
+        popupRef={popupRef}
+        closeMediaPopup={closeMediaPopup}
+        renderMediaContent={renderMediaContent}
+      />
     </div>
   );
 };

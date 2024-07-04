@@ -202,7 +202,8 @@ const CreatePost: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 ${
+              style={{ minWidth: "120px" }}
+              className={`w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-2 px-6 rounded-full shadow-md transition duration-300 disabled:opacity-50 ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >

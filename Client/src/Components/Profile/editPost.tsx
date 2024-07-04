@@ -267,7 +267,7 @@ const EditPost: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-2 px-4 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-md hover:from-blue-600 hover:to-blue-800 transition duration-200 ${
+              className={`w-full py-2 px-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full shadow-md transition duration-300 disabled:opacity-50 ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
               } flex items-center justify-center`}
             >
