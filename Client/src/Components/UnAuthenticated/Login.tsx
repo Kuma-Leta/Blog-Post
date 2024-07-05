@@ -2,10 +2,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import axios from "axios";
-import { IoLogoGoogle } from "react-icons/io";
-import { MdEmail, MdLock } from "react-icons/md"; // Import email and lock icons
+import { MdEmail, MdLock } from "react-icons/md";
 import LoadingSpinner from "./LoadingSpinner";
 import { useUser } from "../../UserContext";
+import SuccessMessage from "../Profile/UserProfile/SuccessMessage";
+import ErrorMessage from "../Profile/UserProfile/ErrorMessage";
+import SocialMediaIcons from "./SocialMediaIcons"; // Import SocialMediaIcons
 
 const Login: React.FC = () => {
   const { setUser } = useUser();
@@ -14,11 +16,13 @@ const Login: React.FC = () => {
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<any>(false);
   const [loading, setLoading] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const navigate = useNavigate();
 
   async function formSubmitHandler(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setLoading(true); // Start loading
+    setLoading(true);
     try {
       const userCredential = await axios.post(
         "http://localhost:5000/api/v1/users/login",
@@ -27,18 +31,17 @@ const Login: React.FC = () => {
 
       if (userCredential) {
         setError("");
+        setShowErrorMessage(false);
         setResult("Congratulations! Successfully logged in.");
         localStorage.setItem("authToken", userCredential.data.token);
         const userData = userCredential.data.data.user;
         setUser(userData);
-        console.log(userData);
         localStorage.setItem("user", JSON.stringify(userData));
-        console.log(userCredential.data);
-        console.log(userCredential.data.data.user);
-        console.log(userCredential.data.token);
+        setShowSuccessMessage(true);
         setTimeout(() => navigate("/home"), 2000);
       }
     } catch (error: any) {
+      setShowSuccessMessage(false);
       if (
         error.response &&
         error.response.data &&
@@ -48,17 +51,29 @@ const Login: React.FC = () => {
       } else {
         setError("An unexpected error occurred. Please try again.");
       }
+      setShowErrorMessage(true);
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   }
 
   return (
-    <div className="flex items-center justify-center w-full">
-      {loading ? (
-        <LoadingSpinner loading={loading} />
-      ) : (
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <div className="relative flex items-center justify-center w-full">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+        {loading && <LoadingSpinner loading={loading} />}
+        {showSuccessMessage && (
+          <SuccessMessage
+            message={result}
+            onClose={() => setShowSuccessMessage(false)}
+          />
+        )}
+        {showErrorMessage && (
+          <ErrorMessage
+            message={error}
+            onClose={() => setShowErrorMessage(false)}
+          />
+        )}
+        {!showSuccessMessage && (
           <form onSubmit={formSubmitHandler} className="space-y-6">
             <h2 className="text-2xl font-bold text-center">LOGIN</h2>
             <div className="relative">
@@ -105,21 +120,12 @@ const Login: React.FC = () => {
                 Forgot password?
               </Link>
             </div>
-            {result && (
-              <p className="mt-4 text-green-500 text-center">{result}</p>
-            )}
-            {error && <p className="mt-4 text-red-500 text-center">{error}</p>}
             <hr className="my-4" />
-            <div className="text-center">or</div>
-            <div className="mt-4 flex justify-center">
-              <button className="flex items-center py-2 px-4 border border-gray-300 rounded-full hover:bg-gray-100 transition duration-300">
-                <IoLogoGoogle size={28} className="mr-2" />
-                Login with Google
-              </button>
-            </div>
+            <div className="text-center">or SIGNUP VIA SOCIAL NETWORK</div>
+            <SocialMediaIcons /> {/* Use SocialMediaIcons */}
           </form>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
