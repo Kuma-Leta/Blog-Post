@@ -40,8 +40,8 @@ const createSendToken = (
 export const signup = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-      console.log("Request Body:", req.body);
-      console.log(req.file);
+      // console.log("Request Body:", req.body);
+      // console.log(req.file);
 
       const newUser = await User.create({
         ...req.body,

@@ -9,6 +9,7 @@ interface IUser extends Document {
   photo?: string;
   numberOfPost: number;
   role: "user" | "admin";
+  gender?: "male" | "female"; // Add gender field
   password: string;
   passwordConfirm?: string;
   passwordChangedAt?: Date;
@@ -44,6 +45,11 @@ const userSchema = new mongoose.Schema<IUser>(
       type: String,
       enum: ["user", "admin"],
       default: "user",
+    },
+    gender: {
+      type: String,
+      enum: ["male", "female"],
+      required: true,
     },
     password: {
       type: String,
