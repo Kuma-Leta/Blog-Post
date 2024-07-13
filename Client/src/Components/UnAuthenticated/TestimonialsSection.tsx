@@ -1,21 +1,52 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+import testimony1 from "../../assets/images/testimonials/john_doe.png";
+import testimony2 from "../../assets/images/testimonials/jane_smith.png";
+import testimony3 from "../../assets/images/testimonials/mickael_brown.png";
 
 interface Testimonial {
   id: number;
   name: string;
   title: string;
   quote: string;
-  imageUrl: string;
+  imageUrl: string; // Make sure this is a string
 }
+
+const testimonials: Testimonial[] = [
+  {
+    id: 1,
+    name: "John Doe",
+    title: "CEO, Tech Solutions Inc.",
+    quote:
+      "Debbal Technologies has been instrumental in helping us stay ahead with their insightful articles and expert analysis.",
+    imageUrl: testimony1, // Set the imported image directly
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    title: "Data Scientist",
+    quote:
+      "The articles on Debbal Technologies have been invaluable in my career growth. They cover the latest trends in an accessible manner.",
+    imageUrl: testimony2, // Set the imported image directly
+  },
+  {
+    id: 3,
+    name: "Michael Brown",
+    title: "Cybersecurity Analyst",
+    quote:
+      "I rely on Debbal Technologies for up-to-date information on cybersecurity threats and best practices. Highly recommended!",
+    imageUrl: testimony3, // Set the imported image directly
+  },
+];
 
 interface Props {
   id: string;
-  testimonials: Testimonial[];
 }
 
-const TestimonialsSection: React.FC<Props> = ({ id, testimonials }) => {
+const TestimonialsSection: React.FC<Props> = ({ id }) => {
   return (
     <section id={id} className="py-16 bg-gray-100 text-black">
       <div className="container mx-auto px-4">
@@ -34,7 +65,7 @@ const TestimonialsSection: React.FC<Props> = ({ id, testimonials }) => {
           {testimonials.map((testimonial) => (
             <div key={testimonial.id} className="p-0">
               <img
-                src={testimonial.imageUrl}
+                src={testimonial.imageUrl} // This is now correctly a string
                 alt={testimonial.name}
                 className="rounded-full w-24 h-24 mx-auto mb-4 object-cover"
                 style={{

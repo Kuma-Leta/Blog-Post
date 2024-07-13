@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
@@ -122,41 +121,7 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
             key={index}
             className="bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 w-full sm:w-auto"
           >
-            {(post.imagePath && post.imagePath.includes(",")) ||
-            post.videoContent ? (
-              <Carousel showThumbs={false}>
-                {post.imagePath &&
-                  post.imagePath.split(",").map((image, idx) => (
-                    <div key={idx} className="h-32">
-                      <img
-                        src={`http://localhost:5000/${image
-                          .trim()
-                          .replace(/\\/g, "/")}`}
-                        alt={post.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ))}
-                {post.videoContent && (
-                  <div className="h-32">
-                    <video
-                      controls
-                      className="w-full h-full object-cover"
-                      style={{ outline: "none" }}
-                    >
-                      <source
-                        src={`http://localhost:5000/${post.videoContent.replace(
-                          /\\/g,
-                          "/"
-                        )}`}
-                        type="video/mp4"
-                      />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                )}
-              </Carousel>
-            ) : (
+            {post.imagePath || post.videoContent ? (
               <>
                 {post.imagePath && (
                   <img
@@ -185,7 +150,7 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
                   </video>
                 )}
               </>
-            )}
+            ) : null}
 
             <div className="p-6">
               <h3 className="font-bold text-2xl mb-2 text-gray-800 truncate-title">

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { IconType } from "react-icons";
 import { FaEdit } from "react-icons/fa";
@@ -12,7 +13,7 @@ interface UserProfileFieldProps {
   formData: any;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: React.FormEvent, field: string) => void;
-  handleEdit: (field: string | null) => void;
+  handleEdit: (field: string) => void;
   error: string | null;
 }
 

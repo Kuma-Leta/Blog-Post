@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import logo from "../../assets/DLogo.png"; // Adjust the path to your image
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +36,7 @@ const Navbar: React.FC = () => {
           onClick={() => handleNavigation("hero")}
         >
           <img
-            src="../../public/DLogo.png"
+            src={logo}
             alt="Debbal Technologies Logo"
             className="h-10 md:h-12 p-1 rounded-full shadow-md"
             style={{ backgroundColor: "#FFFFFF" }}

@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 interface User {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -15,9 +21,13 @@ interface UserContextType {
   setUser: (user: User | null) => void;
 }
 
+interface UserProviderProps {
+  children: ReactNode;
+}
+
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider: React.FC = ({ children }) => {
+export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {

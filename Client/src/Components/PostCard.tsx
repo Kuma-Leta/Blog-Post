@@ -60,7 +60,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     };
   }, [showMediaPopup]);
 
-  const openMediaPopup = (mediaUrl: string, type: "image" | "video") => {
+  const openMediaPopup = (mediaUrl: string, type: string) => {
     if (type === "image") {
       setPopupMedia(mediaUrl);
       setPopupMediaType(type);

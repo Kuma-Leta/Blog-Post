@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 import axios from "axios";
 
 interface RatingProps {
-  postId: string;
+  postId: string | undefined;
   user: any;
 }
 

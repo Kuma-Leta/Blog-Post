@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import axios, { AxiosProgressEvent } from "axios";
 import Navbar from "../AuthenticatedNavbar";
@@ -17,8 +18,6 @@ const CreatePost: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const navigate = useNavigate(); // Get the navigate function from useNavigate
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -63,7 +62,7 @@ const CreatePost: React.FC = () => {
         formData,
         config
       );
-
+      console.log(response);
       setMessage("Post added successfully");
       // setSuccessMessage("Post added successfully");
 

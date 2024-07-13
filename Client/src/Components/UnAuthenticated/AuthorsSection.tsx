@@ -1,5 +1,9 @@
 import React from "react";
 
+import author1 from "../../assets/images/authors/john_doe.png";
+import author2 from "../../assets/images/authors/jane_smith.png";
+import author3 from "../../assets/images/authors/mickael_brown.png";
+
 interface Props {
   id: string;
 }
@@ -13,7 +17,7 @@ const AuthorsSection: React.FC<Props> = ({ id }) => {
           {/* Author Card 1 */}
           <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl">
             <img
-              src="../../public/authors/john_doe.png"
+              src={author1}
               alt="Author 1"
               className="w-32 h-32 mx-auto rounded-full mb-4 object-cover"
             />
@@ -28,7 +32,7 @@ const AuthorsSection: React.FC<Props> = ({ id }) => {
           {/* Author Card 2 */}
           <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl">
             <img
-              src="../../public/authors/jane_smith.png"
+              src={author2}
               alt="Author 2"
               className="w-32 h-32 mx-auto rounded-full mb-4 object-cover"
             />
@@ -43,7 +47,7 @@ const AuthorsSection: React.FC<Props> = ({ id }) => {
           {/* Author Card 3 */}
           <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-md transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl">
             <img
-              src="../../public/authors/mickael_brown.png"
+              src={author3}
               alt="Author 3"
               className="w-32 h-32 mx-auto rounded-full mb-4 object-cover"
               style={{

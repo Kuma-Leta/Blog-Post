@@ -2,7 +2,7 @@ import React from "react";
 import { FiArrowRightCircle } from "react-icons/fi";
 // import backgroundImage from "../../assets/images/vecteezy_touching-technology-and-icon-customer-global-network-connection_3503591.jpg"; // Adjust the path to your image
 import backgroundImage from "../../assets/images/vecteezy_businessmen-use-smartphones-to-conduct-online-transactions_6694131.jpg"; // Adjust the path to your image
-// import backgroundImage from "../../assets/images/nick-morrison-FHnnjk1Yj7Y-unsplash.jpg"; // Adjust the path to your image
+import logo from "../../assets/DLogo.png"; // Adjust the path to your image
 
 interface Props {
   id: string;
@@ -38,7 +38,7 @@ const HeroSection: React.FC<Props> = ({ id }) => {
       <div className="relative z-10 flex flex-col items-center justify-center text-white">
         {/* Logo */}
         <img
-          src="/DLogo.png" // Adjust the path as per your project structure
+          src={logo} // Adjust the path as per your project structure
           alt="Debbal Technologies"
           className="w-32 mb-4"
         />

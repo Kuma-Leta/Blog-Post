@@ -10,29 +10,9 @@ import NewsletterSection from "./NewsletterSection";
 import Footer from "./Footer";
 // import LoadingSpinner from "./LoadingSpinner"; // Import LoadingSpinner component
 
-const articles = [
-  {
-    id: 1,
-    title: "Latest in AI",
-    description: "Discover the newest advancements in artificial intelligence.",
-    imageUrl: "../../public/articles/AI.jpg",
-    link: "/article-1",
-  },
-  {
-    id: 2,
-    title: "Innovations in Software Development",
-    description: "Learn about the latest trends in software development.",
-    imageUrl: "../../public/articles/SD.avif",
-    link: "/article-2",
-  },
-  {
-    id: 3,
-    title: "Cybersecurity Best Practices",
-    description: "Protect your data with these cybersecurity tips.",
-    imageUrl: "../../public/articles/CS.jpg",
-    link: "/article-3",
-  },
-];
+// import testimony1 from "../../assets/images/testimonials/john_doe.png";
+// import testimony2 from "../../assets/images/testimonials/jane_smith.png";
+// import testimony3 from "../../assets/images/testimonials/mickael_brown.png";
 
 const categories = [
   "AI",
@@ -47,32 +27,32 @@ const categories = [
   "Quantum Computing",
 ];
 
-const testimonials = [
-  {
-    id: 1,
-    name: "John Doe",
-    title: "CEO, Tech Solutions Inc.",
-    quote:
-      "Debbal Technologies has been instrumental in helping us stay ahead with their insightful articles and expert analysis.",
-    imageUrl: "../../public/testimonials/john_doe.png",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    title: "Data Scientist",
-    quote:
-      "The articles on Debbal Technologies have been invaluable in my career growth. They cover the latest trends in an accessible manner.",
-    imageUrl: "../../public/testimonials/jane_smith.png",
-  },
-  {
-    id: 3,
-    name: "Michael Brown",
-    title: "Cybersecurity Analyst",
-    quote:
-      "I rely on Debbal Technologies for up-to-date information on cybersecurity threats and best practices. Highly recommended!",
-    imageUrl: "../../public/testimonials/mickael_brown.png",
-  },
-];
+// const testimonials = [
+//   {
+//     id: 1,
+//     name: "John Doe",
+//     title: "CEO, Tech Solutions Inc.",
+//     quote:
+//       "Debbal Technologies has been instrumental in helping us stay ahead with their insightful articles and expert analysis.",
+//     imageUrl: { testimony1 },
+//   },
+//   {
+//     id: 2,
+//     name: "Jane Smith",
+//     title: "Data Scientist",
+//     quote:
+//       "The articles on Debbal Technologies have been invaluable in my career growth. They cover the latest trends in an accessible manner.",
+//     imageUrl: { testimony2 },
+//   },
+//   {
+//     id: 3,
+//     name: "Michael Brown",
+//     title: "Cybersecurity Analyst",
+//     quote:
+//       "I rely on Debbal Technologies for up-to-date information on cybersecurity threats and best practices. Highly recommended!",
+//     imageUrl: { testimony3 },
+//   },
+// ];
 
 const SystemOverview: React.FC = () => {
   // const [loading, setLoading] = useState(true); // State for loading spinner
@@ -101,11 +81,12 @@ const SystemOverview: React.FC = () => {
 
         <AboutSection id="about" />
 
-        <LatestPosts id="latest-posts" articles={articles} />
+        <LatestPosts />
 
         <CategoriesSection id="categories" categories={categories} />
 
-        <TestimonialsSection id="testimonials" testimonials={testimonials} />
+        <TestimonialsSection id="testimonials" />
+        {/* testimonials={testimonials} */}
 
         <AuthorsSection id="authors" />
 

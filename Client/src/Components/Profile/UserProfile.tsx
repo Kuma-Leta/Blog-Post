@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import NavbarLoggedIn from "../AuthenticatedNavbar";
 import axios from "axios";
@@ -9,12 +12,40 @@ import SuccessMessage from "./UserProfile/SuccessMessage";
 import PasswordChangeForm from "./UserProfile/PasswordChangeForm";
 import { FaUser, FaEnvelope, FaLock, FaCamera } from "react-icons/fa";
 
+export interface User {
+  _id: string;
+  title: string;
+  author: string;
+  textContent: string;
+  imagePath?: string;
+  createdAt: string;
+  category: string;
+  authorImage: string;
+  ratingQuantity: number;
+  averageRating: number;
+  videoContent?: string;
+}
+
+export interface Post {
+  _id: string;
+  title: string;
+  author: string;
+  textContent: string;
+  imagePath?: string;
+  createdAt: string;
+  category: string;
+  authorImage: string;
+  ratingQuantity: number;
+  averageRating: number;
+  videoContent?: string;
+}
+
 const UserProfile: React.FC = () => {
   const { user: currentUser, setUser: setCurrentUser } = useUser();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editField, setEditField] = useState<string | null>(null);
-  const [formData, setFormData] = useState<Partial<User> | null>(null);
+  const [formData, setFormData] = useState<Partial<User> | null | any>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string | null>>(
     {
@@ -25,7 +56,7 @@ const UserProfile: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // State for posts
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<Post[] | any>([]);
 
   useEffect(() => {
     fetchUserData();
@@ -58,14 +89,14 @@ const UserProfile: React.FC = () => {
     }
   };
 
-  const handleEdit = (field: string) => {
+  const handleEdit = (field: string | null) => {
     setEditField(field);
     setFormData({ ...currentUser });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
+    setFormData((prevFormData: any) => ({
       ...prevFormData,
       [name]: value,
     }));
@@ -80,7 +111,7 @@ const UserProfile: React.FC = () => {
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
-      setFormData((prevFormData) => ({
+      setFormData((prevFormData: any) => ({
         ...prevFormData,
         photo: URL.createObjectURL(file),
       }));
@@ -129,6 +160,8 @@ const UserProfile: React.FC = () => {
         },
       });
 
+      console.log(response);
+
       if (field === "password") {
         localStorage.removeItem("authToken");
         setSuccessMessage(
@@ -142,7 +175,7 @@ const UserProfile: React.FC = () => {
         setEditField(null);
         await fetchUserData();
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating user data:", error);
       if (
         field === "password" &&

@@ -1,12 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
-import { Post } from "./PostDetail"; // Adjust the import based on your directory structure
+// import { Post } from "./PostDetail"; // Adjust the import based on your directory structure
+
+export interface Post {
+  _id: string;
+  title: string;
+  author: string;
+  textContent: string;
+  imagePath?: string;
+  createdAt: string;
+  category: string;
+  authorImage: string;
+  ratingQuantity: number;
+  averageRating: number;
+  videoContent?: string;
+}
 
 interface PostContentProps {
-  post: Post;
+  post: Post | any;
   isAuthor: boolean;
   handleEdit: (postId: string) => void;
   setPostToDelete: (postId: string | null) => void;
@@ -51,15 +66,17 @@ const PostContent: React.FC<PostContentProps> = ({
       {useCarousel ? (
         <Carousel showThumbs={false} showStatus={false}>
           {post.imagePath &&
-            post.imagePath.split(",").map((image, index) => (
-              <div key={index} className="relative w-full h-80">
-                <img
-                  src={`http://localhost:5000/${image.trim()}`}
-                  alt={post.title}
-                  className="absolute inset-0 w-full h-full object-contain rounded-lg mb-4 shadow-lg"
-                />
-              </div>
-            ))}
+            post.imagePath
+              .split(",")
+              .map((image: string, index: React.Key | null | undefined) => (
+                <div key={index} className="relative w-full h-80">
+                  <img
+                    src={`http://localhost:5000/${image.trim()}`}
+                    alt={post.title}
+                    className="absolute inset-0 w-full h-full object-contain rounded-lg mb-4 shadow-lg"
+                  />
+                </div>
+              ))}
           {post.videoContent && (
             <div className="relative w-full h-80">
               <video

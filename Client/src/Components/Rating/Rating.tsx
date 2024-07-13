@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 import axios from "axios";
 
@@ -15,8 +15,6 @@ const Rating: React.FC<RatingProps> = ({
   ratingQuantity,
   isAuthor,
 }) => {
-  const [userRating, setUserRating] = useState<number | null>(null);
-
   const handleRatingClick = async (rating: number) => {
     try {
       const token = localStorage.getItem("authToken");

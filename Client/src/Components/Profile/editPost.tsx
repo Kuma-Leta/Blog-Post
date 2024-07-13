@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from "react";
 import axios, { AxiosProgressEvent } from "axios";
 import { useParams, useNavigate } from "react-router-dom";
@@ -8,7 +10,6 @@ import {
   faEdit,
   faFileImage,
   faFileVideo,
-  faUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import SuccessMessage from "./UserProfile/SuccessMessage"; // Import the SuccessMessage component
 
@@ -121,8 +122,9 @@ const EditPost: React.FC = () => {
       setVideoFile(null);
       setLoading(false);
       window.scrollTo(0, 0);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error updating post front-end:", error.message);
+      console.log(uploadProgress);
       setLoading(false);
       setError("Failed to update post. Please try again.");
       // Scroll to top when component mounts

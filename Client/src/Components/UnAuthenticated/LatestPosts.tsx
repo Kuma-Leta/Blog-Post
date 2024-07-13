@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { FaTag } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
@@ -32,6 +33,7 @@ const LatestPosts: React.FC = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
+      // eslint-disable-next-line prefer-const
       let url = `http://localhost:5000/api/v1/post/getAllposts?page=${currentPage}&limit=${limit}`;
       const response = await fetch(url);
       const data = await response.json();
@@ -41,7 +43,8 @@ const LatestPosts: React.FC = () => {
 
         // Check for and remove duplicates
         const filteredPosts = newPosts.filter(
-          (newPost) => !posts.some((post) => post._id === newPost._id)
+          (newPost: { _id: string }) =>
+            !posts.some((post) => post._id === newPost._id)
         );
 
         setPosts((prevPosts) => [...prevPosts, ...filteredPosts]);
