@@ -11,13 +11,14 @@ interface AuthorInfoProps {
 
 const AuthorInfo: React.FC<AuthorInfoProps> = ({
   author,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   authorImage,
   createdAt,
 }) => {
   return (
     <div className="flex items-center mb-4 px-4 py-2">
       <img
-        src={`http://localhost:5000/uploads/${authorImage}`}
+        src={authorImage}
         alt={author}
         className="w-10 h-10 rounded-full mr-4"
       />

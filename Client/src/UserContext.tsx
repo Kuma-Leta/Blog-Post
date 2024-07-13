@@ -12,7 +12,8 @@ interface User {
   id: string;
   name: string;
   email: string;
-  photo?: string; // Assuming you have a photo URL property
+  photo?: string;
+  gender: "male" | "female"; // Assuming you have a photo URL property
   // Add more properties as needed
 }
 

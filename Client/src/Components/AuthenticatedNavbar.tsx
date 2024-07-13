@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../UserContext";
+import logo from "../assets/images/DLogo.png";
+import maleDefault from "../assets/images/testimonials/john_doe.png";
+import femaleDefault from "../assets/images/testimonials/jane_smith.png";
 
 const NavbarLoggedIn: React.FC = () => {
   const { user, setUser } = useUser();
@@ -36,20 +39,19 @@ const NavbarLoggedIn: React.FC = () => {
     localStorage.removeItem("user");
   };
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
+  // Determine the source URL for the user's photo or default image
+  const photoSrc = user?.photo
+    ? `http://localhost:5000/${user.photo}`
+    : user?.gender === "female"
+    ? femaleDefault
+    : maleDefault;
 
   return (
     <nav className={`bg-gray-900 p-4 transition-all duration-300 z-50`}>
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/home" className="flex items-center">
           <img
-            src="../../public/DLogo.png"
+            src={logo}
             alt="Company Logo"
             className="h-8 md:h-10 p-1 rounded-full shadow-md"
             style={{ backgroundColor: "#FFFFFF" }}
@@ -65,7 +67,7 @@ const NavbarLoggedIn: React.FC = () => {
           {/* Hamburger menu for small screens */}
           <div className="flex items-center">
             <button
-              onClick={toggleMobileMenu}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden text-white focus:outline-none"
             >
               <svg
@@ -108,14 +110,14 @@ const NavbarLoggedIn: React.FC = () => {
               <Link
                 to="/home"
                 className={`hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
-                onClick={closeMobileMenu} // Close mobile menu when link is clicked
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Home
               </Link>
               <Link
                 to="/profile/userProfile"
                 className={`hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
-                onClick={closeMobileMenu} // Close mobile menu when link is clicked
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Profile
               </Link>
@@ -128,7 +130,7 @@ const NavbarLoggedIn: React.FC = () => {
               className={`flex items-center hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
             >
               <img
-                src={`http://localhost:5000/${user?.photo}`}
+                src={photoSrc}
                 alt="User Avatar"
                 className="h-8 w-8 rounded-full mr-2"
               />
@@ -156,7 +158,7 @@ const NavbarLoggedIn: React.FC = () => {
               className={`flex items-center hover:bg-gray-800 px-3 py-2 rounded-md text-sm font-medium text-white transition-all duration-300`}
             >
               <img
-                src={`http://localhost:5000/${user?.photo}`}
+                src={photoSrc}
                 alt="User Avatar"
                 className="h-8 w-8 rounded-full mr-2"
               />

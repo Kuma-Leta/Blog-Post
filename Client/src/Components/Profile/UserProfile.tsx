@@ -24,6 +24,7 @@ export interface User {
   ratingQuantity: number;
   averageRating: number;
   videoContent?: string;
+  gender: "male" | "female";
 }
 
 export interface Post {

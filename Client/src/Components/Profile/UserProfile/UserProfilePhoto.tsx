@@ -1,5 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { IconType } from "react-icons";
+
+import maleDefault from "../../../assets/images/testimonials/john_doe.png";
+import femaleDefault from "../../../assets/images/testimonials/jane_smith.png";
 
 interface UserProfilePhotoProps {
   currentUser: any;
@@ -20,10 +24,17 @@ const UserProfilePhoto: React.FC<UserProfilePhotoProps> = ({
 }) => {
   const gradientBg = "bg-gradient-to-b from-blue-400 to-indigo-500"; // Define your gradient colors here
 
+  // / Determine the source URL for the user's photo or default image
+  const photoSrc = currentUser?.photo
+    ? `http://localhost:5000/${currentUser.photo}`
+    : currentUser.gender === "female"
+    ? femaleDefault
+    : maleDefault;
+
   return (
     <form onSubmit={(e) => handleSubmit(e, "photo")} className="px-6 py-4">
       <div className={`mb-4 ${gradientBg} rounded-lg p-4 relative`}>
-        <label className="block text-gray-700 text-sm font-bold mb-2 flex items-center justify-between">
+        <label className=" text-gray-700 text-sm font-bold mb-2 flex items-center justify-between">
           <span className="flex items-center text-white">
             <Icon className="mr-2 text-white" />
           </span>
@@ -39,17 +50,11 @@ const UserProfilePhoto: React.FC<UserProfilePhotoProps> = ({
           )}
         </label>
         <div className="flex justify-center">
-          {currentUser.photo ? (
-            <img
-              src={`http://localhost:5000/${currentUser?.photo}`}
-              alt="User Avatar"
-              className="h-32 w-32 rounded-full mx-auto mt-4"
-            />
-          ) : (
-            <div className="h-32 w-32 rounded-full mx-auto mt-4 bg-gray-200 flex items-center justify-center">
-              No Photo
-            </div>
-          )}
+          <img
+            src={photoSrc}
+            alt="User Avatar"
+            className="h-32 w-32 rounded-full mx-auto mt-4"
+          />
         </div>
         {editField === "photo" && (
           <>

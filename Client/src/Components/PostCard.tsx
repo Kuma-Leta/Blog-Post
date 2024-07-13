@@ -11,6 +11,8 @@ import AuthorInfo from "./PostCard/AuthorInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 
+import generic_image from "../assets/generic_user_place_holder.jpg";
+
 interface Post {
   _id: string;
   title: string;
@@ -87,6 +89,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     }
   };
 
+  console.log(post);
   const mediaItems = [
     {
       type: "image",
@@ -191,7 +194,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         />
         <AuthorInfo
           author={post.author}
-          authorImage={post.authorImage}
+          authorImage={generic_image}
           createdAt={post.createdAt}
         />
       </div>

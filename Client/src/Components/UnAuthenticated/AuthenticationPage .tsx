@@ -4,6 +4,8 @@ import Login from "./Login";
 import SignUp from "./Signup";
 import Navbar from "./Navbar";
 
+import authBackground from "../../assets/network-connection-background_23-2148879892.avif";
+
 const AuthenticationPage: React.FC = () => {
   const [showLogin, setShowLogin] = useState<boolean>(true);
   const location = useLocation();
@@ -34,7 +36,7 @@ const AuthenticationPage: React.FC = () => {
       <div
         className="flex flex-col mt-10 lg:flex-row min-h-screen bg-gray-100 "
         style={{
-          backgroundImage: `url('../public/network-connection-background_23-2148879892.avif')`,
+          backgroundImage: `url(${authBackground})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

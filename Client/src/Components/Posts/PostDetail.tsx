@@ -10,6 +10,8 @@ import Rating from "./Rating";
 import Carousel from "react-multi-carousel"; // Assuming you have a carousel component
 import "react-multi-carousel/lib/styles.css";
 
+import generic_image from "../../assets/generic_user_place_holder.jpg";
+
 export interface Post {
   _id: string;
   title: string;
@@ -152,7 +154,8 @@ const PostDetail: React.FC = () => {
           </div>
           <div className="flex items-center mb-4">
             <img
-              src={post.authorImage}
+              // src={post.authorImage}
+              src={generic_image}
               alt={post.author}
               className="w-10 h-10 rounded-full mr-4"
             />

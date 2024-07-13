@@ -14,6 +14,7 @@ const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [gender, setGender] = useState<"male" | "female">("male"); // State for gender selection
   const [photo, setPhoto] = useState<File | null>(null); // State for profile picture
   const [error, setError] = useState<string | null>(null);
   const [signUpSuccess, setSignupSuccess] = useState(false);
@@ -64,7 +65,7 @@ const SignUp: React.FC = () => {
       return;
     }
 
-    setLoading(true); // Start loading
+    setLoading(true);
     setError(null);
     setSignupSuccess(false);
 
@@ -74,9 +75,11 @@ const SignUp: React.FC = () => {
       formData.append("email", email);
       formData.append("password", password);
       formData.append("passwordConfirm", passwordConfirm);
+      formData.append("gender", gender); // Append gender to form data
       if (photo) {
-        formData.append("photo", photo); // Add profile picture to form data
+        formData.append("photo", photo);
       }
+
       const response = await axios.post(
         "http://localhost:5000/api/v1/users/signup",
         formData,
@@ -90,7 +93,7 @@ const SignUp: React.FC = () => {
       if (response.data) {
         setError(null);
         setSignupSuccess(true);
-        setTimeout(() => navigate("/login"), 2000); // Navigate to login after showing success message
+        setTimeout(() => navigate("/login"), 2000);
       }
     } catch (error: any) {
       setSignupSuccess(false);
@@ -104,7 +107,7 @@ const SignUp: React.FC = () => {
         setError("An unexpected error occurred. Please try again.");
       }
     } finally {
-      setLoading(false); // End loading
+      setLoading(false);
     }
   }
 
@@ -178,6 +181,16 @@ const SignUp: React.FC = () => {
               placeholder="Confirm password"
               className="w-full p-2 pl-10 border border-gray-300 rounded-full"
             />
+          </div>
+          <div className="relative">
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value as "male" | "female")}
+              className="w-full p-2 pl-10 border border-gray-300 rounded-full"
+            >
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
           </div>
           <div className="relative">
             <BsFillImageFill
