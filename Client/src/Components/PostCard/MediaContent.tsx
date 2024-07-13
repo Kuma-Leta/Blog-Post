@@ -42,28 +42,35 @@ const MediaContent: React.FC<MediaContentProps> = ({
     </button>
   );
 
+  const mediaContainerStyles =
+    "w-[394px] h-[192px] flex justify-center items-center bg-gray-200 mb-4 rounded-md overflow-hidden";
+
   return (
     <>
       {imagePath && !videoContent && (
-        <img
-          src={`http://localhost:5000/${imagePath}`}
-          alt="Media Content"
-          className="w-full h-48 object-cover rounded-md mb-4 cursor-pointer"
+        <div
+          className={mediaContainerStyles}
           onClick={() =>
             openMediaPopup(`http://localhost:5000/${imagePath}`, "image")
           }
-        />
+        >
+          <img
+            src={`http://localhost:5000/${imagePath}`}
+            alt="Media Content"
+            className="h-full min-w-fit object-contain cursor-pointer"
+          />
+        </div>
       )}
 
       {videoContent && !imagePath && (
         <div
-          className="relative h-48 mb-4 cursor-pointer"
+          className={mediaContainerStyles}
           onClick={(e) =>
             handleVideoBodyClick(e, `http://localhost:5000/${videoContent}`)
           }
         >
           <video
-            className="w-full h-full object-cover rounded-md"
+            className="object-contain w-full h-full cursor-pointer"
             controls
             onClick={(e) => e.stopPropagation()}
           >
@@ -95,35 +102,35 @@ const MediaContent: React.FC<MediaContentProps> = ({
           customLeftArrow={<CustomLeftArrow />}
           customRightArrow={<CustomRightArrow />}
         >
-          <div>
+          <div
+            className={mediaContainerStyles}
+            onClick={() =>
+              openMediaPopup(`http://localhost:5000/${imagePath}`, "image")
+            }
+          >
             <img
               src={`http://localhost:5000/${imagePath}`}
               alt="Media Content"
-              className="w-full h-48 object-cover rounded-md mb-4 cursor-pointer"
-              onClick={() =>
-                openMediaPopup(`http://localhost:5000/${imagePath}`, "image")
-              }
+              className="object-contain w-full h-full cursor-pointer"
             />
           </div>
-          <div>
-            <div
-              className="relative h-48 mb-4 cursor-pointer"
-              onClick={(e) =>
-                handleVideoBodyClick(e, `http://localhost:5000/${videoContent}`)
-              }
+          <div
+            className={mediaContainerStyles}
+            onClick={(e) =>
+              handleVideoBodyClick(e, `http://localhost:5000/${videoContent}`)
+            }
+          >
+            <video
+              className="object-contain w-full h-full cursor-pointer"
+              controls
+              onClick={(e) => e.stopPropagation()}
             >
-              <video
-                className="w-full h-full object-cover rounded-md"
-                controls
-                onClick={(e) => e.stopPropagation()}
-              >
-                <source
-                  src={`http://localhost:5000/${videoContent}`}
-                  type="video/mp4"
-                />
-                Your browser does not support the video tag.
-              </video>
-            </div>
+              <source
+                src={`http://localhost:5000/${videoContent}`}
+                type="video/mp4"
+              />
+              Your browser does not support the video tag.
+            </video>
           </div>
         </Carousel>
       )}

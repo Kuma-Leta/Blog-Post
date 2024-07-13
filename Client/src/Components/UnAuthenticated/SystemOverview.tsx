@@ -2,7 +2,7 @@
 import Navbar from "./Navbar";
 import HeroSection from "./HeroSection";
 import AboutSection from "./AboutSection";
-import FeaturedArticlesSection from "./FeaturedArticlesSection";
+import LatestPosts from "./LatestPosts";
 import CategoriesSection from "./CategoriesSection";
 import TestimonialsSection from "./TestimonialsSection";
 import AuthorsSection from "./AuthorsSection";
@@ -95,13 +95,13 @@ const SystemOverview: React.FC = () => {
       <div
       // style={{ opacity: loading ? 0 : 1, transition: "opacity 0.5s ease" }}
       >
-        <Navbar theme="dark" />
+        <Navbar />
 
         <HeroSection id="hero" />
 
         <AboutSection id="about" />
 
-        <FeaturedArticlesSection id="featured-articles" articles={articles} />
+        <LatestPosts id="latest-posts" articles={articles} />
 
         <CategoriesSection id="categories" categories={categories} />
 

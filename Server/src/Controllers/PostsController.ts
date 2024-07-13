@@ -63,7 +63,7 @@ export const updatePost = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const postId = req.params.id;
     console.log(req.body);
-    console.log(req.files);
+    // console.log(req.files);
 
     // Find the existing post
     const post = await Post.findById(postId);
@@ -131,22 +131,33 @@ export const getAllPosts: RequestHandler = asyncWrapper(
     let filter = {};
     if (req.params.userId) filter = { user: req.params.userId };
 
-    console.log(req.query);
-    //EXECUTE THE QUERY
-    const features = new APIfeatures(Post.find(filter), req.query)
+    // Create the initial query with filter
+    let initialQuery = Post.find(filter);
+
+    // Create an instance of APIfeatures to apply filters and sorting for the count query
+    const countFeatures = new APIfeatures(initialQuery, req.query)
+      .filter()
+      .sort();
+
+    // Get the total number of posts matching the filter criteria (excluding pagination)
+    const totalPosts = await countFeatures.query.countDocuments();
+
+    // Create an instance of APIfeatures to apply filters, sorting, and pagination for the data query
+    const dataFeatures = new APIfeatures(Post.find(filter), req.query)
       .filter()
       .sort()
       .limit()
       .paginate();
-    //const docs = await features.query.explain();
-    const posts = await features.query;
 
+    // Fetch the posts based on the applied features
+    const posts = await dataFeatures.query;
+
+    // Send response with total count of matching posts and the posts themselves
     res.status(200).json({
       status: "success",
       result: posts.length,
-      data: {
-        data: posts,
-      },
+      totalPosts, // Total posts matching the filter criteria in the database
+      data: posts,
     });
   }
 );
@@ -154,7 +165,7 @@ export const getAllPosts: RequestHandler = asyncWrapper(
 export const getPost: RequestHandler = asyncWrapper(async (req, res, next) => {
   const post = await Post.findById(req.params.postId).populate("user");
 
-  console.log(req.params);
+  // console.log(req.params);
 
   res.status(200).json({
     status: "Success",

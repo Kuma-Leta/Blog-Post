@@ -10,6 +10,7 @@ import {
   faFileVideo,
   faUpload,
 } from "@fortawesome/free-solid-svg-icons";
+import SuccessMessage from "./UserProfile/SuccessMessage"; // Import the SuccessMessage component
 
 const EditPost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,7 +25,22 @@ const EditPost: React.FC = () => {
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [imagePath, setImagePath] = useState<string | null>(null);
   const [videoPath, setVideoPath] = useState<string | null>(null);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] =
+    useState<boolean>(false);
   const navigate = useNavigate();
+
+  const categories = [
+    "All",
+    "AI",
+    "Software Development",
+    "Cloud Computing",
+    "Data Science",
+    "Blockchain",
+    "Internet of Things (IoT)",
+    "DevOps",
+    "Quantum Computing",
+    "Cybersecurity",
+  ];
 
   useEffect(() => {
     const fetchPostData = async () => {
@@ -44,8 +60,13 @@ const EditPost: React.FC = () => {
         setCategory(post.category);
         setImagePath(post.imagePath);
         setVideoPath(post.videoContent);
+
+        // Scroll to top when component mounts
+        window.scrollTo(0, 0);
       } catch (error) {
         setError("Error fetching post data.");
+        // Scroll to top when component mounts
+        window.scrollTo(0, 0);
       }
     };
 
@@ -89,7 +110,7 @@ const EditPost: React.FC = () => {
         },
       };
 
-      const response = await axios.patch(
+      await axios.patch(
         `http://localhost:5000/api/v1/post/update/${id}`,
         formData,
         config
@@ -99,21 +120,62 @@ const EditPost: React.FC = () => {
       setImageFile(null);
       setVideoFile(null);
       setLoading(false);
+      window.scrollTo(0, 0);
     } catch (error) {
       console.error("Error updating post front-end:", error.message);
       setLoading(false);
       setError("Failed to update post. Please try again.");
+      // Scroll to top when component mounts
+      window.scrollTo(0, 0);
     }
+  };
+
+  const handleSuccessMessageClose = () => {
+    setMessage(null); // Clear the success message
+    // navigate(-1); // Navigate back to previous page or handle as needed
   };
 
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-8 px-4">
         <form
           onSubmit={handleSubmit}
-          className="max-w-3xl mx-auto bg-gradient-to-r from-blue-50 to-blue-100 shadow-lg rounded-lg px-10 pt-8 pb-8 mb-6 border border-blue-300"
+          className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg px-10 pt-8 pb-8 mb-6 border border-gray-300"
         >
+          {/* Success message component */}
+          {message && (
+            <SuccessMessage
+              message={message}
+              onClose={handleSuccessMessageClose}
+            />
+          )}
+
+          {/* Error message */}
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+              {error}
+              <span
+                className="absolute top-0 bottom-0 right-0 px-4 py-3"
+                onClick={() => setError(null)}
+              >
+                <svg
+                  className="h-6 w-6 text-red-500"
+                  role="button"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M14.293 5.293a1 1 0 00-1.414 0L10 8.586 6.707 5.293a1 1 0 00-1.414 1.414L8.586 10l-3.293 3.293a1 1 0 101.414 1.414L10 11.414l3.293 3.293a1 1 0 001.414-1.414L11.414 10l3.293-3.293a1 1 0 000-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </span>
+            </div>
+          )}
+
           <div className="flex items-center justify-between mb-6">
             <button
               className="text-gray-600 hover:text-gray-900"
@@ -122,7 +184,8 @@ const EditPost: React.FC = () => {
               <FiArrowLeft className="text-3xl" />
             </button>
             <h2 className="text-3xl font-bold text-gray-800 flex items-center">
-              <FontAwesomeIcon icon={faEdit} className="mr-2" /> Edit Post
+              <FontAwesomeIcon icon={faEdit} className="mr-2 text-purple-600" />{" "}
+              Edit Post
             </h2>
           </div>
 
@@ -139,7 +202,7 @@ const EditPost: React.FC = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-lg"
               placeholder="Enter title..."
             />
           </div>
@@ -156,37 +219,60 @@ const EditPost: React.FC = () => {
               onChange={(e) => setContent(e.target.value)}
               required
               rows={5}
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
+              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-lg"
               placeholder="Write your content here..."
             />
           </div>
-          <div className="mb-6">
+          <div className="relative mb-6">
             <label
               htmlFor="category"
               className="block text-lg font-medium text-gray-700 mb-2"
             >
               Category
             </label>
-            <select
-              id="category"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
+            <button
+              onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+              className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-semibold px-4 py-2 rounded-full w-full text-left flex justify-between items-center shadow-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300"
             >
-              <option value="">Select a category</option>
-              <option value="AI">AI</option>
-              <option value="Software Development">Software Development</option>
-              <option value="Cloud Computing">Cloud Computing</option>
-              <option value="Data Science">Data Science</option>
-              <option value="Blockchain">Blockchain</option>
-              <option value="Internet of Things (IoT)">
-                Internet of Things (IoT)
-              </option>
-              <option value="DevOps">DevOps</option>
-              <option value="Quantum Computing">Quantum Computing</option>
-              <option value="Cybersecurity">Cybersecurity</option>
-            </select>
+              {category || "Select a category"}{" "}
+              <svg
+                className={`w-5 h-5 transform transition-transform ${
+                  isCategoryDropdownOpen ? "rotate-180" : "rotate-0"
+                }`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            {isCategoryDropdownOpen && (
+              <ul className="absolute mt-2 w-full bg-white rounded-md shadow-lg z-10 max-h-48 overflow-y-auto border border-gray-300 transition duration-300">
+                {categories.map((categoryOption, index) => (
+                  <li key={index}>
+                    <button
+                      onClick={() => {
+                        setCategory(categoryOption);
+                        setIsCategoryDropdownOpen(false);
+                      }}
+                      className={`block w-full text-left px-4 py-2 hover:bg-gradient-to-r hover:from-purple-400 hover:to-pink-500 hover:text-white transition duration-300 ${
+                        category === categoryOption
+                          ? "bg-gray-300 font-bold text-gray-900"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {categoryOption}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           {imagePath && (
             <div className="mb-6">
@@ -212,15 +298,10 @@ const EditPost: React.FC = () => {
                 Current Video
               </label>
               <video
+                src={`http://localhost:5000/${videoPath}`}
                 controls
                 className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm"
-              >
-                <source
-                  src={`http://localhost:5000/${videoPath}`}
-                  type="video/mp4"
-                />{" "}
-                Your browser does not support the video tag.
-              </video>
+              ></video>
             </div>
           )}
           <div className="mb-6">
@@ -228,57 +309,66 @@ const EditPost: React.FC = () => {
               htmlFor="image"
               className="block text-lg font-medium text-gray-700 mb-2"
             >
-              <FontAwesomeIcon icon={faFileImage} className="mr-2" /> Update
-              Image
+              Update Image
             </label>
-            <input
-              type="file"
-              id="image"
-              onChange={(e) =>
-                setImageFile(e.target.files ? e.target.files[0] : null)
-              }
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
-            />
-            {imageFile && (
-              <p className="text-gray-500 mt-2">Uploading: {uploadProgress}%</p>
-            )}
+            <div className="flex items-center space-x-4">
+              <label
+                htmlFor="imageUpload"
+                className="flex items-center px-4 py-2 border border-gray-300 rounded-full shadow-sm text-purple-600 hover:bg-purple-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 cursor-pointer transition duration-300"
+              >
+                <FontAwesomeIcon icon={faFileImage} className="mr-2" />
+                <span>Select Image</span>
+                <input
+                  type="file"
+                  id="imageUpload"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                />
+              </label>
+              {imageFile && (
+                <span className="text-sm text-gray-500">{imageFile.name}</span>
+              )}
+            </div>
           </div>
           <div className="mb-6">
             <label
               htmlFor="video"
               className="block text-lg font-medium text-gray-700 mb-2"
             >
-              <FontAwesomeIcon icon={faFileVideo} className="mr-2" /> Update
-              Video
+              Update Video
             </label>
-            <input
-              type="file"
-              id="video"
-              onChange={(e) =>
-                setVideoFile(e.target.files ? e.target.files[0] : null)
-              }
-              className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-lg"
-            />
-            {videoFile && (
-              <p className="text-gray-500 mt-2">Uploading: {uploadProgress}%</p>
-            )}
+            <div className="flex items-center space-x-4">
+              <label
+                htmlFor="videoUpload"
+                className="flex items-center px-4 py-2 border border-gray-300 rounded-full shadow-sm text-purple-600 hover:bg-purple-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 cursor-pointer transition duration-300"
+              >
+                <FontAwesomeIcon icon={faFileVideo} className="mr-2" />
+                <span>Select Video</span>
+                <input
+                  type="file"
+                  id="videoUpload"
+                  accept="video/*"
+                  className="sr-only"
+                  onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
+                />
+              </label>
+              {videoFile && (
+                <span className="text-sm text-gray-500">{videoFile.name}</span>
+              )}
+            </div>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="mb-6">
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-2 px-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full shadow-md transition duration-300 disabled:opacity-50 ${
+              className={`w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-semibold px-4 py-2 rounded-full shadow-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300 ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
-              } flex items-center justify-center`}
+              }`}
             >
-              <FontAwesomeIcon icon={faUpload} className="mr-2" />
               {loading ? "Updating..." : "Update Post"}
             </button>
           </div>
-          {message && (
-            <p className="text-green-500 mt-6 text-center">{message}</p>
-          )}
-          {error && <p className="text-red-500 mt-6 text-center">{error}</p>}
         </form>
       </div>
     </div>

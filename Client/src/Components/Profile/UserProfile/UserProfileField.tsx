@@ -1,5 +1,6 @@
 import React from "react";
 import { IconType } from "react-icons";
+import { FaEdit } from "react-icons/fa";
 
 interface UserProfileFieldProps {
   label: string;
@@ -62,9 +63,10 @@ const UserProfileField: React.FC<UserProfileFieldProps> = ({
           <button
             type="button"
             onClick={() => handleEdit(field)}
-            className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+            className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50 flex items-center justify-center"
             style={{ minWidth: "100px" }}
           >
+            <FaEdit className="mr-1" />
             Edit
           </button>
         </div>

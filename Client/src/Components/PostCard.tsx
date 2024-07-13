@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-import PostHeader from "./PostCard/PostHeader";
-import PostContent from "./PostCard/PostContent";
-import AuthorInfo from "./PostCard/AuthorInfo";
-import MediaContent from "./PostCard/MediaContent";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom";
+import { FaRegBookmark, FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import MediaPopup from "./PostCard/MediaPopup";
-import CategoryBadge from "./PostCard/CategoryBadge";
+import PostHeader from "./PostCard/PostHeader";
+import AuthorInfo from "./PostCard/AuthorInfo";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 interface Post {
   _id: string;
@@ -30,36 +35,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
   const [popupMediaType, setPopupMediaType] = useState<
     "image" | "video" | null
   >(null);
-
-  const categoryStyles: { [key: string]: string } = {
-    AI: "bg-blue-200 text-blue-800",
-    "Software Development": "bg-green-200 text-green-800",
-    "Cloud Computing": "bg-purple-200 text-purple-800",
-    "Data Science": "bg-pink-200 text-pink-800",
-    Blockchain: "bg-yellow-200 text-yellow-800",
-    "Internet of Things (IoT)": "bg-red-200 text-red-800",
-    DevOps: "bg-indigo-200 text-indigo-800",
-    "Quantum Computing": "bg-teal-200 text-teal-800",
-    Cybersecurity: "bg-orange-200 text-orange-800",
-  };
-
-  const responsiveCarousel = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 1,
-      slidesToSlide: 1,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 1,
-      slidesToSlide: 1,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-      slidesToSlide: 1,
-    },
-  };
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
 
   const popupRef = useRef<HTMLDivElement>(null);
 
@@ -85,9 +61,11 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
   }, [showMediaPopup]);
 
   const openMediaPopup = (mediaUrl: string, type: "image" | "video") => {
-    setPopupMedia(mediaUrl);
-    setPopupMediaType(type);
-    setShowMediaPopup(true);
+    if (type === "image") {
+      setPopupMedia(mediaUrl);
+      setPopupMediaType(type);
+      setShowMediaPopup(true);
+    }
   };
 
   const closeMediaPopup = () => {
@@ -96,67 +74,120 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     setPopupMediaType(null);
   };
 
-  const handleVideoBodyClick = (
-    e: React.MouseEvent<HTMLDivElement>,
-    mediaUrl: string
-  ) => {
-    e.stopPropagation();
-    openMediaPopup(mediaUrl, "video");
-  };
-
-  const renderMediaContent = () => {
-    if (!popupMedia) return null;
-
-    if (popupMediaType === "video") {
-      return (
-        <video
-          controls
-          autoPlay
-          className="w-full h-full object-cover rounded-t-lg outline-none"
-        >
-          <source src={popupMedia} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      );
-    } else {
-      return (
-        <img
-          src={popupMedia}
-          alt="Popup Media"
-          className="w-full h-full object-cover rounded-t-lg"
-        />
-      );
+  const handlePreviousMedia = () => {
+    if (currentMediaIndex > 0) {
+      setCurrentMediaIndex(currentMediaIndex - 1);
     }
   };
 
+  const handleNextMedia = () => {
+    if (currentMediaIndex < 1) {
+      // Assuming there are only two media (image and video)
+      setCurrentMediaIndex(currentMediaIndex + 1);
+    }
+  };
+
+  const mediaItems = [
+    {
+      type: "image",
+      url: `http://localhost:5000/${post.imagePath}`,
+    },
+    {
+      type: "video",
+      url: `http://localhost:5000/${post.videoContent}`,
+    },
+  ];
+
   return (
-    <div className="relative">
-      <div className="bg-white  rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105">
-        <div className="relative">
-          <MediaContent
-            imagePath={post.imagePath}
-            videoContent={post.videoContent}
-            openMediaPopup={openMediaPopup}
-            handleVideoBodyClick={handleVideoBodyClick}
-            showMediaPopup={showMediaPopup}
-            responsiveCarousel={responsiveCarousel}
+    <Card sx={{ maxWidth: 394 }}>
+      <div
+        style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}
+      >
+        {mediaItems.map(
+          (media, index) =>
+            index === currentMediaIndex && (
+              <CardMedia
+                key={index}
+                component={media.type === "image" ? "img" : "video"}
+                image={media.url}
+                title={post.title}
+                onClick={() => openMediaPopup(media.url, media.type)}
+                className="cursor-pointer"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  zIndex: 1,
+                  display: index === currentMediaIndex ? "block" : "none",
+                }}
+                controls={media.type === "video"}
+              />
+            )
+        )}
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            transform: "translateY(-50%)",
+            zIndex: 2,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <FaArrowLeft
+            className="cursor-pointer"
+            onClick={handlePreviousMedia}
+            style={{
+              visibility: currentMediaIndex === 0 ? "hidden" : "visible",
+            }}
           />
-          {/* Category badge in the top right corner of the media */}
-          <div className="absolute top-0 right-0 m-2">
-            <CategoryBadge
-              category={post.category}
-              categoryStyles={categoryStyles}
-            />
-          </div>
+          <FaArrowRight
+            className="cursor-pointer"
+            onClick={handleNextMedia}
+            style={{
+              visibility: currentMediaIndex === 1 ? "hidden" : "visible",
+            }}
+          />
         </div>
+      </div>
+
+      <CardContent>
+        <div className="flex items-center mb-2 gap-2">
+          <FaRegBookmark className="text-purple-500" />
+          <span className="text-xs text-white py-1 rounded-full px-4 bg-purple-500 uppercase font-semibold mr-2">
+            {post.category}
+          </span>
+        </div>
+        <Typography gutterBottom variant="h5" component="div">
+          {post.title}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {post.textContent.length > 100 ? (
+            <>
+              {post.textContent.substring(0, 50)}...
+              <Link
+                to={`/post/${post._id}`}
+                className="text-purple-500 ml-1 flex items-center cursor-pointer"
+              >
+                <FontAwesomeIcon icon={faEye} className="mr-1" />
+                See more
+              </Link>
+            </>
+          ) : (
+            post.textContent
+          )}
+        </Typography>
+      </CardContent>
+
+      <div className="">
         <PostHeader
           ratingQuantity={post.ratingQuantity}
           averageRating={post.averageRating}
-        />
-        <PostContent
-          _id={post._id}
-          title={post.title}
-          textContent={post.textContent}
         />
         <AuthorInfo
           author={post.author}
@@ -164,13 +195,34 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
           createdAt={post.createdAt}
         />
       </div>
+
       <MediaPopup
         showMediaPopup={showMediaPopup}
         popupRef={popupRef}
         closeMediaPopup={closeMediaPopup}
-        renderMediaContent={renderMediaContent}
+        renderMediaContent={() => {
+          if (popupMediaType === "image") {
+            return (
+              <img
+                src={popupMedia ?? ""}
+                alt="Popup Media"
+                className="w-full h-full object-cover rounded-t-lg"
+              />
+            );
+          } else if (popupMediaType === "video") {
+            return (
+              <video
+                src={popupMedia ?? ""}
+                className="w-full h-full object-cover rounded-t-lg"
+                controls
+              />
+            );
+          } else {
+            return null;
+          }
+        }}
       />
-    </div>
+    </Card>
   );
 };
 

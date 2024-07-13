@@ -8,6 +8,7 @@ class APIfeatures {
   constructor(query: Query<any, any>, queryString: Request["query"]) {
     this.query = query;
     this.queryString = queryString;
+    // console.log(queryString);
   }
 
   filter() {
@@ -25,10 +26,18 @@ class APIfeatures {
 
   sort() {
     if (this.queryString.sort) {
-      const sortBy = (this.queryString.sort as string).split(",").join(" ");
+      let sortBy = (this.queryString.sort as string).split(",").join(" ");
+      // Adjust sort by Date to sort by newest first
+      if (sortBy.includes("date")) {
+        sortBy = sortBy.replace("date", "-createdAt");
+      }
+      // Adjust sort by rating to sort by averageRating
+      if (sortBy.includes("rating")) {
+        sortBy = sortBy.replace("rating", "-averageRating");
+      }
       this.query = this.query.sort(sortBy);
     } else {
-      this.query = this.query.sort("-createdAt");
+      this.query = this.query.sort("-createdAt"); // Default sort by Date (newest first)
     }
 
     return this;
@@ -47,7 +56,7 @@ class APIfeatures {
 
   paginate() {
     const page = parseInt(this.queryString.page as string, 10) || 1;
-    const limit = parseInt(this.queryString.limit as string, 10) || 100;
+    const limit = parseInt(this.queryString.limit as string, 10) || 9;
     const skip = (page - 1) * limit;
 
     this.query = this.query.skip(skip).limit(limit);

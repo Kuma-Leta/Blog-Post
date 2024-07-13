@@ -11,16 +11,22 @@ export interface AuthenticatedRequest extends Request {
 
 export const addRating = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    if (!req.body.post) req.body.post = req.params.postId;
+    if (!req.body.post) req.body.post = req.body.postId;
     if (!req.body.user) req.body.user = req.user.id;
 
-    const post = await Post.findById(req.params.postId);
+    // console.log("req post: " + req.body.post);
+    // console.log("req user: " + req.body.user);
+
+    const post = await Post.findById(req.body.post);
+    // console.log("post: " + post);
 
     if (req.user.id === String(post?.user)) {
       return next(new AppError("you can't rate your post", 404));
     }
 
+    // console.log(req.body);
     const rating = await Rating.create(req.body);
+    console.log("rating: " + rating);
     res.status(200).json({
       status: "Success",
       data: {
@@ -54,7 +60,9 @@ export const deleteRating = asyncWrapper(async (req, res, next) => {
 
 export const updateRating = asyncWrapper(async (req, res, next) => {
   const rate = await Rating.findById(req.params.id);
+  if (!req.body.user) req.body.user = req.user.id;
 
+  // console.log(req.body);
   if (req.user.id != String(rate?.user)) {
     return next(
       new AppError(
@@ -72,7 +80,7 @@ export const updateRating = asyncWrapper(async (req, res, next) => {
       runValidators: true,
     }
   );
-
+  // console.log(updatedrating);
   if (!updatedrating) {
     return next(new AppError("No rating found with that ID", 404));
   }
@@ -95,11 +103,11 @@ export const updateRating = asyncWrapper(async (req, res, next) => {
 });
 
 export const getAllRating = asyncWrapper(async (req, res, next) => {
-  console.log(req.params);
+  // console.log(req.params);
   let filter = {};
   if (req.params.postId) filter = { post: req.params.postId };
 
-  console.log(req.query);
+  // console.log(req.query);
   //EXECUTE THE QUERY
   const features = new APIFeatures(Rating.find(filter), req.query)
     .filter()

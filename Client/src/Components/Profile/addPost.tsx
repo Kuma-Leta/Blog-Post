@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios, { AxiosProgressEvent } from "axios";
 import Navbar from "../AuthenticatedNavbar";
 import { useNavigate } from "react-router-dom";
+
+import ErrorMessage from "./UserProfile/ErrorMessage"; // Adjust the path as per your file structure
+import SuccessMessage from "./UserProfile/SuccessMessage"; // Adjust the path as per your file structure
 
 const CreatePost: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -14,6 +17,8 @@ const CreatePost: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const navigate = useNavigate(); // Get the navigate function from useNavigate
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,6 +26,7 @@ const CreatePost: React.FC = () => {
     setMessage(null);
     setError(null);
 
+    useEffect;
     try {
       const authToken = localStorage.getItem("authToken");
 
@@ -59,7 +65,9 @@ const CreatePost: React.FC = () => {
       );
 
       setMessage("Post added successfully");
-      console.log("Response from server:", response.data);
+      // setSuccessMessage("Post added successfully");
+
+      // console.log("Response from server:", response.data);
 
       // Clear form fields after successful submission
       setTitle("");
@@ -69,11 +77,26 @@ const CreatePost: React.FC = () => {
       setVideoFile(null);
 
       setLoading(false);
+      window.scrollTo(0, 0);
     } catch (error: unknown) {
-      console.error("Error adding post front-end:", (error as Error).message);
+      // console.error("Error adding post front-end:", (error as Error).message);
       setLoading(false);
       setError("Failed to add post. Please try again.");
+      // setErrorMessage("Failed to add post. Please try again.");
+      window.scrollTo(0, 0);
     }
+  };
+
+  const handleSuccessMessageClose = () => {
+    setMessage(null); // Clear the success message
+    // navigate(-1); // Navigate back to previous page or handle as needed
+  };
+
+  const handleErrorMessageClose = () => {
+    setError(null); // Clear the success message
+    setLoading(false);
+
+    // navigate(-1); // Navigate back to previous page or handle as needed
   };
 
   const handleGoBack = () => {
@@ -90,10 +113,21 @@ const CreatePost: React.FC = () => {
         >
           <button
             onClick={handleGoBack}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l mb-4"
           >
             Go Back
           </button>
+
+          {error && (
+            <ErrorMessage message={error} onClose={handleErrorMessageClose} />
+          )}
+          {message && (
+            <SuccessMessage
+              message={message}
+              onClose={handleSuccessMessageClose}
+            />
+          )}
+
           <h2 className="text-3xl font-bold mb-4 text-center">
             Create a New Post
           </h2>
@@ -198,7 +232,7 @@ const CreatePost: React.FC = () => {
               <p className="text-gray-500 mt-2">Uploading: {uploadProgress}%</p>
             )}
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center mt-6">
             <button
               type="submit"
               disabled={loading}
@@ -210,10 +244,10 @@ const CreatePost: React.FC = () => {
               {loading ? "Submitting..." : "Submit Post"}
             </button>
           </div>
-          {message && (
+          {/* {message && (
             <p className="text-green-500 mt-4 text-center">{message}</p>
-          )}
-          {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
+          )} */}
+          {/* {error && <p className="text-red-500 mt-4 text-center">{error}</p>} */}
         </form>
       </div>
     </div>

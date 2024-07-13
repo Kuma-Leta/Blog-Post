@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { FaEdit, FaTrash } from "react-icons/fa";
+
 import axios from "axios";
 import SuccessMessage from "./SuccessMessage";
 
@@ -30,7 +32,7 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
   const navigate = useNavigate();
 
   const handleLoadMore = () => {
-    setVisiblePostsCount((prevCount) => prevCount + 3);
+    setVisiblePostsCount((prevCount) => prevCount + 2);
   };
 
   const handleEdit = (postId: string) => {
@@ -212,16 +214,19 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
                 <div className="flex gap-1">
                   <button
                     onClick={() => handleEdit(post._id)}
-                    className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+                    className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50 flex  justify-center items-center"
                     style={{ minWidth: "100px" }}
                   >
+                    <FaEdit className="mr-1" />
                     Edit
                   </button>
+
                   <button
                     onClick={() => setPostToDelete(post._id)}
-                    className="bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+                    className="bg-red-500 text-white py-1 px-3 rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 flex items-center justify-center"
                     style={{ minWidth: "100px" }}
                   >
+                    <FaTrash className="mr-1 " />
                     Delete
                   </button>
                 </div>

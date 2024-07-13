@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 interface User {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   posts: any;
   id: string;
   name: string;

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const WelcomeSection: React.FC = () => {
   const scrollToPosts = () => {
@@ -18,10 +19,18 @@ const WelcomeSection: React.FC = () => {
           <p className="text-lg md:text-xl mt-4 animate-fadeInUp">
             Explore and enjoy our latest posts
           </p>
+          <div className="mt-8 flex justify-center">
+            <Link
+              to="/profile/addPost"
+              className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300"
+            >
+              Create Post
+            </Link>
+          </div>
           <div className="mt-8">
             <button
               onClick={scrollToPosts}
-              className="bg-gradient-to-r from-purple-400 to-pink-500 text-white font-semibold px-6 py-3 rounded-full shadow-lg border border-gray-300 hover:from-purple-500 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300"
+              className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg border border-gray-300  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300"
             >
               Discover More
             </button>

@@ -20,7 +20,7 @@ const PostContent: React.FC<PostContentProps> = ({
       <p className="text-gray-800 mb-4 px-4">
         {textContent.length > 100 ? (
           <>
-            {textContent.substring(0, 100)}...
+            {textContent.substring(0, 50)}...
             <Link
               to={`/post/${_id}`}
               className="text-blue-500 ml-1 flex items-center cursor-pointer"

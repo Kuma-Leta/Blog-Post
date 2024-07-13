@@ -9,6 +9,10 @@ const AuthenticationPage: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     if (location.pathname === "/login") {
       setShowLogin(true);
     } else if (location.pathname === "/signup") {
@@ -26,7 +30,7 @@ const AuthenticationPage: React.FC = () => {
 
   return (
     <div>
-      <Navbar theme="light" />
+      <Navbar />
       <div
         className="flex flex-col mt-10 lg:flex-row min-h-screen bg-gray-100 "
         style={{

@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../UserContext";
 
 const NavbarLoggedIn: React.FC = () => {
   const { user, setUser } = useUser();
-  const [isSticky, setIsSticky] = useState(false);
+  const [, setIsSticky] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 

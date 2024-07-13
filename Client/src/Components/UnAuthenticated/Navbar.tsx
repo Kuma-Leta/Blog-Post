@@ -1,73 +1,57 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
-interface NavbarProps {
-  theme: "light" | "dark";
-}
-
-const Navbar: React.FC<NavbarProps> = ({ theme }) => {
+const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+  const navbarHeight = 64; // Adjust this value to match your navbar height
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
+  const handleNavigation = (id: string) => {
+    if (location.pathname !== "/") {
+      window.location.href = `/#${id}`;
+    } else {
+      const section = document.getElementById(id);
+      if (section) {
+        const offsetTop = section.offsetTop - navbarHeight; // Adjust for navbar height
+        window.scrollTo({
+          top: offsetTop,
+          behavior: "smooth",
+        });
+        setIsOpen(false);
       }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  const scrollToSection = (id: string) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false);
     }
   };
 
-  const baseTextColor = theme === "light" ? "text-black" : "text-white";
-  const baseBgColor =
-    theme === "light" ? "bg-white" : "bg-transparent bg-opacity-70";
-  const scrolledTextColor = "text-black";
-  const scrolledBgColor = "bg-white bg-opacity-80 shadow-md";
-
-  const textColor = scrolled ? scrolledTextColor : baseTextColor;
-  const bgColor = scrolled ? scrolledBgColor : baseBgColor;
-  const hamburgerColor = scrolled ? "text-black" : baseTextColor;
-  const openTextColor = isOpen && !scrolled ? "text-black" : textColor;
+  const textColor = "text-black";
+  const bgColor = "bg-white";
 
   return (
     <nav
-      className={`${bgColor} fixed w-full top-0 z-100 transition duration-300`}
+      className={`${bgColor} fixed w-full top-0 z-50 transition duration-300`}
     >
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <Link
-          to="/"
-          className={`text-xl font-bold ${textColor} flex items-center`}
-          onClick={() => {
-            scrollToSection("hero");
-          }}
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() => handleNavigation("hero")}
         >
-          {/* Debbal Technologies */}
           <img
             src="../../public/DLogo.png"
             alt="Debbal Technologies Logo"
-            className="h-8 md:h-10 p-1 rounded-full shadow-md"
+            className="h-10 md:h-12 p-1 rounded-full shadow-md"
             style={{ backgroundColor: "#FFFFFF" }}
           />
-        </Link>
+          <span
+            className="ml-2 text-xl font-bold text-black"
+            style={{ fontFamily: "MuseoModerno, sans-serif" }}
+          >
+            Debbal Tech Gazette
+          </span>
+        </div>
 
         <div className="flex md:hidden">
           <button
             type="button"
-            className={`text-xl ${hamburgerColor} focus:outline-none`}
+            className={`text-xl ${textColor} focus:outline-none`}
             aria-label="Toggle navigation"
             onClick={() => setIsOpen(!isOpen)}
           >
@@ -99,79 +83,67 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
           } bg-gray-200 md:bg-transparent`}
         >
           <NavLink
-            onClick={() => scrollToSection("hero")}
-            textColor={openTextColor}
+            onClick={() => handleNavigation("hero")}
+            textColor={textColor}
           >
             Home
           </NavLink>
           <NavLink
-            onClick={() => scrollToSection("about")}
-            textColor={openTextColor}
+            onClick={() => handleNavigation("about")}
+            textColor={textColor}
           >
             About
           </NavLink>
           <NavLink
-            onClick={() => scrollToSection("featured-articles")}
-            textColor={openTextColor}
+            onClick={() => handleNavigation("latest-posts")}
+            textColor={textColor}
           >
-            Featured Articles
+            Blogs
           </NavLink>
           <NavLink
-            onClick={() => scrollToSection("categories")}
-            textColor={openTextColor}
+            onClick={() => handleNavigation("categories")}
+            textColor={textColor}
           >
             Categories
           </NavLink>
           <NavLink
-            onClick={() => scrollToSection("testimonials")}
-            textColor={openTextColor}
+            onClick={() => handleNavigation("testimonials")}
+            textColor={textColor}
           >
             Testimonials
           </NavLink>
           <NavLink
-            onClick={() => scrollToSection("authors")}
-            textColor={openTextColor}
+            onClick={() => handleNavigation("authors")}
+            textColor={textColor}
           >
             Authors
           </NavLink>
           <NavLink
-            onClick={() => scrollToSection("newsletter")}
-            textColor={openTextColor}
+            onClick={() => handleNavigation("newsletter")}
+            textColor={textColor}
           >
             Newsletter
           </NavLink>
           <NavLink
-            onClick={() => scrollToSection("footer")}
-            textColor={openTextColor}
+            onClick={() => handleNavigation("footer")}
+            textColor={textColor}
           >
             Contact
           </NavLink>
           <Link
             to="/login"
-            className="block px-4 py-2 bg-blue-700 rounded-full hover:bg-blue-800 mx-2 text-white md:hidden"
+            className="block px-6 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full shadow-md transition duration-300 disabled:opacity-50 mb-4 md:hidden"
           >
             Login
-          </Link>
-          <Link
-            to="/signup"
-            className="block px-4 py-2 bg-green-500 rounded-full hover:bg-green-600 mx-2 text-white md:hidden"
-          >
-            Sign Up
           </Link>
         </div>
 
         <div className="hidden md:flex">
           <Link
             to="/login"
-            className="px-4 py-2 bg-blue-700 rounded-full hover:bg-blue-800 mx-2 text-white"
+            className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-2 px-6 rounded-full shadow-md transition duration-300 disabled:opacity-50 "
           >
             Login
-          </Link>
-          <Link
-            to="/signup"
-            className="px-4 py-2 bg-green-500 rounded-full hover:bg-green-600 mx-2 text-white"
-          >
-            Sign Up
           </Link>
         </div>
       </div>
@@ -182,15 +154,14 @@ const Navbar: React.FC<NavbarProps> = ({ theme }) => {
 const NavLink: React.FC<{
   onClick: () => void;
   textColor: string;
-  children: React.ReactNode; // Add this line
+  children: React.ReactNode;
 }> = ({ children, onClick, textColor }) => (
-  <Link
-    to="/"
-    className={`block px-3 py-2 text-sm ${textColor} hover:text-gray-900 hover:bg-gray-100 rounded-md mx-2 transition duration-300 ease-in-out`}
+  <a
+    className={`block px-4 py-2 text-sm ${textColor} hover:text-gray-900 hover:bg-gray-100 hover:border-2 hover:border-purple-500 rounded-full mx-2 transition duration-300 ease-in-out cursor-pointer`}
     onClick={onClick}
   >
     {children}
-  </Link>
+  </a>
 );
 
 export default Navbar;

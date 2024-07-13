@@ -1,32 +1,25 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import AddPost from "./Components/Profile/AddPost";
 import EditPost from "./Components/Profile/EditPost";
 import PreviousPosts from "./Components/Profile/PreviousPosts";
 import AllPosts from "./Components/AllPosts";
-// import Login from "./Components/Login";
-// import Signup from "./Components/Signup";
 import NotFound from "./Components/NotFound";
 import HomePage from "./Components/Home";
 import SystemOverview from "./Components/UnAuthenticated/SystemOverview";
 import ForgotPassword from "./Components/ForgotPassword";
 import PostDetail from "./Components/Posts/PostDetail";
-
-import { PrivateRoutes } from "./privateRoutes";
 import UserProfile from "./Components/Profile/UserProfile";
 import AuthenticationPage from "./Components/UnAuthenticated/AuthenticationPage ";
-// import Navbar from "./Components/Navbar"; // Import your Navbar component here
-// import NavbarLoggedIn from "./Components/AuthenticatedNavbar"; // Import your NavbarLoggedIn component here
+import CategoryPage from "./Components/UnAuthenticated/CategoryPage";
+
+import { PrivateRoutes } from "./privateRoutes";
 
 const App: React.FC = () => {
-  // Determine if the user is authenticated (you can implement this logic)
-  // const isAuthenticated = true; // Example: Assume user is authenticated
-
   return (
     <>
       <Router>
-        {/* Conditional rendering of Navbar or NavbarLoggedIn */}
-
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<SystemOverview />} />
@@ -86,6 +79,7 @@ const App: React.FC = () => {
 
           {/* Route for post detail */}
           <Route path="/post/:postId" element={<PostDetail />} />
+          <Route path="/category/:category" element={<CategoryPage />} />
 
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />

@@ -37,6 +37,7 @@ export const getAllUsers = asyncWrapper(
     });
   }
 );
+
 export const getUser = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     if (!req.params.id) req.params.id = req.user.id;

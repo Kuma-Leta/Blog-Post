@@ -38,6 +38,7 @@ router.patch(
 );
 router.get("/getMyPost", protect, getMyPost);
 router.get("/getPost/:postId", protect, getPost);
+router.get("/getPost/:postId", getPost);
 router.delete("/deletePost/:postId", protect, deletePost);
 router.delete("/deleteAllMyPost", protect, deleteAllMyPost);
 router.delete("/user/:userId/deletePost/:postId", protect, deletePost);

@@ -12,7 +12,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({
   averageRating,
 }) => {
   return (
-    <div className="flex justify-between items-center mb-4 p-4">
+    <div className="flex justify-between items-center  p-4">
       <div className="flex items-center text-sm text-gray-600">
         <FontAwesomeIcon icon={faStar} className="mr-1 text-yellow-500" />
         <span className="mr-2">{ratingQuantity} ratings</span>
