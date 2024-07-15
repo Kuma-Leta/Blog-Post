@@ -32,7 +32,7 @@ const HeroSection: React.FC<Props> = ({ id }) => {
       }}
     >
       {/* Background Overlay */}
-      <div className="absolute top-0 left-0 w-full h-full bg-purple-900 rounded-lg opacity-75"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-black rounded-lg opacity-75"></div>
 
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-center text-white">
@@ -57,14 +57,14 @@ const HeroSection: React.FC<Props> = ({ id }) => {
         <div className="flex items-center space-x-4">
           <button
             onClick={() => handleNavigation("latest-posts")}
-            className="bg-white text-purple-500 hover:text-purple-600 font-semibold py-2 px-4 rounded-full shadow-md transition duration-300 ease-in-out"
+            className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300 transform hover:scale-105"
           >
             Explore Latest Posts{" "}
             <FiArrowRightCircle className="inline-block ml-1" />
           </button>
           <button
             onClick={() => handleNavigation("newsletter")}
-            className="bg-white text-purple-500 hover:text-purple-600 font-semibold py-2 px-4 rounded-full shadow-md transition duration-300 ease-in-out"
+            className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300 transform hover:scale-105"
           >
             Sign Up for Newsletter{" "}
             <FiArrowRightCircle className="inline-block ml-1" />

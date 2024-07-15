@@ -10,7 +10,7 @@ import { FaApple } from "react-icons/fa";
 
 const SocialMediaIcons: React.FC = () => {
   return (
-    <div className="mt-4 flex justify-center space-x-3">
+    <div className="mt-4 flex justify-center space-x-2">
       <button className="hover:bg-red-500 hover:text-white p-2 rounded-full transition duration-300">
         <IoLogoGoogle size={24} />
       </button>

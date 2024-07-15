@@ -115,7 +115,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                 image={media.url}
                 title={post.title}
                 onClick={() => openMediaPopup(media.url, media.type)}
-                className="cursor-pointer"
+                className="cursor-pointer rounded-md"
                 style={{
                   position: "absolute",
                   top: 0,
@@ -170,7 +170,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
           {post.title}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {post.textContent.length > 100 ? (
+          {post.textContent.length > 50 ? (
             <>
               {post.textContent.substring(0, 50)}...
               <Link

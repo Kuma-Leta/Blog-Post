@@ -32,11 +32,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, post }) => {
         <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full max-h-[80vh] overflow-auto relative transform transition-transform duration-300 ease-in-out">
           <button
             onClick={onClose}
-            className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2"
+            className="absolute top-2 right-2 bg-red-500 text-white rounded-full py-1 px-5"
           >
             &times;
           </button>
-          <h2 className="text-3xl font-bold mb-4">{post.title}</h2>
+
           {post.imagePath && (
             <img
               src={`http://localhost:5000/${post.imagePath}`}
@@ -64,6 +64,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, post }) => {
               {post.averageRating} ({post.ratingQuantity} ratings)
             </p>
           </div>
+          <h2 className="text-3xl font-bold mb-4">{post.title}</h2>
           <div className="text-gray-700 whitespace-pre-wrap leading-relaxed mb-4">
             {post.textContent}
           </div>

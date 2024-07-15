@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
   };
 
   const textColor = "text-black";
-  const bgColor = "bg-white";
+  const bgColor = "bg-blue-50";
 
   return (
     <nav

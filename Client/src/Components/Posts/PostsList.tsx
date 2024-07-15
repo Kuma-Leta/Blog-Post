@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PostCard from "../PostCard";
@@ -125,13 +126,18 @@ const PostsList: React.FC = () => {
     }
   };
 
-  const updateUrlParams = (category: string, sort: string, page: number) => {
+  const updateUrlParams = (
+    category: string,
+    sort: string,
+    page: number,
+    search: string
+  ) => {
     const params = new URLSearchParams();
     if (category !== "All") params.set("category", category);
     params.set("sort", sort);
     params.set("page", page.toString());
-    if (searchQuery) {
-      params.set("search", searchQuery);
+    if (search) {
+      params.set("search", search);
     }
     navigate({
       search: params.toString(),
@@ -140,7 +146,7 @@ const PostsList: React.FC = () => {
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    updateUrlParams(selectedCategory, sort, pageNumber);
+    updateUrlParams(selectedCategory, sort, pageNumber, searchQuery);
     scrollToTop(); // Scroll to top after updating posts
   };
 
@@ -159,14 +165,14 @@ const PostsList: React.FC = () => {
   const handleCategoryClick = (category: string) => {
     setSelectedCategory(category);
     setCurrentPage(1);
-    updateUrlParams(category, sort, 1);
+    updateUrlParams(category, sort, 1, searchQuery);
     setIsCategoryDropdownOpen(false);
   };
 
   const handleSortChange = (sortOption: string) => {
     setSort(sortOption);
     setCurrentPage(1);
-    updateUrlParams(selectedCategory, sortOption, 1);
+    updateUrlParams(selectedCategory, sortOption, 1, searchQuery);
     setIsSortDropdownOpen(false);
   };
 
@@ -176,7 +182,9 @@ const PostsList: React.FC = () => {
 
   const handleSearchSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    fetchPosts();
+    setCurrentPage(1);
+    updateUrlParams(selectedCategory, sort, 1, searchQuery);
+    setSearchQuery("");
   };
 
   const renderPageNumbers = () => {
@@ -242,22 +250,23 @@ const PostsList: React.FC = () => {
               </button>
             </div>
             {isCategoryDropdownOpen && (
-              <ul className="absolute mt-2 w-full bg-white rounded-md shadow-lg z-10 max-h-48 overflow-y-auto border border-gray-300 transition duration-300">
-                {categories.map((category, index) => (
-                  <li key={index}>
-                    <button
+              <div className="absolute z-10 w-full mt-2 bg-white rounded-md shadow-lg border border-gray-300">
+                <ul className="py-2">
+                  {categories.map((category) => (
+                    <li
+                      key={category}
                       onClick={() => handleCategoryClick(category)}
-                      className={`block w-full text-left px-4 py-2 hover:bg-gradient-to-r hover:from-purple-400 hover:to-pink-500 hover:text-white transition duration-300 ${
+                      className={`cursor-pointer px-4 py-2 ${
                         selectedCategory === category
-                          ? "bg-gradient-to-r from-purple-500 to-indigo-500 text-white"
-                          : "text-gray-700"
-                      }`}
+                          ? "bg-purple-500 text-white"
+                          : "text-gray-800 hover:bg-purple-500 hover:text-white"
+                      } transition duration-300`}
                     >
                       {category}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
           <div className="relative w-full">
@@ -267,7 +276,7 @@ const PostsList: React.FC = () => {
                 onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
                 className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-semibold px-4 py-2 rounded-full w-full text-left flex justify-between items-center shadow-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300"
               >
-                {sort}{" "}
+                {sortOptions.find((option) => option.value === sort)?.label}{" "}
                 <svg
                   className={`w-5 h-5 transform transition-transform ${
                     isSortDropdownOpen ? "rotate-180" : "rotate-0"
@@ -287,86 +296,75 @@ const PostsList: React.FC = () => {
               </button>
             </div>
             {isSortDropdownOpen && (
-              <ul className="absolute mt-2 w-full bg-white rounded-md shadow-lg z-10 max-h-48 overflow-y-auto border border-gray-300 transition duration-300">
-                {sortOptions.map((option, index) => (
-                  <li key={index}>
-                    <button
+              <div className="absolute z-10 w-full mt-2 bg-white rounded-md shadow-lg border border-gray-300">
+                <ul className="py-2">
+                  {sortOptions.map((option) => (
+                    <li
+                      key={option.value}
                       onClick={() => handleSortChange(option.value)}
-                      className={`block w-full text-left px-4 py-2 hover:bg-gradient-to-r hover:from-purple-400 hover:to-pink-500 hover:text-white transition duration-300 ${
+                      className={`cursor-pointer px-4 py-2 ${
                         sort === option.value
-                          ? "bg-gradient-to-r from-purple-500 to-indigo-500 text-white"
-                          : "text-gray-700"
-                      }`}
+                          ? "bg-purple-500 text-white"
+                          : "text-gray-800 hover:bg-purple-500 hover:text-white"
+                      } transition duration-300`}
                     >
                       {option.label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
-        </div>
-        <form
-          onSubmit={handleSearchSubmit}
-          className="flex items-center space-x-4 w-full md:w-auto"
-        >
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            placeholder="Search posts..."
-            className="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 w-full"
-          />
-          <button
-            type="submit"
-            className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-4 py-2 rounded-full shadow-md transition duration-300"
+          <form
+            onSubmit={handleSearchSubmit}
+            className="relative w-full md:w-1/2"
           >
-            <FaSearch className="w-5 h-5" />
-          </button>
-        </form>
-      </div>
-
-      {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <ClipLoader color="#6B46C1" loading={loading} size={35} />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="w-full border border-gray-300 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent shadow-md"
+              placeholder="Search..."
+            />
+            <button
+              type="submit"
+              className="absolute inset-y-0 right-0 px-6 py-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300"
+            >
+              <FaSearch />
+            </button>
+          </form>
         </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {posts.map((post) => (
-              <PostCard key={post._id} post={post} />
-            ))}
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {loading ? (
+          <div className="flex justify-center items-center w-full col-span-3">
+            <ClipLoader color="#9333ea" loading={loading} size={50} />
           </div>
-
-          {totalPages > 1 && (
-            <div className="flex items-center justify-center mt-8 space-x-4">
-              <button
-                onClick={handlePrevPage}
-                disabled={currentPage === 1}
-                className={`${
-                  currentPage === 1
-                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                    : "bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:from-purple-600 hover:to-indigo-600"
-                } px-4 py-2 rounded-full shadow-md transition duration-300`}
-              >
-                <FaChevronLeft className="w-5 h-5" />
-              </button>
-              {renderPageNumbers()}
-              <button
-                onClick={handleNextPage}
-                disabled={currentPage === totalPages}
-                className={`${
-                  currentPage === totalPages
-                    ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                    : "bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:from-purple-600 hover:to-indigo-600"
-                } px-4 py-2 rounded-full shadow-md transition duration-300`}
-              >
-                <FaChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          )}
-        </>
-      )}
+        ) : posts.length === 0 ? (
+          <div className="flex justify-center items-center w-full col-span-3">
+            <p className="text-gray-500">No posts found.</p>
+          </div>
+        ) : (
+          posts.map((post) => <PostCard key={post._id} post={post} />)
+        )}
+      </div>
+      <div className="mt-8 flex justify-center items-center space-x-4">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className="bg-white border border-purple-500 text-purple-500 py-2 px-4 rounded-full shadow-md hover:bg-purple-500 hover:text-white transition duration-300"
+        >
+          <FaChevronLeft />
+        </button>
+        <div className="flex space-x-2">{renderPageNumbers()}</div>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="bg-white border border-purple-500 text-purple-500 py-2 px-4 rounded-full shadow-md hover:bg-purple-500 hover:text-white transition duration-300"
+        >
+          <FaChevronRight />
+        </button>
+      </div>
     </div>
   );
 };

@@ -68,13 +68,7 @@ const SystemOverview: React.FC = () => {
 
   return (
     <div className="bg-gradient-to-r from-blue-500 to-purple-600 min-h-screen text-white relative">
-      {/* Loading Spinner */}
-      {/* {loading && <LoadingSpinner loading={loading} />} */}
-
-      {/* Content */}
-      <div
-      // style={{ opacity: loading ? 0 : 1, transition: "opacity 0.5s ease" }}
-      >
+      <div>
         <Navbar />
 
         <HeroSection id="hero" />

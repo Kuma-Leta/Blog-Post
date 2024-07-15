@@ -140,7 +140,7 @@ const EditPost: React.FC = () => {
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto py-8 px-4">
+      <div className="container mx-auto py-8 px-4 bg-gradient-to-r from-blue-50 to-blue-100">
         <form
           onSubmit={handleSubmit}
           className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg px-10 pt-8 pb-8 mb-6 border border-gray-300"

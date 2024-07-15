@@ -9,7 +9,7 @@ const AboutSection: React.FC<Props> = ({ id }) => {
   return (
     <section
       id={id}
-      className="bg-white text-gray-800 py-16 px-4 md:px-16 lg:px-32"
+      className="bg-blue-100 text-gray-800 py-16 px-4 md:px-16 lg:px-32"
     >
       <h2 className="text-3xl font-bold text-center mb-8">
         About Debbal Tech Gazette

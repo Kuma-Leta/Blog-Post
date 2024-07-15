@@ -74,7 +74,7 @@ const LatestPosts: React.FC = () => {
   };
 
   return (
-    <section id="latest-posts" className="py-16 bg-gray-100 text-black">
+    <section id="latest-posts" className="py-16 bg-blue-50 text-black">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-8">Latest Posts</h2>
         {loading && currentPage === 1 ? (
@@ -90,7 +90,7 @@ const LatestPosts: React.FC = () => {
                 posts.map((post) => (
                   <div
                     key={post._id}
-                    className="bg-white p-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:shadow-xl hover:-translate-y-1 cursor-pointer"
+                    className="bg-white  rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:shadow-2xl hover:-translate-y-1 hover:scale-105 cursor-pointer"
                     onClick={() => handlePostClick(post)} // Set the post when clicked
                   >
                     <img
@@ -98,22 +98,24 @@ const LatestPosts: React.FC = () => {
                       alt={post.title}
                       className="w-full h-40 object-cover rounded-t-lg mb-4"
                     />
-                    <h3 className="text-xl font-bold mb-2">{post.title}</h3>
+                    <h3 className="text-xl px-4  font-bold mb-2">
+                      {post.title}
+                    </h3>
 
-                    <div className="flex items-center mb-2 text-gray-600">
+                    <div className="flex items-center mb-2 px-4 text-gray-600">
                       <FaTag className="text-purple-500 mr-2" />
                       <span>{post.category}</span>
                     </div>
 
-                    <p className="text-gray-700">
-                      {post.textContent.substring(0, 100)}...
+                    <p className="text-gray-700 px-4">
+                      {post.textContent.substring(0, 50)}...
                     </p>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handlePostClick(post);
                       }}
-                      className="text-blue-500 hover:underline mt-4"
+                      className="text-blue-500 hover:underline mt-4 mb-4 px-4"
                     >
                       Read more
                     </button>
@@ -125,7 +127,7 @@ const LatestPosts: React.FC = () => {
               <div className="flex justify-center mt-8">
                 <button
                   onClick={handleLoadMore}
-                  className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-2 px-6 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+                  className="w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-2 px-6 rounded-full shadow-md transition duration-300 disabled:opacity-50"
                 >
                   Load More
                 </button>

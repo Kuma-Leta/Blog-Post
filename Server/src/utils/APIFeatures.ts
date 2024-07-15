@@ -8,12 +8,12 @@ class APIfeatures {
   constructor(query: Query<any, any>, queryString: Request["query"]) {
     this.query = query;
     this.queryString = queryString;
-    // console.log(queryString);
+    console.log(queryString);
   }
 
   filter() {
     const queryObj = { ...this.queryString };
-    const excludedFields = ["page", "sort", "limit", "fields"];
+    const excludedFields = ["page", "sort", "limit", "fields", "search"];
     excludedFields.forEach((el) => delete queryObj[el]);
 
     // Advanced Filtering
@@ -21,6 +21,20 @@ class APIfeatures {
     queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, (match) => `$${match}`);
     this.query = this.query.find(JSON.parse(queryStr));
 
+    return this;
+  }
+
+  search() {
+    if (this.queryString.search) {
+      const searchStr = this.queryString.search as string;
+      this.query = this.query.find({
+        $or: [
+          { title: { $regex: searchStr, $options: "i" } },
+          { textContent: { $regex: searchStr, $options: "i" } },
+          { category: { $regex: searchStr, $options: "i" } },
+        ],
+      });
+    }
     return this;
   }
 

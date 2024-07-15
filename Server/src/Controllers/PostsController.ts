@@ -134,17 +134,19 @@ export const getAllPosts: RequestHandler = asyncWrapper(
     // Create the initial query with filter
     let initialQuery = Post.find(filter);
 
-    // Create an instance of APIfeatures to apply filters and sorting for the count query
+    // Create an instance of APIfeatures to apply filters, search, and sorting for the count query
     const countFeatures = new APIfeatures(initialQuery, req.query)
       .filter()
+      .search()
       .sort();
 
     // Get the total number of posts matching the filter criteria (excluding pagination)
     const totalPosts = await countFeatures.query.countDocuments();
 
-    // Create an instance of APIfeatures to apply filters, sorting, and pagination for the data query
+    // Create an instance of APIfeatures to apply filters, search, sorting, and pagination for the data query
     const dataFeatures = new APIfeatures(Post.find(filter), req.query)
       .filter()
+      .search()
       .sort()
       .limit()
       .paginate();
