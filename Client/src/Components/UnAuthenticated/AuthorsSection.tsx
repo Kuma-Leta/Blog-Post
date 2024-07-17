@@ -1,8 +1,8 @@
 import React from "react";
 
-import author1 from "../../assets/images/authors/john_doe.png";
-import author2 from "../../assets/images/authors/jane_smith.png";
-import author3 from "../../assets/images/authors/mickael_brown.png";
+import author1 from "../../../public/john_doe.png";
+import author2 from "../../../public/jane_smith.png";
+import author3 from "../../../public/mickael_brown.png";
 
 interface Author {
   name: string;

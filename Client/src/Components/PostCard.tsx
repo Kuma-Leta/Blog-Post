@@ -11,7 +11,7 @@ import AuthorInfo from "./PostCard/AuthorInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 
-import generic_image from "../assets/generic_user_place_holder.jpg";
+import generic_image from "../../public/generic_user_place_holder.jpg";
 
 interface Post {
   _id: string;

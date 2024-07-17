@@ -2,8 +2,8 @@
 import React from "react";
 import { IconType } from "react-icons";
 
-import maleDefault from "../../../assets/images/testimonials/john_doe.png";
-import femaleDefault from "../../../assets/images/testimonials/jane_smith.png";
+import maleDefault from "../../../../public/john_doe.png";
+import femaleDefault from "../../../../public/jane_smith.png";
 
 interface UserProfilePhotoProps {
   currentUser: any;

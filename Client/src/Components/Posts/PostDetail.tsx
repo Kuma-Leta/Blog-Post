@@ -10,7 +10,7 @@ import Rating from "./Rating";
 import Carousel from "react-multi-carousel"; // Assuming you have a carousel component
 import "react-multi-carousel/lib/styles.css";
 
-import generic_image from "../../assets/generic_user_place_holder.jpg";
+import generic_image from "../../../public/generic_user_place_holder.jpg";
 
 export interface Post {
   _id: string;

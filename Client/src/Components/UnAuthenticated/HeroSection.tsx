@@ -1,7 +1,7 @@
 import React from "react";
 import { FiArrowRightCircle } from "react-icons/fi";
 import logo from "../../assets/DLogo.png"; // Adjust the path to your image
-import videoBackground from "../../assets/Top-Five-AI-Trends-to-Look-Out-for-in-2023.mp4";
+import videoBackground from "../../../public/Top-Five-AI-Trends-to-Look-Out-for-in-2023.mp4";
 
 interface Props {
   id: string;

@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUser } from "../UserContext";
-import logo from "../assets/images/DLogo.png";
-import maleDefault from "../assets/images/testimonials/john_doe.png";
-import femaleDefault from "../assets/images/testimonials/jane_smith.png";
+
+import logo from "../../public/DLogo.png";
+import maleDefault from "../../public/john_doe.png";
+import femaleDefault from "../../public/jane_smith.png";
 
 const NavbarLoggedIn: React.FC = () => {
   const { user, setUser } = useUser();

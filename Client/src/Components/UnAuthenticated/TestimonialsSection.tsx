@@ -3,9 +3,9 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi"; // Import icons for custom arrows
 
-import testimony1 from "../../assets/images/testimonials/john_doe.png";
-import testimony2 from "../../assets/images/testimonials/jane_smith.png";
-import testimony3 from "../../assets/images/testimonials/mickael_brown.png";
+import testimony1 from "../../../public/john_doe.png";
+import testimony2 from "../../../public/jane_smith.png";
+import testimony3 from "../../../public/mickael_brown.png";
 
 interface Testimonial {
   id: number;
