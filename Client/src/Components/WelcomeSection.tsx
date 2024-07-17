@@ -37,7 +37,7 @@ const WelcomeSection: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 opacity-20 z-0 pointer-events-none"></div>
+      {/* <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 opacity-20 z-0 pointer-events-none"></div> */}
       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-0 w-full max-w-lg h-96 bg-noise opacity-30"></div>
       <div className="absolute top-1/2 left-1/4 w-32 h-32 bg-purple-500 rounded-full blur-xl opacity-20 animate-bounce"></div>
       <div className="absolute top-1/3 right-1/4 w-24 h-24 bg-pink-500 rounded-full blur-lg opacity-20 animate-spin-slow"></div>
