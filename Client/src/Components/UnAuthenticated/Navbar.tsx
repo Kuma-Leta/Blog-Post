@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../assets/DLogo.png"; // Adjust the path to your image
+import logo from "../../../public/DLogo.png"; // Adjust the path to your image
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
