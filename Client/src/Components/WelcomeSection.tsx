@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import heroImage from "../assets/images/vecteezy_touching-technology-and-icon-customer-global-network-connection_3503591.jpg";
+import heroImage from "../../public/vecteezy_touching-technology-and-icon-customer-global-network-connection_3503591.jpg";
 const WelcomeSection: React.FC = () => {
   const scrollToPosts = () => {
     const postListSection = document.getElementById("latest-posts");
