@@ -14,6 +14,11 @@ import UserProfile from "./Components/Profile/UserProfile";
 import AuthenticationPage from "./Components/UnAuthenticated/AuthenticationPage ";
 import CategoryPage from "./Components/UnAuthenticated/CategoryPage";
 
+import AdminLogin from "./Components/Admin/AdminLogin";
+import AdminDashboard from "./Components/Admin/AdminDashboard";
+import PrivateRoute from "./Components/Admin/PrivateRoute";
+import Unauthorized from "./Components/Admin/UnAuthorized";
+
 import { PrivateRoutes } from "./privateRoutes";
 
 const App: React.FC = () => {
@@ -80,6 +85,18 @@ const App: React.FC = () => {
           {/* Route for post detail */}
           <Route path="/post/:postId" element={<PostDetail />} />
           <Route path="/category/:category" element={<CategoryPage />} />
+
+          {/* Admin routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <PrivateRoute>
+                <AdminDashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/unauthorized" element={<Unauthorized />} />
 
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />

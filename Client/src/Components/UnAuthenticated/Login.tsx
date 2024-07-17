@@ -29,6 +29,8 @@ const Login: React.FC = () => {
         { email, password }
       );
 
+      console.log(userCredential);
+
       if (userCredential) {
         setError("");
         setShowErrorMessage(false);

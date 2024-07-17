@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { FaTag } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
@@ -16,6 +15,7 @@ interface Post {
   authorImage: string;
   ratingQuantity: number;
   averageRating: number;
+  videoContent?: string;
 }
 
 const LatestPosts: React.FC = () => {
@@ -33,8 +33,7 @@ const LatestPosts: React.FC = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      // eslint-disable-next-line prefer-const
-      let url = `http://localhost:5000/api/v1/post/getAllposts?page=${currentPage}&limit=${limit}`;
+      const url = `http://localhost:5000/api/v1/post/getAllposts?page=${currentPage}&limit=${limit}`;
       const response = await fetch(url);
       const data = await response.json();
 
@@ -90,35 +89,42 @@ const LatestPosts: React.FC = () => {
                 posts.map((post) => (
                   <div
                     key={post._id}
-                    className="bg-white  rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:shadow-2xl hover:-translate-y-1 hover:scale-105 cursor-pointer"
+                    className="bg-white rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:shadow-2xl hover:-translate-y-1 hover:scale-105 cursor-pointer"
                     onClick={() => handlePostClick(post)} // Set the post when clicked
                   >
-                    <img
-                      src={`http://localhost:5000/${post.imagePath}`}
-                      alt={post.title}
-                      className="w-full h-40 object-cover rounded-t-lg mb-4"
-                    />
-                    <h3 className="text-xl px-4  font-bold mb-2">
-                      {post.title}
-                    </h3>
-
-                    <div className="flex items-center mb-2 px-4 text-gray-600">
-                      <FaTag className="text-purple-500 mr-2" />
-                      <span>{post.category}</span>
+                    {post.imagePath && !post.videoContent && (
+                      <img
+                        src={`http://localhost:5000/${post.imagePath}`}
+                        alt={post.title}
+                        className="w-full h-40 object-cover rounded-t-lg mb-4"
+                      />
+                    )}
+                    {post.videoContent && (
+                      <video
+                        src={`http://localhost:5000/${post.videoContent}`}
+                        controls
+                        className="w-full h-40 object-cover rounded-t-lg mb-4"
+                      ></video>
+                    )}
+                    <div className="p-4">
+                      <h3 className="text-xl font-bold mb-2">{post.title}</h3>
+                      <div className="flex items-center mb-2 text-gray-600">
+                        <FaTag className="text-purple-500 mr-2" />
+                        <span>{post.category}</span>
+                      </div>
+                      <p className="text-gray-700 mb-4">
+                        {post.textContent.substring(0, 50)}...
+                      </p>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePostClick(post);
+                        }}
+                        className="text-purple-700 hover:underline"
+                      >
+                        Read more
+                      </button>
                     </div>
-
-                    <p className="text-gray-700 px-4">
-                      {post.textContent.substring(0, 50)}...
-                    </p>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePostClick(post);
-                      }}
-                      className="text-blue-500 hover:underline mt-4 mb-4 px-4"
-                    >
-                      Read more
-                    </button>
                   </div>
                 ))
               )}
@@ -127,7 +133,7 @@ const LatestPosts: React.FC = () => {
               <div className="flex justify-center mt-8">
                 <button
                   onClick={handleLoadMore}
-                  className="w-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-2 px-6 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+                  className="w-full max-w-xs bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-2 px-6 rounded-full shadow-md transition duration-300 disabled:opacity-50"
                 >
                   Load More
                 </button>

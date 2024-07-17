@@ -26,7 +26,7 @@ const CategoriesSection: React.FC<Props> = ({ id, categories }) => {
                 Discover the latest articles and insights on{" "}
                 {category.toLowerCase()}.
               </p>
-              <div className="category-link text-blue-600 font-medium inline-flex items-center transition duration-300 ease-in-out">
+              <div className="category-link text-purple-700 font-medium inline-flex items-center transition duration-300 ease-in-out">
                 Explore {category} <FaAngleRight className="ml-2" />
               </div>
             </Link>

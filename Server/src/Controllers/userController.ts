@@ -3,6 +3,7 @@ import User from "./../models/userModel";
 import asyncWrapper from "./../utils/asyncWrapper";
 import AppError from "../utils/appError";
 import APIFeatures from "../utils/APIFeatures";
+import userAPIFeatures from "../utils/userAPIFeatures";
 // Define the custom request type
 export interface AuthenticatedRequest extends Request {
   user?: any;
@@ -16,21 +17,28 @@ export const getMe = (
   req.params.id = req.user.id;
   next();
 };
+
 export const getAllUsers = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    // Execute the query with filters, sorting, and pagination
     console.log(req.query);
-    //EXECUTE THE QUERY
-    const features = new APIFeatures(User.find(), req.query)
+    const features = new userAPIFeatures(User.find(), req.query)
       .filter()
       .sort()
       .limit()
-      .paginate();
-    //const docs = await features.query.explain();
+      .paginate()
+      .search();
+
+    // Get the filtered users
     const users = await features.query;
+
+    // Get the total number of users in the database
+    const totalUsers = await User.countDocuments();
 
     res.status(200).json({
       status: "success",
       result: users.length,
+      totalUsers, // Include the total user count
       data: {
         data: users,
       },

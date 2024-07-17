@@ -9,7 +9,7 @@ interface IUser extends Document {
   photo?: string;
   numberOfPost: number;
   role: "user" | "admin";
-  gender?: "male" | "female"; // Add gender field
+  gender?: "male" | "female";
   password: string;
   passwordConfirm?: string;
   passwordChangedAt?: Date;
@@ -21,6 +21,7 @@ interface IUser extends Document {
   ): Promise<boolean>;
   changePasswordAfter(JWTTimestamp: number): boolean;
   createPasswordResetToken(): string;
+  createdAt: Date; // Add createdAt field
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -55,7 +56,7 @@ const userSchema = new mongoose.Schema<IUser>(
       type: String,
       required: [true, "Please provide a password"],
       minlength: 8,
-      select: false, // Exclude password field from query results by default
+      select: false,
     },
     passwordConfirm: {
       type: String,
@@ -70,10 +71,14 @@ const userSchema = new mongoose.Schema<IUser>(
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
+    createdAt: {
+      type: Date,
+      default: Date.now, // Set default value to current date and time
+    },
   },
   {
-    toJSON: { virtuals: true }, // Include virtual fields in JSON output
-    toObject: { virtuals: true }, // Include virtual fields in object output
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
 
@@ -88,8 +93,8 @@ userSchema.virtual("posts", {
 userSchema.pre<IUser>("save", async function (next) {
   if (!this.isModified("password")) return next();
 
-  this.password = await bcrypt.hash(this.password, 12); // Hash password with bcrypt
-  this.passwordConfirm = undefined; // Clear passwordConfirm after saving
+  this.password = await bcrypt.hash(this.password, 12);
+  this.passwordConfirm = undefined;
   next();
 });
 
@@ -97,7 +102,7 @@ userSchema.pre<IUser>("save", async function (next) {
 userSchema.pre<IUser>("save", function (next) {
   if (!this.isModified("password") || this.isNew) return next();
 
-  this.passwordChangedAt = new Date(Date.now() - 1000); // Ensure JWT creation time is before password change
+  this.passwordChangedAt = new Date(Date.now() - 1000);
   next();
 });
 
@@ -106,7 +111,7 @@ userSchema.methods.correctPassword = async function (
   candidatePassword: string,
   userPassword: string
 ): Promise<boolean> {
-  return await bcrypt.compare(candidatePassword, userPassword); // Compare entered password with stored hashed password
+  return await bcrypt.compare(candidatePassword, userPassword);
 };
 
 // Instance method to check if password was changed after JWT creation
@@ -120,18 +125,18 @@ userSchema.methods.changePasswordAfter = function (
     );
     return JWTTimestamp < changedTimestamp;
   }
-  return false; // Return false if password was not changed
+  return false;
 };
 
 // Instance method to create a password reset token
 userSchema.methods.createPasswordResetToken = function (): string {
-  const resetToken = crypto.randomBytes(32).toString("hex"); // Generate random resetToken
+  const resetToken = crypto.randomBytes(32).toString("hex");
   this.passwordResetToken = crypto
     .createHash("sha256")
     .update(resetToken)
-    .digest("hex"); // Encrypt resetToken and store in database
-  this.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // Set expiration time to 10 minutes
-  return resetToken; // Return plain text resetToken to send via email
+    .digest("hex");
+  this.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000);
+  return resetToken;
 };
 
 // Create User model

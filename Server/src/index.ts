@@ -4,6 +4,8 @@ const path = require("path");
 import postRoute from "./routes/postRoutes";
 import ratingRoute from "./routes/ratingRoute";
 import userRoutes from "./routes/userRoutes";
+import adminRoutes from "./routes/adminRoutes";
+
 import { connectDB } from "./connectDb";
 import cors from "cors";
 import globalErrorHandler from "./Controllers/errorController";
@@ -27,6 +29,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/post", postRoute);
 app.use("/api/v1/rating", ratingRoute);
+app.use("/api/v1/admin", adminRoutes);
 
 // Handling unhandled routes
 app.all("*", (req: Request, res: Response, next: NextFunction) => {

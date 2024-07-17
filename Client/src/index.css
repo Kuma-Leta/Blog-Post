@@ -59,3 +59,16 @@ html {
 .category-container:hover .category-link {
   color: white;
 }
+
+.flash {
+  animation: flashAnimation 0.5s alternate infinite;
+}
+
+@keyframes flashAnimation {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}

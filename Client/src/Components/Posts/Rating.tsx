@@ -67,6 +67,13 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
       }
     };
 
+    // Reset the state before fetching new data
+    setUserRating(null);
+    setAverageRating(0);
+    setRatingQuantity(0);
+    setIsAuthor(false);
+    setRatingId(null);
+
     fetchRating();
   }, [postId, user._id]);
 
@@ -278,24 +285,26 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
       )}
 
       {showRatingModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl mb-4">Rate this post</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-md w-80">
+            <h2 className="text-lg font-semibold mb-4">
+              {userRating === null ? "Add Rating" : "Update Rating"}
+            </h2>
             <div className="flex justify-center mb-4">
               {renderStarsWithClick(selectedRating)}
             </div>
             <div className="flex justify-end space-x-4">
               <button
-                onClick={submitRating}
-                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full shadow-md transition duration-300 disabled:opacity-50"
-              >
-                Submit
-              </button>
-              <button
                 onClick={closeRatingModal}
-                className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded-full shadow-md transition duration-300"
+                className="bg-gray-500 hover:bg-gray-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300"
               >
                 Cancel
+              </button>
+              <button
+                onClick={submitRating}
+                className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300"
+              >
+                {userRating === null ? "Add" : "Update"}
               </button>
             </div>
           </div>
@@ -303,22 +312,22 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
       )}
 
       {showDeleteModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-2xl mb-4">Confirm Deletion</h2>
-            <p className="mb-4">Are you sure you want to delete your rating?</p>
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={confirmDeleteRating}
-                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-full shadow-md transition duration-300"
-              >
-                Yes
-              </button>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-md w-80">
+            <h2 className="text-lg font-semibold mb-4">Delete Rating</h2>
+            <p>Are you sure you want to delete your rating?</p>
+            <div className="flex justify-end space-x-4 mt-4">
               <button
                 onClick={closeDeleteModal}
-                className="bg-gray-300 hover:bg-gray-400 text-black py-2 px-4 rounded-full shadow-md transition duration-300"
+                className="bg-gray-500 hover:bg-gray-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300"
               >
-                No
+                Cancel
+              </button>
+              <button
+                onClick={confirmDeleteRating}
+                className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300"
+              >
+                Delete
               </button>
             </div>
           </div>

@@ -1,13 +1,20 @@
-import React from "react";
-import { CSSTransition } from "react-transition-group";
-import { FaUser, FaStar, FaCalendarAlt, FaTag } from "react-icons/fa";
-import "./modal.css";
+import React, { useState } from "react";
+import {
+  FaTimes,
+  FaChevronLeft,
+  FaChevronRight,
+  FaTag,
+  FaUser,
+  FaCalendarAlt,
+} from "react-icons/fa";
+import moment from "moment";
 
 interface Post {
   _id: string;
   title: string;
   textContent: string;
-  imagePath: string;
+  imagePath?: string; // Make imagePath and videoContent optional
+  videoContent?: string;
   postedAt: string;
   createdAt: string;
   category: string;
@@ -20,58 +27,93 @@ interface Post {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  post: Post | null;
+  post: Post | null; // Ensure post can be null
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, post }) => {
-  if (!post) return null;
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  return (
-    <CSSTransition in={isOpen} timeout={300} classNames="modal" unmountOnExit>
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full max-h-[80vh] overflow-auto relative transform transition-transform duration-300 ease-in-out">
-          <button
-            onClick={onClose}
-            className="absolute top-2 right-2 bg-red-500 text-white rounded-full py-1 px-5"
-          >
-            &times;
-          </button>
+  if (!post) return null; // Handle case where post is null or undefined
 
-          {post.imagePath && (
-            <img
-              src={`http://localhost:5000/${post.imagePath}`}
-              alt={post.title}
-              className="w-full h-64 object-cover rounded-lg mb-4"
+  // Create an array of media items based on presence of imagePath and videoContent
+  const mediaItems = [
+    ...(post.imagePath ? [{ type: "image", src: post.imagePath }] : []),
+    ...(post.videoContent ? [{ type: "video", src: post.videoContent }] : []),
+  ];
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? mediaItems.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === mediaItems.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  return isOpen ? (
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-75">
+      <div className="relative bg-white rounded-lg w-11/12 max-w-3xl overflow-auto max-h-full p-4">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 mb-10"
+        >
+          <FaTimes className="text-red-600 " size={24} />
+        </button>
+
+        <div className=" mb-10">
+          <div className="flex justify-center items-center mb-2 text-gray-600">
+            <FaChevronLeft
+              onClick={handlePrev}
+              className="cursor-pointer text-xl mr-4 text-purple-700"
             />
-          )}
-          <div className="flex items-center mb-4">
-            <FaUser className="text-purple-500 mr-2" />
-            <p className="text-gray-700 font-semibold">{post.author}</p>
+            <div>
+              {mediaItems.length > 0 && (
+                <>
+                  {mediaItems[currentIndex].type === "image" ? (
+                    <img
+                      src={`http://localhost:5000/${mediaItems[currentIndex].src}`}
+                      alt={post.title}
+                      className="w-full h-auto max-h-96 object-contain"
+                    />
+                  ) : (
+                    <video
+                      src={`http://localhost:5000/${mediaItems[currentIndex].src}`}
+                      controls
+                      className="w-full h-auto max-h-96"
+                    ></video>
+                  )}
+                </>
+              )}
+            </div>
+            <FaChevronRight
+              onClick={handleNext}
+              className="cursor-pointer text-xl ml-4 text-purple-700"
+            />
           </div>
-          <div className="flex items-center mb-4">
-            <FaCalendarAlt className="text-purple-500 mr-2" />
-            <p className="text-gray-700">
-              {new Date(post.createdAt).toLocaleDateString()}
-            </p>
+        </div>
+
+        <div className="p-4 text-left">
+          <h3 className="text-xl font-semibold mb-2">Post Details</h3>
+          <p className="text-gray-700 mb-4">{post.textContent}</p>
+          <div className="flex items-center text-gray-600 mb-2">
+            <FaUser className="mr-2 text-purple-700" />
+            <span>{post.author}</span>
           </div>
-          <div className="flex items-center mb-4">
-            <FaTag className="text-purple-500 mr-2" />
-            <p className="text-gray-700">{post.category}</p>
+          <div className="flex items-center text-gray-600 mb-2">
+            <FaTag className="mr-2 text-purple-700" />
+            <span>{post.category}</span>
           </div>
-          <div className="flex items-center mb-4">
-            <FaStar className="text-yellow-500 mr-2" />
-            <p className="text-gray-700">
-              {post.averageRating} ({post.ratingQuantity} ratings)
-            </p>
-          </div>
-          <h2 className="text-3xl font-bold mb-4">{post.title}</h2>
-          <div className="text-gray-700 whitespace-pre-wrap leading-relaxed mb-4">
-            {post.textContent}
+          <div className="flex items-center text-gray-600">
+            <FaCalendarAlt className="mr-2 text-purple-700" />
+            <span>{moment(post.postedAt).format("MMMM Do YYYY")}</span>
           </div>
         </div>
       </div>
-    </CSSTransition>
-  );
+    </div>
+  ) : null;
 };
 
 export default Modal;

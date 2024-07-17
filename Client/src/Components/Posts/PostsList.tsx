@@ -102,29 +102,29 @@ const PostsList: React.FC = () => {
     }
   }, [location.search]);
 
-  const fetchPosts = async () => {
-    setLoading(true);
-    try {
-      let url = `http://localhost:5000/api/v1/post/getAllposts?page=${currentPage}`;
-      if (selectedCategory !== "All") {
-        url += `&category=${selectedCategory}`;
-      }
-      url += `&sort=${sort}`;
-      if (searchQuery) {
-        url += `&search=${encodeURIComponent(searchQuery)}`;
-      }
-      const response = await fetch(url);
-      const data = await response.json();
-      console.log(data);
-      setPosts(data.data);
-      setTotalPages(Math.ceil(data.totalPosts / 9));
-      setLoading(false);
-      scrollToTop(); // Scroll to top after setting posts
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-      setLoading(false);
-    }
-  };
+  // const fetchPosts = async () => {
+  //   setLoading(true);
+  //   try {
+  //     let url = `http://localhost:5000/api/v1/post/getAllposts?page=${currentPage}`;
+  //     if (selectedCategory !== "All") {
+  //       url += `&category=${selectedCategory}`;
+  //     }
+  //     url += `&sort=${sort}`;
+  //     if (searchQuery) {
+  //       url += `&search=${encodeURIComponent(searchQuery)}`;
+  //     }
+  //     const response = await fetch(url);
+  //     const data = await response.json();
+  //     console.log(data);
+  //     setPosts(data.data);
+  //     setTotalPages(Math.ceil(data.totalPosts / 9));
+  //     setLoading(false);
+  //     scrollToTop(); // Scroll to top after setting posts
+  //   } catch (error) {
+  //     console.error("Error fetching posts:", error);
+  //     setLoading(false);
+  //   }
+  // };
 
   const updateUrlParams = (
     category: string,
