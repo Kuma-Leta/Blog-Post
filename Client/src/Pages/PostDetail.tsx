@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../AuthenticatedNavbar";
-import { useUser } from "../../UserContext";
+import Navbar from "../Components/AuthenticatedNavbar";
+import { useUser } from "../UserContext";
 import { FaArrowLeft, FaEdit, FaTrash, FaArrowRight } from "react-icons/fa";
-import SuccessMessage from "../Profile/UserProfile/SuccessMessage";
-import RelatedPostsSection from "./RelatedPostsSection";
-import Rating from "./Rating";
+import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage";
+import RelatedPostsSection from "../Components/Posts/RelatedPostsSection";
+import Rating from "../Components/Posts/Rating";
 import Carousel from "react-multi-carousel"; // Assuming you have a carousel component
 import "react-multi-carousel/lib/styles.css";
 
-import generic_image from "../../../public/generic_user_place_holder.jpg";
+import generic_image from "../../public/generic_user_place_holder.jpg";
 
 export interface Post {
   _id: string;

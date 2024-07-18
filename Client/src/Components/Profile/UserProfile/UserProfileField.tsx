@@ -58,7 +58,7 @@ const UserProfileField: React.FC<UserProfileFieldProps> = ({
       ) : (
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <Icon className="mr-2 text-blue-500" />
+            <Icon className="mr-2 text-purple-500" />
             <p>{currentUser[field]}</p>
           </div>
           <button

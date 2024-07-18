@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { Post } from "./PostDetail"; // Assuming Post interface is exported from PostDetail
+import { Post } from "../../Pages/PostDetail"; // Assuming Post interface is exported from PostDetail
 import { BsArrowRight } from "react-icons/bs"; // Example arrow icon, import others as needed
 
 interface RelatedPostsProps {

@@ -32,7 +32,7 @@ const NewsletterSection: React.FC<Props> = ({ id }) => {
             />
             <button
               type="submit"
-              className="text-white ml-4 bg-blue-500 px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
+              className="ml-4 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white focus:outline-none"
             >
               Subscribe
             </button>

@@ -41,7 +41,7 @@ const Login: React.FC = () => {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Log in to Your Account
+            Log in as Admin
           </h2>
           {error && (
             <div className="mt-4 bg-red-100 border border-red-400 text-red-700 py-2 px-3 rounded">
@@ -68,7 +68,7 @@ const Login: React.FC = () => {
           />
           <button
             type="submit"
-            className="mt-6 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="w-full py-2 px-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full shadow-md transition duration-300"
           >
             Log in
           </button>

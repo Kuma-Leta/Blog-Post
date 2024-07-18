@@ -172,7 +172,7 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
               <div className="flex justify-between">
                 <Link
                   to={`/post/${post._id}`}
-                  className="text-blue-500 hover:underline"
+                  className="text-purple-500 hover:underline"
                 >
                   Read More
                 </Link>

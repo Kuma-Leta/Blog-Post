@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "./AuthenticatedNavbar";
-import WelcomeSection from "./WelcomeSection";
-import PostsList from "./Posts/PostsList";
-import Footer from "./Footer";
+import Navbar from "../Components/AuthenticatedNavbar";
+import WelcomeSection from "../Components/WelcomeSection";
+import PostsList from "../Components/Posts/PostsList";
+import Footer from "../Components/Footer";
 
 const Homepage: React.FC = () => {
   return (

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios, { AxiosProgressEvent } from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "../AuthenticatedNavbar";
+import Navbar from "../Components/AuthenticatedNavbar";
 import { FiArrowLeft } from "react-icons/fi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,7 +11,7 @@ import {
   faFileImage,
   faFileVideo,
 } from "@fortawesome/free-solid-svg-icons";
-import SuccessMessage from "./UserProfile/SuccessMessage"; // Import the SuccessMessage component
+import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage"; // Import the SuccessMessage component
 
 const EditPost: React.FC = () => {
   const { id } = useParams<{ id: string }>();

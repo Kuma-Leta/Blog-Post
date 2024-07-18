@@ -2,14 +2,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
-import NavbarLoggedIn from "../AuthenticatedNavbar";
+import NavbarLoggedIn from "../Components/AuthenticatedNavbar";
 import axios from "axios";
-import { useUser } from "../../UserContext";
-import UserProfileField from "./UserProfile/UserProfileField";
-import UserProfilePhoto from "./UserProfile/UserProfilePhoto";
-import UserPosts from "./UserProfile/UserPosts";
-import SuccessMessage from "./UserProfile/SuccessMessage";
-import PasswordChangeForm from "./UserProfile/PasswordChangeForm";
+import { useUser } from "../UserContext";
+import UserProfileField from "../Components/Profile/UserProfile/UserProfileField";
+import UserProfilePhoto from "../Components/Profile/UserProfile/UserProfilePhoto";
+import UserPosts from "../Components/Profile/UserProfile/UserPosts";
+import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage";
+import PasswordChangeForm from "../Components/Profile/UserProfile/PasswordChangeForm";
 import { FaUser, FaEnvelope, FaLock, FaCamera } from "react-icons/fa";
 
 export interface User {

@@ -1,16 +1,16 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import AddPost from "./Components/Profile/AddPost";
-import EditPost from "./Components/Profile/EditPost";
+import AddPost from "./Pages/AddPost";
+import EditPost from "./Pages/EditPost";
 import PreviousPosts from "./Components/Profile/PreviousPosts";
 import AllPosts from "./Components/AllPosts";
 import NotFound from "./Components/NotFound";
-import HomePage from "./Components/Home";
+import HomePage from "./Pages/Home";
 import SystemOverview from "./Components/UnAuthenticated/SystemOverview";
 import ForgotPassword from "./Components/ForgotPassword";
-import PostDetail from "./Components/Posts/PostDetail";
-import UserProfile from "./Components/Profile/UserProfile";
+import PostDetail from "./Pages/PostDetail";
+import UserProfile from "./Pages/UserProfile";
 import AuthenticationPage from "./Components/UnAuthenticated/AuthenticationPage ";
 import CategoryPage from "./Components/UnAuthenticated/CategoryPage";
 

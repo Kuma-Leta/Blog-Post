@@ -268,14 +268,14 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
           <div className="mt-2 space-x-4">
             <button
               onClick={openRatingModal}
-              className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+              className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50"
             >
               {userRating === null ? "Add Rating" : "Update Rating"}
             </button>
             {userRating !== null && (
               <button
                 onClick={openDeleteModal}
-                className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50"
+                className="bg-red-500 hover:bg-red-700 text-white py-1 px-3 rounded-full shadow-md transition duration-300 disabled:opacity-50"
               >
                 Delete Rating
               </button>
@@ -302,7 +302,7 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
               </button>
               <button
                 onClick={submitRating}
-                className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300"
+                className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white py-1 px-3 rounded-full shadow-md transition duration-300"
               >
                 {userRating === null ? "Add" : "Update"}
               </button>

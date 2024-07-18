@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import axios, { AxiosProgressEvent } from "axios";
-import Navbar from "../AuthenticatedNavbar";
+import Navbar from "../Components/AuthenticatedNavbar";
 import { useNavigate } from "react-router-dom";
 
-import ErrorMessage from "./UserProfile/ErrorMessage"; // Adjust the path as per your file structure
-import SuccessMessage from "./UserProfile/SuccessMessage"; // Adjust the path as per your file structure
+import ErrorMessage from "../Components/Profile/UserProfile/ErrorMessage"; // Adjust the path as per your file structure
+import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage"; // Adjust the path as per your file structure
 
 const CreatePost: React.FC = () => {
   const [title, setTitle] = useState("");
