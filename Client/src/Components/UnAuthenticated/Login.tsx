@@ -7,7 +7,9 @@ import LoadingSpinner from "./LoadingSpinner";
 import { useUser } from "../../UserContext";
 import SuccessMessage from "../Profile/UserProfile/SuccessMessage";
 import ErrorMessage from "../Profile/UserProfile/ErrorMessage";
-import SocialMediaIcons from "./SocialMediaIcons"; // Import SocialMediaIcons
+import SocialMediaIcons from "./SocialMediaIcons";
+
+import { BASE_URL } from "../../config";
 
 const Login: React.FC = () => {
   const { setUser } = useUser();
@@ -25,7 +27,7 @@ const Login: React.FC = () => {
     setLoading(true);
     try {
       const userCredential = await axios.post(
-        "http://localhost:5000/api/v1/users/login",
+        ` ${BASE_URL}/api/v1/users/login`,
         { email, password }
       );
 
@@ -124,7 +126,7 @@ const Login: React.FC = () => {
             </div>
             <hr className="my-4" />
             <div className="text-center">or SIGNUP VIA SOCIAL NETWORK</div>
-            <SocialMediaIcons /> {/* Use SocialMediaIcons */}
+            <SocialMediaIcons />
           </form>
         )}
       </div>

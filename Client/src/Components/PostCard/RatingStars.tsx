@@ -2,12 +2,12 @@ import React from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 
 interface RatingStarsProps {
-  currentRating: number; // Rating given by current user
-  onRate: (rating: number) => void; // Callback function when user rates
+  currentRating: number;
+  onRate: (rating: number) => void;
 }
 
 const RatingStars: React.FC<RatingStarsProps> = ({ currentRating, onRate }) => {
-  const totalStars = 5; // Total number of stars
+  const totalStars = 5;
 
   const handleStarClick = (rating: number) => {
     onRate(rating);

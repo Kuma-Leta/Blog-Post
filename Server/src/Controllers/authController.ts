@@ -40,17 +40,12 @@ const createSendToken = (
 export const signup = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-      // console.log("Request Body:", req.body);
-      // console.log(req.file);
-
       const newUser = await User.create({
         ...req.body,
         photo: req.file?.path.replace(path.join(__dirname, "../../public"), ""), // Assuming 'photo' is the fieldname for profile picture
       });
       createSendToken(newUser, 201, res);
     } catch (error: any) {
-      // console.error("Signup Error:", error);
-
       // Handle duplicate email error
       if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
         return next(
@@ -70,7 +65,6 @@ export const login = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     console.log(req.body);
     const { email, password } = req.body;
-    // console.log("email: " + email, "password: " + password);
 
     if (!email || !password) {
       return next(new AppError("Please provide email and password", 400));
@@ -150,7 +144,6 @@ export const restrictTo = (...roles: string[]) => {
 export const forgotPassword = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const user = await User.findOne({ email: req.body.email });
-    // console.log(req.body);
     if (!user) {
       return next(new AppError("There is no user with email address.", 404));
     }
@@ -158,7 +151,6 @@ export const forgotPassword = asyncWrapper(
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
 
-    // console.log("reset token" + resetToken);
     const resetURL = `${req.protocol}://${req.get(
       "host"
     )}/api/v1/users/resetPassword/${resetToken}`;
@@ -166,7 +158,6 @@ export const forgotPassword = asyncWrapper(
     const message = `Forgot password? Submit a PATCH request with your new password and password confirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email`;
 
     try {
-      // console.log(user.email);
       await sendEmail({
         email: user.email,
         subject: "Your password reset token (valid for 10 min)",

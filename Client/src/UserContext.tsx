@@ -13,8 +13,7 @@ interface User {
   name: string;
   email: string;
   photo?: string;
-  gender: "male" | "female"; // Assuming you have a photo URL property
-  // Add more properties as needed
+  gender: "male" | "female";
 }
 
 interface UserContextType {
@@ -32,7 +31,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Fetch user data from local storage when the component mounts
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));

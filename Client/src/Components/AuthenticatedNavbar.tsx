@@ -5,6 +5,7 @@ import { useUser } from "../UserContext";
 import logo from "../../public/DLogo.png";
 import maleDefault from "../../public/john_doe.png";
 import femaleDefault from "../../public/jane_smith.png";
+import { BASE_URL } from "../config";
 
 interface NavLinkProps {
   to: string;
@@ -45,9 +46,8 @@ const NavbarLoggedIn: React.FC = () => {
     localStorage.removeItem("user");
   };
 
-  // Determine the source URL for the user's photo or default image
   const photoSrc = user?.photo
-    ? `http://localhost:5000/${user.photo}`
+    ? `${BASE_URL}/${user.photo}`
     : user?.gender === "female"
     ? femaleDefault
     : maleDefault;
@@ -74,7 +74,6 @@ const NavbarLoggedIn: React.FC = () => {
           </span>
         </Link>
         <div className="flex items-center space-x-4">
-          {/* Hamburger menu for small screens */}
           <div className="flex items-center md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -95,12 +94,10 @@ const NavbarLoggedIn: React.FC = () => {
               </svg>
             </button>
           </div>
-          {/* Links for desktop screens */}
           <div className={`hidden md:flex space-x-4 items-center`}>
             <NavLink to="/home">Home</NavLink>
             <NavLink to="/profile/userProfile">Profile</NavLink>
           </div>
-          {/* Mobile menu */}
           <div
             className={`${
               isMobileMenuOpen ? "block" : "hidden"
@@ -118,7 +115,6 @@ const NavbarLoggedIn: React.FC = () => {
               </NavLink>
             </div>
           </div>
-          {/* User profile dropdown */}
           <div className="relative">
             <button
               onClick={toggleDropdown}

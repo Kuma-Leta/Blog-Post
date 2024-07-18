@@ -7,7 +7,7 @@ interface UserProfileFieldProps {
   label: string;
   field: string;
   type: string;
-  icon: IconType; // Add this line
+  icon: IconType;
   currentUser: any;
   editField: string | null;
   formData: any;
@@ -21,7 +21,7 @@ const UserProfileField: React.FC<UserProfileFieldProps> = ({
   label,
   field,
   type,
-  icon: Icon, // Add this line
+  icon: Icon,
   currentUser,
   editField,
   formData,

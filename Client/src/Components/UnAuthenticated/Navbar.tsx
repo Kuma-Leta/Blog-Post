@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../../public/DLogo.png"; // Adjust the path to your image
+import logo from "../../../public/DLogo.png";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const navbarHeight = 64; // Adjust this value to match your navbar height
+  const navbarHeight = 64;
 
   const handleNavigation = (id: string) => {
     if (location.pathname !== "/") {
@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
     } else {
       const section = document.getElementById(id);
       if (section) {
-        const offsetTop = section.offsetTop - navbarHeight; // Adjust for navbar height
+        const offsetTop = section.offsetTop - navbarHeight;
         window.scrollTo({
           top: offsetTop,
           behavior: "smooth",

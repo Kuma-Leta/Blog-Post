@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-import Modal from "./Modal"; // Import the Modal component
+import Modal from "./Modal";
 import Navbar from "./Navbar";
+
+import { BASE_URL } from "../../config";
 
 interface Post {
   _id: string;
@@ -26,14 +28,14 @@ const CategoryPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const limit = 6; // Number of posts to load per request
+  const limit = 6;
 
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/v1/post/getAllposts?category=${category}&limit=${limit}&page=${currentPage}`
+          `${BASE_URL}/api/v1/post/getAllposts?category=${category}&limit=${limit}&page=${currentPage}`
         );
         const data = await response.json();
         console.log(data);
@@ -70,16 +72,16 @@ const CategoryPage: React.FC = () => {
   };
 
   const handlePostClick = (post: Post) => {
-    setSelectedPost(post); // Set the selected post to be displayed in the modal
+    setSelectedPost(post);
   };
 
   const handleCloseModal = () => {
-    setSelectedPost(null); // Close the modal
+    setSelectedPost(null);
   };
 
   return (
     <>
-      <Navbar /> {/* Render the Navbar component outside the section */}
+      <Navbar />
       <section
         id="category-posts"
         className="py-16 bg-gray-100 text-black mt-6"
@@ -109,10 +111,10 @@ const CategoryPage: React.FC = () => {
                     <div
                       key={post._id}
                       className="bg-white p-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:shadow-xl hover:-translate-y-1 cursor-pointer"
-                      onClick={() => handlePostClick(post)} // Set the post when clicked
+                      onClick={() => handlePostClick(post)}
                     >
                       <img
-                        src={`http://localhost:5000/${post.imagePath}`}
+                        src={`${BASE_URL}/${post.imagePath}`}
                         alt={post.title}
                         className="w-full h-40 object-cover rounded-t-lg mb-4"
                       />
@@ -147,7 +149,6 @@ const CategoryPage: React.FC = () => {
             </>
           )}
         </div>
-        {/* Render the Modal component and pass the selected post */}
         <Modal
           isOpen={!!selectedPost}
           onClose={handleCloseModal}

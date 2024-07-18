@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import Modal from "./Modal";
 
+import { BASE_URL } from "../../config";
+
 interface User {
   _id: string;
   name: string;
@@ -56,7 +58,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchTotalUsers = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/v1/admin`, {
+      const response = await axios.get(`${BASE_URL}/api/v1/admin`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
@@ -80,7 +82,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      let url = `http://localhost:5000/api/v1/admin?page=${currentPage}&limit=${usersPerPage}`;
+      let url = `${BASE_URL}/api/v1/admin?page=${currentPage}&limit=${usersPerPage}`;
       if (searchTerm) {
         url += `&search=${searchTerm}`;
       }
@@ -116,14 +118,11 @@ const AdminDashboard: React.FC = () => {
 
   const handleViewDetails = async (userId: string) => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/v1/admin/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/v1/admin/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      });
       setSelectedUser(response.data.data.data);
       setShowModal(true);
     } catch (error) {
@@ -134,14 +133,11 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteUser = async () => {
     if (selectedUser) {
       try {
-        await axios.delete(
-          `http://localhost:5000/api/v1/admin/${selectedUser._id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            },
-          }
-        );
+        await axios.delete(`${BASE_URL}/api/v1/admin/${selectedUser._id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        });
         setDeleteModalOpen(false);
         setSuccessMessage(`Successfully deleted user: ${selectedUser.name}`);
         fetchUsers();
@@ -226,9 +222,7 @@ const AdminDashboard: React.FC = () => {
                         Total Posts:
                       </td>
                       <td className="py-2 px-4 border-b">100</td>
-                      {/* Replace with actual data */}
                     </tr>
-                    {/* Add more rows for additional overview data */}
                   </tbody>
                 </table>
               </div>

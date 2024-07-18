@@ -11,7 +11,6 @@ import cors from "cors";
 import globalErrorHandler from "./Controllers/errorController";
 import AppError from "./utils/appError";
 
-// Define the custom request type
 export interface AuthenticatedRequest extends Request {
   user?: any;
 }

@@ -1,7 +1,6 @@
 import mongoose, { Document, Model, Schema } from "mongoose";
 import User from "./userModel";
 
-// Interface representing a document in MongoDB.
 export interface IPost extends Document {
   title: string;
   author: string;
@@ -20,7 +19,6 @@ interface IPostModel extends Model<IPost> {
   calcPostNumber(userId: mongoose.Types.ObjectId): Promise<void>;
 }
 
-// Schema corresponding to the document interface.
 const PostSchema: Schema<IPost> = new Schema(
   {
     title: {
@@ -87,11 +85,10 @@ const PostSchema: Schema<IPost> = new Schema(
     },
   },
   {
-    timestamps: true, // Automatically manage createdAt and updatedAt fields
+    timestamps: true,
   }
 );
 
-// Indexes for better performance (e.g., search by category and author).
 PostSchema.index({ category: 1 });
 PostSchema.index({ author: 1, postedAt: -1 });
 
@@ -125,6 +122,5 @@ PostSchema.post<IPost>(/^findOneAnd/, async function (doc) {
   }
 });
 
-// Create and export the model
 const Post = mongoose.model<IPost, IPostModel>("Post", PostSchema);
 export default Post;

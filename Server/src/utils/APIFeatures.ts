@@ -8,7 +8,6 @@ class APIfeatures {
   constructor(query: Query<any, any>, queryString: Request["query"]) {
     this.query = query;
     this.queryString = queryString;
-    console.log(queryString);
   }
 
   filter() {
@@ -16,7 +15,6 @@ class APIfeatures {
     const excludedFields = ["page", "sort", "limit", "fields", "search"];
     excludedFields.forEach((el) => delete queryObj[el]);
 
-    // Advanced Filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gte|gt|lt|lte)\b/g, (match) => `$${match}`);
     this.query = this.query.find(JSON.parse(queryStr));
@@ -41,17 +39,17 @@ class APIfeatures {
   sort() {
     if (this.queryString.sort) {
       let sortBy = (this.queryString.sort as string).split(",").join(" ");
-      // Adjust sort by Date to sort by newest first
+
       if (sortBy.includes("date")) {
         sortBy = sortBy.replace("date", "-createdAt");
       }
-      // Adjust sort by rating to sort by averageRating
+
       if (sortBy.includes("rating")) {
         sortBy = sortBy.replace("rating", "-averageRating");
       }
       this.query = this.query.sort(sortBy);
     } else {
-      this.query = this.query.sort("-createdAt"); // Default sort by Date (newest first)
+      this.query = this.query.sort("-createdAt");
     }
 
     return this;

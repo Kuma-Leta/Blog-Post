@@ -2,20 +2,22 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import { MdEmail, MdLock, MdPerson } from "react-icons/md"; // Import icons
+import { MdEmail, MdLock, MdPerson } from "react-icons/md";
 import { BsFillImageFill } from "react-icons/bs";
 import LoadingSpinner from "./LoadingSpinner";
 import SuccessMessage from "../Profile/UserProfile/SuccessMessage";
 import ErrorMessage from "../Profile/UserProfile/ErrorMessage";
 import SocialMediaIcons from "./SocialMediaIcons";
 
+import { BASE_URL } from "../../config";
+
 const SignUp: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [gender, setGender] = useState<"male" | "female">("male"); // State for gender selection
-  const [photo, setPhoto] = useState<File | null>(null); // State for profile picture
+  const [gender, setGender] = useState<"male" | "female">("male");
+  const [photo, setPhoto] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [signUpSuccess, setSignupSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -75,13 +77,13 @@ const SignUp: React.FC = () => {
       formData.append("email", email);
       formData.append("password", password);
       formData.append("passwordConfirm", passwordConfirm);
-      formData.append("gender", gender); // Append gender to form data
+      formData.append("gender", gender);
       if (photo) {
         formData.append("photo", photo);
       }
 
       const response = await axios.post(
-        "http://localhost:5000/api/v1/users/signup",
+        `${BASE_URL}/api/v1/users/signup`,
         formData,
         {
           headers: {
@@ -214,7 +216,7 @@ const SignUp: React.FC = () => {
           </div>
           <hr className="my-4" />
           <div className="text-center">or SIGNUP VIA SOCIAL NETWORK</div>
-          <SocialMediaIcons /> {/* Use SocialMediaIcons */}
+          <SocialMediaIcons />
         </form>
       </div>
     </div>

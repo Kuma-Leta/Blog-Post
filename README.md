@@ -29,7 +29,7 @@ git clone https://github.com/username/blog-post-website.git
 cd blog-post-website
 ```
 
-2. **Install dependencies for both client and server
+2. \*\*Install dependencies for both client and server
 
 ```sh
 # Install server dependencies
@@ -74,7 +74,7 @@ blog-post-website/
 │       ├── pages/
 │       ├── services/
 │       ├── App.tsx
-│       └── index.tsx
+│       └── main.tsx
 ├── server/             # Express back-end
 │   ├── src/
 │       ├── controllers/
@@ -118,6 +118,7 @@ git push origin feature/branch-name
 ### 4. Creating Pull Requests
 
 1. **Create a Pull Request (PR):**
+
    - Go to the GitHub repository.
    - Click on "Pull requests" > "New pull request".
    - Select the branch with your changes.
@@ -158,4 +159,3 @@ We welcome contributions from all team members! Here are some guidelines to foll
 - **Small Changes:** Make small, incremental changes to make reviews easier.
 - **Code Reviews:** Review code thoroughly to maintain code quality.
 - **Communication:** Use GitHub issues, pull request comments, and a communication tool (e.g., Slack) to coordinate and discuss changes.
-

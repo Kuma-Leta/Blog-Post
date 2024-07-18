@@ -1,7 +1,7 @@
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi"; // Import icons for custom arrows
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 import testimony1 from "../../../public/john_doe.png";
 import testimony2 from "../../../public/jane_smith.png";
@@ -53,8 +53,8 @@ const TestimonialsSection: React.FC<Props> = ({ id }) => {
         <h2 className="text-3xl font-bold text-center mb-8">Testimonials</h2>
         <Carousel
           autoPlay={true}
-          interval={5000} // Rotate every 5 seconds
-          transitionTime={1000} // Transition time in milliseconds
+          interval={5000}
+          transitionTime={1000}
           infiniteLoop={true}
           showArrows={true}
           showStatus={false}

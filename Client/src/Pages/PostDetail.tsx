@@ -7,10 +7,11 @@ import { FaArrowLeft, FaEdit, FaTrash, FaArrowRight } from "react-icons/fa";
 import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage";
 import RelatedPostsSection from "../Components/Posts/RelatedPostsSection";
 import Rating from "../Components/Posts/Rating";
-import Carousel from "react-multi-carousel"; // Assuming you have a carousel component
+import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 import generic_image from "../../public/generic_user_place_holder.jpg";
+import { BASE_URL } from "../config";
 
 export interface Post {
   _id: string;
@@ -35,14 +36,14 @@ const PostDetail: React.FC = () => {
   const navigate = useNavigate();
   const [postToDelete, setPostToDelete] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [mediaType, setMediaType] = useState<"image" | "video" | null>("image"); // Default to "image" if imagePath exists
+  const [mediaType, setMediaType] = useState<"image" | "video" | null>("image");
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const token = localStorage.getItem("authToken");
         const response = await axios.get(
-          `http://localhost:5000/api/v1/post/getPost/${postId}`,
+          `${BASE_URL}/api/v1/post/getPost/${postId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -53,7 +54,6 @@ const PostDetail: React.FC = () => {
         setPost(response.data.data.post);
         fetchRelatedPosts(response.data.data.post.category);
 
-        // Scroll to top when component mounts
         window.scrollTo(0, 0);
       } catch (error) {
         console.error("Error fetching post:", error);
@@ -64,7 +64,7 @@ const PostDetail: React.FC = () => {
 
     const fetchRelatedPosts = async (category: string) => {
       try {
-        let url = `http://localhost:5000/api/v1/post/getAllposts`;
+        let url = `${BASE_URL}/api/v1/post/getAllposts`;
         if (category && category !== "All") {
           url += `?category=${category}`;
         }
@@ -92,14 +92,11 @@ const PostDetail: React.FC = () => {
   const handleDelete = async (postId: string) => {
     try {
       const token = localStorage.getItem("authToken");
-      await axios.delete(
-        `http://localhost:5000/api/v1/post/deletePost/${postId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`${BASE_URL}/api/v1/post/deletePost/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       setPostToDelete(null);
       setSuccessMessage("Post deleted successfully!");
@@ -154,7 +151,6 @@ const PostDetail: React.FC = () => {
           </div>
           <div className="flex items-center mb-4">
             <img
-              // src={post.authorImage}
               src={generic_image}
               alt={post.author}
               className="w-10 h-10 rounded-full mr-4"
@@ -199,7 +195,7 @@ const PostDetail: React.FC = () => {
                     {images.map((image, index) => (
                       <img
                         key={index}
-                        src={`http://localhost:5000/${image}`}
+                        src={`${BASE_URL}/${image}`}
                         alt={`Post image ${index + 1}`}
                         className="w-full h-auto rounded-lg shadow-md"
                       />
@@ -208,7 +204,7 @@ const PostDetail: React.FC = () => {
                 )}
                 {mediaType === "video" && hasVideos && (
                   <video
-                    src={`http://localhost:5000/${videos[0]}`}
+                    src={`${BASE_URL}/${videos[0]}`}
                     controls
                     className="w-full h-auto rounded-lg shadow-md"
                   />
@@ -260,10 +256,7 @@ const PostDetail: React.FC = () => {
         <div className="w-1/3">
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h3 className="text-xl font-bold mb-4">Related Posts</h3>
-            <RelatedPostsSection
-              relatedPosts={relatedPosts} // Limit related posts to 6
-              category={""}
-            />
+            <RelatedPostsSection relatedPosts={relatedPosts} category={""} />
           </div>
         </div>
       </div>

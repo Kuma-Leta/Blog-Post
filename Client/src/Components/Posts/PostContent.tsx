@@ -4,7 +4,7 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
-// import { Post } from "./PostDetail"; // Adjust the import based on your directory structure
+import { BASE_URL } from "../../config";
 
 export interface Post {
   _id: string;
@@ -71,7 +71,7 @@ const PostContent: React.FC<PostContentProps> = ({
               .map((image: string, index: React.Key | null | undefined) => (
                 <div key={index} className="relative w-full h-80">
                   <img
-                    src={`http://localhost:5000/${image.trim()}`}
+                    src={`${BASE_URL}/${image.trim()}`}
                     alt={post.title}
                     className="absolute inset-0 w-full h-full object-contain rounded-lg mb-4 shadow-lg"
                   />
@@ -85,7 +85,7 @@ const PostContent: React.FC<PostContentProps> = ({
                 style={{ outline: "none" }}
               >
                 <source
-                  src={`http://localhost:5000/${post.videoContent}`}
+                  src={`${BASE_URL}/${post.videoContent}`}
                   type="video/mp4"
                 />
                 Your browser does not support the video tag.
@@ -97,7 +97,7 @@ const PostContent: React.FC<PostContentProps> = ({
         <div className="relative w-full h-80 mb-4">
           {post.imagePath && (
             <img
-              src={`http://localhost:5000/${post.imagePath}`}
+              src={`${BASE_URL}/${post.imagePath}`}
               alt={post.title}
               className="absolute inset-0 w-full h-full object-contain rounded-lg shadow-lg"
             />
@@ -109,7 +109,7 @@ const PostContent: React.FC<PostContentProps> = ({
               style={{ outline: "none" }}
             >
               <source
-                src={`http://localhost:5000/${post.videoContent}`}
+                src={`${BASE_URL}/${post.videoContent}`}
                 type="video/mp4"
               />
               Your browser does not support the video tag.
@@ -121,7 +121,7 @@ const PostContent: React.FC<PostContentProps> = ({
       <div className="flex items-center justify-between border-t pt-4 mt-4">
         <div className="flex items-center">
           <img
-            src={`http://localhost:5000/${post.authorImage}`}
+            src={`${BASE_URL}/${post.authorImage}`}
             alt={post.author}
             className="h-10 w-10 rounded-full object-cover mr-2"
           />
@@ -135,7 +135,6 @@ const PostContent: React.FC<PostContentProps> = ({
         </div>
       </div>
 
-      {/* Ratings Section */}
       <div className="flex items-center justify-between border-t pt-4 mt-4">
         <div className="flex items-center">
           <p className="text-gray-600 mr-2">Rating:</p>

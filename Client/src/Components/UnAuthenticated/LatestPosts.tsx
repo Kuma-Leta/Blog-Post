@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaTag } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
 import Modal from "./Modal";
+import { BASE_URL } from "../../config";
 
 interface Post {
   _id: string;
@@ -33,14 +34,13 @@ const LatestPosts: React.FC = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const url = `http://localhost:5000/api/v1/post/getAllposts?page=${currentPage}&limit=${limit}`;
+      const url = `${BASE_URL}/api/v1/post/getAllposts?page=${currentPage}&limit=${limit}`;
       const response = await fetch(url);
       const data = await response.json();
 
       if (response.ok) {
         const newPosts = data.data;
 
-        // Check for and remove duplicates
         const filteredPosts = newPosts.filter(
           (newPost: { _id: string }) =>
             !posts.some((post) => post._id === newPost._id)
@@ -65,11 +65,11 @@ const LatestPosts: React.FC = () => {
   };
 
   const handlePostClick = (post: Post) => {
-    setSelectedPost(post); // Set the selected post to be displayed in the modal
+    setSelectedPost(post);
   };
 
   const handleCloseModal = () => {
-    setSelectedPost(null); // Close the modal
+    setSelectedPost(null);
   };
 
   return (
@@ -90,18 +90,18 @@ const LatestPosts: React.FC = () => {
                   <div
                     key={post._id}
                     className="bg-white rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:shadow-2xl hover:-translate-y-1 hover:scale-105 cursor-pointer"
-                    onClick={() => handlePostClick(post)} // Set the post when clicked
+                    onClick={() => handlePostClick(post)}
                   >
                     {post.imagePath && !post.videoContent && (
                       <img
-                        src={`http://localhost:5000/${post.imagePath}`}
+                        src={`${BASE_URL}/${post.imagePath}`}
                         alt={post.title}
                         className="w-full h-40 object-cover rounded-t-lg mb-4"
                       />
                     )}
                     {post.videoContent && (
                       <video
-                        src={`http://localhost:5000/${post.videoContent}`}
+                        src={`${BASE_URL}/${post.videoContent}`}
                         controls
                         className="w-full h-40 object-cover rounded-t-lg mb-4"
                       ></video>

@@ -1,6 +1,6 @@
 import React from "react";
 import { FiArrowRightCircle } from "react-icons/fi";
-import logo from "../../../public/DLogo.png"; // Adjust the path to your image
+import logo from "../../../public/DLogo.png";
 import videoBackground from "../../../public/Top-Five-AI-Trends-to-Look-Out-for-in-2023.mp4";
 
 interface Props {
@@ -8,12 +8,12 @@ interface Props {
 }
 
 const HeroSection: React.FC<Props> = ({ id }) => {
-  const navbarHeight = 64; // Adjust this value to match your navbar height
+  const navbarHeight = 64;
 
   const handleNavigation = (id: string) => {
     const section = document.getElementById(id);
     if (section) {
-      const offsetTop = section.offsetTop - navbarHeight; // Adjust for navbar height
+      const offsetTop = section.offsetTop - navbarHeight;
       window.scrollTo({
         top: offsetTop,
         behavior: "smooth",
@@ -26,12 +26,11 @@ const HeroSection: React.FC<Props> = ({ id }) => {
       id={id}
       className="relative flex flex-col items-center justify-center text-center"
       style={{
-        height: "100vh", // Full viewport height
-        overflow: "hidden", // Ensure video stays within viewport
-        position: "relative", // Ensure proper positioning context
+        height: "100vh",
+        overflow: "hidden",
+        position: "relative",
       }}
     >
-      {/* Background Video */}
       <video
         autoPlay
         loop
@@ -46,29 +45,19 @@ const HeroSection: React.FC<Props> = ({ id }) => {
         Your browser does not support the video tag.
       </video>
 
-      {/* Background Overlay */}
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-75 z-10"></div>
 
-      {/* Content Wrapper */}
       <div className="relative z-20 flex flex-col items-center justify-center text-white">
-        {/* Logo */}
-        <img
-          src={logo} // Adjust the path as per your project structure
-          alt="Debbal Technologies"
-          className="w-32 mb-4"
-        />
+        <img src={logo} alt="Debbal Technologies" className="w-32 mb-4" />
 
-        {/* Main Heading */}
         <h1 className="text-4xl font-bold mb-4">
           Welcome to Debbal Tech Gazette
         </h1>
 
-        {/* Subheading / Mission Statement */}
         <p className="text-lg mb-6">
           Your Source for Technology Insights and Tutorials
         </p>
 
-        {/* Call to Action */}
         <div className="flex items-center space-x-4">
           <button
             onClick={() => handleNavigation("latest-posts")}

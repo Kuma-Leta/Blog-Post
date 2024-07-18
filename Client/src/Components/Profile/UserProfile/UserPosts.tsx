@@ -6,6 +6,8 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import SuccessMessage from "./SuccessMessage";
 
+import { BASE_URL } from "../../../config";
+
 interface Post {
   _id: string;
   title: string;
@@ -41,14 +43,11 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
   const handleDelete = async (postId: string) => {
     try {
       const token = localStorage.getItem("authToken");
-      await axios.delete(
-        `http://localhost:5000/api/v1/post/deletePost/${postId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`${BASE_URL}/api/v1/post/deletePost/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
       setSuccessMessage("Post deleted successfully!");
       setPostToDelete(null);
@@ -64,7 +63,7 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
   const handleDeleteAllPosts = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      await axios.delete("http://localhost:5000/api/v1/post/deleteAllMyPost", {
+      await axios.delete("${BASE_URL}/api/v1/post/deleteAllMyPost", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -125,10 +124,7 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
               <>
                 {post.imagePath && (
                   <img
-                    src={`http://localhost:5000/${post.imagePath.replace(
-                      /\\/g,
-                      "/"
-                    )}`}
+                    src={`${BASE_URL}/${post.imagePath.replace(/\\/g, "/")}`}
                     alt={post.title}
                     className="w-full h-32 object-cover"
                   />
@@ -140,7 +136,7 @@ const UserPosts: React.FC<UserPostsProps> = ({ posts, setPosts }) => {
                     style={{ outline: "none" }}
                   >
                     <source
-                      src={`http://localhost:5000/${post.videoContent.replace(
+                      src={`${BASE_URL}/${post.videoContent.replace(
                         /\\/g,
                         "/"
                       )}`}

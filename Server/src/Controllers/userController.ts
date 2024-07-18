@@ -38,7 +38,7 @@ export const getAllUsers = asyncWrapper(
     res.status(200).json({
       status: "success",
       result: users.length,
-      totalUsers, // Include the total user count
+      totalUsers,
       data: {
         data: users,
       },
@@ -65,6 +65,7 @@ export const getUser = asyncWrapper(
     });
   }
 );
+
 //Not Update Password
 export const updateUser = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {

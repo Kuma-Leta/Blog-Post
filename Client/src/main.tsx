@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import { UserProvider } from "./UserContext"; // Import your UserProvider
+import { UserProvider } from "./UserContext";
 
 import "./index.css";
 

@@ -63,7 +63,6 @@ export const updatePost = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const postId = req.params.id;
     console.log(req.body);
-    // console.log(req.files);
 
     // Find the existing post
     const post = await Post.findById(postId);
@@ -96,7 +95,6 @@ export const updatePost = asyncWrapper(
       req.body.videoContent = videoPath;
     }
 
-    // Ensure the user updating the post is the author
     if (post.user.toString() !== req.user.id) {
       return res.status(403).json({
         status: "fail",
@@ -104,11 +102,9 @@ export const updatePost = asyncWrapper(
       });
     }
 
-    // Update the post's author and user fields
     req.body.author = req.user.name;
     req.body.user = req.user.id;
 
-    // Update the post with the new data
     const updatedPost = await Post.findByIdAndUpdate(postId, req.body, {
       new: true,
       runValidators: true,
@@ -131,19 +127,15 @@ export const getAllPosts: RequestHandler = asyncWrapper(
     let filter = {};
     if (req.params.userId) filter = { user: req.params.userId };
 
-    // Create the initial query with filter
     let initialQuery = Post.find(filter);
 
-    // Create an instance of APIfeatures to apply filters, search, and sorting for the count query
     const countFeatures = new APIfeatures(initialQuery, req.query)
       .filter()
       .search()
       .sort();
 
-    // Get the total number of posts matching the filter criteria (excluding pagination)
     const totalPosts = await countFeatures.query.countDocuments();
 
-    // Create an instance of APIfeatures to apply filters, search, sorting, and pagination for the data query
     const dataFeatures = new APIfeatures(Post.find(filter), req.query)
       .filter()
       .search()
@@ -154,7 +146,6 @@ export const getAllPosts: RequestHandler = asyncWrapper(
     // Fetch the posts based on the applied features
     const posts = await dataFeatures.query;
 
-    // Send response with total count of matching posts and the posts themselves
     res.status(200).json({
       status: "success",
       result: posts.length,
@@ -166,8 +157,6 @@ export const getAllPosts: RequestHandler = asyncWrapper(
 
 export const getPost: RequestHandler = asyncWrapper(async (req, res, next) => {
   const post = await Post.findById(req.params.postId).populate("user");
-
-  // console.log(req.params);
 
   res.status(200).json({
     status: "Success",

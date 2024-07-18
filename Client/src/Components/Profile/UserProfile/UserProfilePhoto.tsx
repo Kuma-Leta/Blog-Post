@@ -4,6 +4,7 @@ import { IconType } from "react-icons";
 
 import maleDefault from "../../../../public/john_doe.png";
 import femaleDefault from "../../../../public/jane_smith.png";
+import { BASE_URL } from "../../../config";
 
 interface UserProfilePhotoProps {
   currentUser: any;
@@ -22,11 +23,10 @@ const UserProfilePhoto: React.FC<UserProfilePhotoProps> = ({
   handleSubmit,
   icon: Icon,
 }) => {
-  const gradientBg = "bg-gradient-to-b from-blue-400 to-indigo-500"; // Define your gradient colors here
+  const gradientBg = "bg-gradient-to-b from-blue-400 to-indigo-500";
 
-  // / Determine the source URL for the user's photo or default image
   const photoSrc = currentUser?.photo
-    ? `http://localhost:5000/${currentUser.photo}`
+    ? `${BASE_URL}/${currentUser.photo}`
     : currentUser.gender === "female"
     ? femaleDefault
     : maleDefault;

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
-import { Post } from "../../Pages/PostDetail"; // Assuming Post interface is exported from PostDetail
-import { BsArrowRight } from "react-icons/bs"; // Example arrow icon, import others as needed
+import { Post } from "../../Pages/PostDetail";
+import { BsArrowRight } from "react-icons/bs";
+
+import { BASE_URL } from "../../config";
 
 interface RelatedPostsProps {
   relatedPosts: Post[];
@@ -39,7 +41,7 @@ const RelatedPostsSection: React.FC<RelatedPostsProps> = ({ relatedPosts }) => {
           <div key={relatedPost._id} className="mb-4 flex">
             {relatedPost.imagePath && (
               <img
-                src={`http://localhost:5000/${relatedPost.imagePath}`}
+                src={`${BASE_URL}/${relatedPost.imagePath}`}
                 alt={relatedPost.title}
                 className="h-20 w-20 object-cover rounded-lg mr-4"
               />

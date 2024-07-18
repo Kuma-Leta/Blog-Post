@@ -13,7 +13,6 @@ interface Props {
 const NewsletterSection: React.FC<Props> = ({ id }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
   };
 
   return (

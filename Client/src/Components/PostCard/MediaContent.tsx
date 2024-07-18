@@ -3,6 +3,8 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
+import { BASE_URL } from "../../config";
+
 interface MediaContentProps {
   imagePath?: string;
   videoContent?: string;
@@ -50,12 +52,10 @@ const MediaContent: React.FC<MediaContentProps> = ({
       {imagePath && !videoContent && (
         <div
           className={mediaContainerStyles}
-          onClick={() =>
-            openMediaPopup(`http://localhost:5000/${imagePath}`, "image")
-          }
+          onClick={() => openMediaPopup(`${BASE_URL}/${imagePath}`, "image")}
         >
           <img
-            src={`http://localhost:5000/${imagePath}`}
+            src={`${BASE_URL}/${imagePath}`}
             alt="Media Content"
             className="h-full min-w-fit object-contain cursor-pointer"
           />
@@ -66,7 +66,7 @@ const MediaContent: React.FC<MediaContentProps> = ({
         <div
           className={mediaContainerStyles}
           onClick={(e) =>
-            handleVideoBodyClick(e, `http://localhost:5000/${videoContent}`)
+            handleVideoBodyClick(e, `${BASE_URL}/${videoContent}`)
           }
         >
           <video
@@ -74,10 +74,7 @@ const MediaContent: React.FC<MediaContentProps> = ({
             controls
             onClick={(e) => e.stopPropagation()}
           >
-            <source
-              src={`http://localhost:5000/${videoContent}`}
-              type="video/mp4"
-            />
+            <source src={`${BASE_URL}/${videoContent}`} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -104,12 +101,10 @@ const MediaContent: React.FC<MediaContentProps> = ({
         >
           <div
             className={mediaContainerStyles}
-            onClick={() =>
-              openMediaPopup(`http://localhost:5000/${imagePath}`, "image")
-            }
+            onClick={() => openMediaPopup(`${BASE_URL}/${imagePath}`, "image")}
           >
             <img
-              src={`http://localhost:5000/${imagePath}`}
+              src={`${BASE_URL}/${imagePath}`}
               alt="Media Content"
               className="object-contain w-full h-full cursor-pointer"
             />
@@ -117,7 +112,7 @@ const MediaContent: React.FC<MediaContentProps> = ({
           <div
             className={mediaContainerStyles}
             onClick={(e) =>
-              handleVideoBodyClick(e, `http://localhost:5000/${videoContent}`)
+              handleVideoBodyClick(e, `${BASE_URL}/${videoContent}`)
             }
           >
             <video
@@ -125,10 +120,7 @@ const MediaContent: React.FC<MediaContentProps> = ({
               controls
               onClick={(e) => e.stopPropagation()}
             >
-              <source
-                src={`http://localhost:5000/${videoContent}`}
-                type="video/mp4"
-              />
+              <source src={`${BASE_URL}/${videoContent}`} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>

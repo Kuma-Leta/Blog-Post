@@ -55,7 +55,7 @@ const CategoryDropdown: React.FC<CategoryDropdownProps> = ({
                   }`}
                   onClick={() => {
                     handleCategoryClick(cat);
-                    setIsDropdownOpen(false); // Close the dropdown on selection
+                    setIsDropdownOpen(false);
                   }}
                 >
                   {cat}

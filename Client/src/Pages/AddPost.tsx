@@ -4,8 +4,9 @@ import axios, { AxiosProgressEvent } from "axios";
 import Navbar from "../Components/AuthenticatedNavbar";
 import { useNavigate } from "react-router-dom";
 
-import ErrorMessage from "../Components/Profile/UserProfile/ErrorMessage"; // Adjust the path as per your file structure
-import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage"; // Adjust the path as per your file structure
+import ErrorMessage from "../Components/Profile/UserProfile/ErrorMessage";
+import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage";
+import { BASE_URL } from "../config";
 
 const CreatePost: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -17,7 +18,7 @@ const CreatePost: React.FC = () => {
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
-  const navigate = useNavigate(); // Get the navigate function from useNavigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,17 +59,13 @@ const CreatePost: React.FC = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/v1/post/addPost",
+        `${BASE_URL}/api/v1/post/addPost`,
         formData,
         config
       );
       console.log(response);
       setMessage("Post added successfully");
-      // setSuccessMessage("Post added successfully");
 
-      // console.log("Response from server:", response.data);
-
-      // Clear form fields after successful submission
       setTitle("");
       setContent("");
       setCategory("");
@@ -78,28 +75,23 @@ const CreatePost: React.FC = () => {
       setLoading(false);
       window.scrollTo(0, 0);
     } catch (error: unknown) {
-      // console.error("Error adding post front-end:", (error as Error).message);
       setLoading(false);
       setError("Failed to add post. Please try again.");
-      // setErrorMessage("Failed to add post. Please try again.");
       window.scrollTo(0, 0);
     }
   };
 
   const handleSuccessMessageClose = () => {
-    setMessage(null); // Clear the success message
-    // navigate(-1); // Navigate back to previous page or handle as needed
+    setMessage(null);
   };
 
   const handleErrorMessageClose = () => {
-    setError(null); // Clear the success message
+    setError(null);
     setLoading(false);
-
-    // navigate(-1); // Navigate back to previous page or handle as needed
   };
 
   const handleGoBack = () => {
-    navigate(-1); // Go back to the previous location in history
+    navigate(-1);
   };
 
   return (
@@ -243,10 +235,6 @@ const CreatePost: React.FC = () => {
               {loading ? "Submitting..." : "Submit Post"}
             </button>
           </div>
-          {/* {message && (
-            <p className="text-green-500 mt-4 text-center">{message}</p>
-          )} */}
-          {/* {error && <p className="text-red-500 mt-4 text-center">{error}</p>} */}
         </form>
       </div>
     </div>

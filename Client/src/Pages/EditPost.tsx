@@ -11,7 +11,9 @@ import {
   faFileImage,
   faFileVideo,
 } from "@fortawesome/free-solid-svg-icons";
-import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage"; // Import the SuccessMessage component
+import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage";
+
+import { BASE_URL } from "../config";
 
 const EditPost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -47,7 +49,7 @@ const EditPost: React.FC = () => {
     const fetchPostData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/post/getPost/${id}`,
+          `${BASE_URL}/api/v1/post/getPost/${id}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -62,11 +64,9 @@ const EditPost: React.FC = () => {
         setImagePath(post.imagePath);
         setVideoPath(post.videoContent);
 
-        // Scroll to top when component mounts
         window.scrollTo(0, 0);
       } catch (error) {
         setError("Error fetching post data.");
-        // Scroll to top when component mounts
         window.scrollTo(0, 0);
       }
     };
@@ -112,7 +112,7 @@ const EditPost: React.FC = () => {
       };
 
       await axios.patch(
-        `http://localhost:5000/api/v1/post/update/${id}`,
+        `${BASE_URL}/api/v1/post/update/${id}`,
         formData,
         config
       );
@@ -127,14 +127,12 @@ const EditPost: React.FC = () => {
       console.log(uploadProgress);
       setLoading(false);
       setError("Failed to update post. Please try again.");
-      // Scroll to top when component mounts
       window.scrollTo(0, 0);
     }
   };
 
   const handleSuccessMessageClose = () => {
-    setMessage(null); // Clear the success message
-    // navigate(-1); // Navigate back to previous page or handle as needed
+    setMessage(null);
   };
 
   return (
@@ -145,7 +143,6 @@ const EditPost: React.FC = () => {
           onSubmit={handleSubmit}
           className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg px-10 pt-8 pb-8 mb-6 border border-gray-300"
         >
-          {/* Success message component */}
           {message && (
             <SuccessMessage
               message={message}
@@ -153,7 +150,6 @@ const EditPost: React.FC = () => {
             />
           )}
 
-          {/* Error message */}
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
               {error}
@@ -285,7 +281,7 @@ const EditPost: React.FC = () => {
                 Current Image
               </label>
               <img
-                src={`http://localhost:5000/${imagePath}`}
+                src={`${BASE_URL}/${imagePath}`}
                 alt="Current Image"
                 className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm"
               />
@@ -300,7 +296,7 @@ const EditPost: React.FC = () => {
                 Current Video
               </label>
               <video
-                src={`http://localhost:5000/${videoPath}`}
+                src={`${BASE_URL}/${videoPath}`}
                 controls
                 className="mt-2 block w-full border border-gray-300 rounded-md shadow-sm"
               ></video>

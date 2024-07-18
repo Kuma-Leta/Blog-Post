@@ -5,6 +5,8 @@ import PostCard from "../PostCard";
 import { FaChevronLeft, FaChevronRight, FaSearch } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
 
+import { BASE_URL } from "../../config";
+
 interface Post {
   _id: string;
   title: string;
@@ -56,7 +58,6 @@ const PostsList: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Initialize state from URL parameters
     const params = new URLSearchParams(location.search);
     const categoryParam = params.get("category") || "All";
     const sortParam = params.get("sort") || "date";
@@ -68,11 +69,10 @@ const PostsList: React.FC = () => {
     setCurrentPage(pageParam);
     setSearchQuery(searchParam);
 
-    // Fetch posts based on URL parameters
     const fetchPostsFromUrl = async () => {
       setLoading(true);
       try {
-        let url = `http://localhost:5000/api/v1/post/getAllposts?page=${pageParam}&limit=9`;
+        let url = `${BASE_URL}/api/v1/post/getAllposts?page=${pageParam}&limit=9`;
         if (categoryParam !== "All") {
           url += `&category=${categoryParam}`;
         }
@@ -85,7 +85,7 @@ const PostsList: React.FC = () => {
         setPosts(data.data);
         setTotalPages(Math.ceil(data.totalPosts / 9));
         setLoading(false);
-        scrollToTop(); // Scroll to top after setting posts
+        scrollToTop();
       } catch (error) {
         console.error("Error fetching posts:", error);
         setLoading(false);
@@ -94,37 +94,12 @@ const PostsList: React.FC = () => {
 
     fetchPostsFromUrl();
 
-    // Scroll to top or post list section based on URL parameters
     if (!location.search) {
       scrollToTop();
     } else {
       scrollToPostList();
     }
   }, [location.search]);
-
-  // const fetchPosts = async () => {
-  //   setLoading(true);
-  //   try {
-  //     let url = `http://localhost:5000/api/v1/post/getAllposts?page=${currentPage}`;
-  //     if (selectedCategory !== "All") {
-  //       url += `&category=${selectedCategory}`;
-  //     }
-  //     url += `&sort=${sort}`;
-  //     if (searchQuery) {
-  //       url += `&search=${encodeURIComponent(searchQuery)}`;
-  //     }
-  //     const response = await fetch(url);
-  //     const data = await response.json();
-  //     console.log(data);
-  //     setPosts(data.data);
-  //     setTotalPages(Math.ceil(data.totalPosts / 9));
-  //     setLoading(false);
-  //     scrollToTop(); // Scroll to top after setting posts
-  //   } catch (error) {
-  //     console.error("Error fetching posts:", error);
-  //     setLoading(false);
-  //   }
-  // };
 
   const updateUrlParams = (
     category: string,
@@ -147,7 +122,7 @@ const PostsList: React.FC = () => {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     updateUrlParams(selectedCategory, sort, pageNumber, searchQuery);
-    scrollToTop(); // Scroll to top after updating posts
+    scrollToTop();
   };
 
   const handlePrevPage = () => {

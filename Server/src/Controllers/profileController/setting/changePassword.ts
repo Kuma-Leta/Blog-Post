@@ -9,7 +9,6 @@ export const changePassword = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: Function) => {
     const { oldPassword, newPassword, passwordConfirm } = req.body;
 
-    // Fetch the user from the database
     const user = await User.findById(req.user._id).select("+password");
 
     // Check if user exists

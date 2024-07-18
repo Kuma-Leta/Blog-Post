@@ -13,7 +13,6 @@ import { protect, upload } from "./../Controllers/authController";
 
 const router = Router({ mergeParams: true });
 
-// Nest ratingRoute under /:postId/rating
 router.use("/:postId/rating", ratingRoute);
 
 router.post(
@@ -26,7 +25,6 @@ router.post(
   addPost
 );
 router.get("/getAllposts", getAllPosts);
-//router.post("/addPosts", protect, addPost);
 router.patch(
   "/update/:id",
   protect,

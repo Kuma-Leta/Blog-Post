@@ -41,7 +41,6 @@ const AuthenticationPage: React.FC = () => {
           backgroundPosition: "center",
         }}
       >
-        {/* Left Section */}
         <div className="flex-1 flex flex-col items-center justify-center p-8 lg:shadow-lg">
           <div className="text-center text-white">
             <h1
@@ -71,7 +70,6 @@ const AuthenticationPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Section */}
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="w-full max-w-md">
             {showLogin ? <Login /> : <SignUp />}

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+import { BASE_URL } from "../config";
+
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [message, setMessage] = useState<string | null>(null);
@@ -11,7 +13,7 @@ const ForgotPassword: React.FC = () => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/users/forgotpassword",
+        `${BASE_URL}/api/v1/users/forgotpassword`,
         { email }
       );
       console.log(response.data);

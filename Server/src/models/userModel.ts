@@ -21,7 +21,7 @@ interface IUser extends Document {
   ): Promise<boolean>;
   changePasswordAfter(JWTTimestamp: number): boolean;
   createPasswordResetToken(): string;
-  createdAt: Date; // Add createdAt field
+  createdAt: Date;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -73,7 +73,7 @@ const userSchema = new mongoose.Schema<IUser>(
     passwordResetExpires: Date,
     createdAt: {
       type: Date,
-      default: Date.now, // Set default value to current date and time
+      default: Date.now,
     },
   },
   {

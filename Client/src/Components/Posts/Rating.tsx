@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
 import axios from "axios";
 
+import { BASE_URL } from "../../config";
+
 interface RatingProps {
   postId: string | undefined;
   user: any;
@@ -23,9 +25,8 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
       try {
         const token = localStorage.getItem("authToken");
 
-        // Fetch average rating and rating quantity
         const response = await axios.get(
-          `http://localhost:5000/api/v1/post/getPost/${postId}`,
+          `${BASE_URL}/api/v1/post/getPost/${postId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -36,12 +37,10 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
         setAverageRating(post.averageRating);
         setRatingQuantity(post.ratingQuantity);
 
-        // Check if the current user is the author of the post
         setIsAuthor(post.user._id === user._id);
 
-        // Fetch all ratings for the current post
         const ratingsResponse = await axios.get(
-          `http://localhost:5000/api/v1/rating/${postId}`,
+          `${BASE_URL}/api/v1/rating/${postId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -50,14 +49,13 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
         );
         const allRatings = ratingsResponse.data.data.data;
 
-        // Find user's rating for the current post
         const userRating = allRatings.find((rating: any) => {
           return rating.post._id === postId && rating.user._id === user._id;
         });
 
         if (userRating) {
           setUserRating(userRating.rating);
-          setRatingId(userRating._id); // Store the rating ID
+          setRatingId(userRating._id);
         } else {
           setUserRating(null);
           setRatingId(null);
@@ -67,7 +65,6 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
       }
     };
 
-    // Reset the state before fetching new data
     setUserRating(null);
     setAverageRating(0);
     setRatingQuantity(0);
@@ -155,23 +152,16 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
       let response;
 
       if (userRating === null) {
-        // Add new rating
-        response = await axios.post(
-          `http://localhost:5000/api/v1/rating`,
-          ratingData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        response = await axios.post(`${BASE_URL}/api/v1/rating`, ratingData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        // Set the ratingId to the new rating's ID
         setRatingId(response.data.data.data._id);
       } else {
-        // Update existing rating
         response = await axios.patch(
-          `http://localhost:5000/api/v1/rating/${ratingId}`,
+          `${BASE_URL}/api/v1/rating/${ratingId}`,
           ratingData,
           {
             headers: {
@@ -181,13 +171,11 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
         );
       }
 
-      // Update the state after submitting the rating
       setUserRating(selectedRating);
       setShowRatingModal(false);
 
-      // Refetch the average rating and quantity after submitting the rating
       const postResponse = await axios.get(
-        `http://localhost:5000/api/v1/post/getPost/${postId}`,
+        `${BASE_URL}/api/v1/post/getPost/${postId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -213,22 +201,17 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
   const confirmDeleteRating = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      await axios.delete(
-        `http://localhost:5000/api/v1/rating/${ratingId}`, // Use ratingId instead of postId
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`${BASE_URL}/api/v1/rating/${ratingId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      // Clear user's rating after deletion
       setUserRating(null);
       setShowDeleteModal(false);
 
-      // Refetch the average rating and quantity after deleting the rating
       const response = await axios.get(
-        `http://localhost:5000/api/v1/post/getPost/${postId}`,
+        `${BASE_URL}/api/v1/post/getPost/${postId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

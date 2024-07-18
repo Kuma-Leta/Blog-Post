@@ -16,7 +16,6 @@ interface Props {
 }
 
 const AuthorsSection: React.FC<Props> = ({ id }) => {
-  // Define authors data as an array
   const authors: Author[] = [
     {
       name: "John Doe",
@@ -39,7 +38,6 @@ const AuthorsSection: React.FC<Props> = ({ id }) => {
         "Michael Brown is a cybersecurity analyst with expertise in identifying and mitigating security threats.",
       image: author3,
     },
-    // Add more authors as needed
   ];
 
   return (

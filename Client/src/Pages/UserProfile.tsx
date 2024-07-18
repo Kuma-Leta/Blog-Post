@@ -12,6 +12,8 @@ import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage";
 import PasswordChangeForm from "../Components/Profile/UserProfile/PasswordChangeForm";
 import { FaUser, FaEnvelope, FaLock, FaCamera } from "react-icons/fa";
 
+import { BASE_URL } from "../config";
+
 export interface User {
   _id: string;
   title: string;
@@ -56,7 +58,6 @@ const UserProfile: React.FC = () => {
   );
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  // State for posts
   const [posts, setPosts] = useState<Post[] | any>([]);
 
   useEffect(() => {
@@ -71,17 +72,14 @@ const UserProfile: React.FC = () => {
         throw new Error("Authentication token not found");
       }
 
-      const response = await axios.get(
-        "http://localhost:5000/api/v1/users/me",
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URL}/api/v1/users/me`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
-      setCurrentUser(response.data.data.data); // Update user context
-      setPosts(response.data.data.data.posts); // Set posts state
+      setCurrentUser(response.data.data.data);
+      setPosts(response.data.data.data.posts);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -102,7 +100,6 @@ const UserProfile: React.FC = () => {
       [name]: value,
     }));
 
-    // Clear field error when user starts typing
     setFieldErrors((prevErrors) => ({
       ...prevErrors,
       [name]: null,
@@ -195,7 +192,7 @@ const UserProfile: React.FC = () => {
   };
 
   const getEndpointAndData = (field: string) => {
-    let endpoint = "http://localhost:5000/api/v1/users/";
+    let endpoint = "${BASE_URL}/api/v1/users/";
     let data: any = {};
 
     switch (field) {
@@ -237,10 +234,9 @@ const UserProfile: React.FC = () => {
         throw new Error("Authentication token not found");
       }
 
-      // Hide the modal immediately after confirming
       setShowDeleteModal(false);
 
-      await axios.delete("http://localhost:5000/api/v1/users/deleteMe", {
+      await axios.delete("${BASE_URL}/api/v1/users/deleteMe", {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
@@ -249,7 +245,7 @@ const UserProfile: React.FC = () => {
       localStorage.removeItem("authToken");
       setSuccessMessage("Account deleted successfully!");
       setTimeout(() => {
-        window.location.href = "/"; // Redirect to home page or login page
+        window.location.href = "/";
       }, 3000);
     } catch (error) {
       console.error("Error deleting account:", error);
@@ -295,7 +291,7 @@ const UserProfile: React.FC = () => {
                 handleChange={handleChange}
                 handleSubmit={handleSubmit}
                 handleEdit={handleEdit}
-                error={null} // Replace with actual error handling if needed
+                error={null}
               />
               <UserProfileField
                 label="Email"
@@ -308,7 +304,7 @@ const UserProfile: React.FC = () => {
                 handleChange={handleChange}
                 handleSubmit={handleSubmit}
                 handleEdit={handleEdit}
-                error={null} // Replace with actual error handling if needed
+                error={null}
               />
               {editField === "password" ? (
                 <PasswordChangeForm

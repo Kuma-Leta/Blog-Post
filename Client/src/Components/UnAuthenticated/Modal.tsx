@@ -9,11 +9,13 @@ import {
 } from "react-icons/fa";
 import moment from "moment";
 
+import { BASE_URL } from "../../config";
+
 interface Post {
   _id: string;
   title: string;
   textContent: string;
-  imagePath?: string; // Make imagePath and videoContent optional
+  imagePath?: string;
   videoContent?: string;
   postedAt: string;
   createdAt: string;
@@ -27,15 +29,14 @@ interface Post {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  post: Post | null; // Ensure post can be null
+  post: Post | null;
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, post }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  if (!post) return null; // Handle case where post is null or undefined
+  if (!post) return null;
 
-  // Create an array of media items based on presence of imagePath and videoContent
   const mediaItems = [
     ...(post.imagePath ? [{ type: "image", src: post.imagePath }] : []),
     ...(post.videoContent ? [{ type: "video", src: post.videoContent }] : []),
@@ -74,13 +75,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, post }) => {
                 <>
                   {mediaItems[currentIndex].type === "image" ? (
                     <img
-                      src={`http://localhost:5000/${mediaItems[currentIndex].src}`}
+                      src={`${BASE_URL}/${mediaItems[currentIndex].src}`}
                       alt={post.title}
                       className="w-full h-auto max-h-96 object-contain"
                     />
                   ) : (
                     <video
-                      src={`http://localhost:5000/${mediaItems[currentIndex].src}`}
+                      src={`${BASE_URL}/${mediaItems[currentIndex].src}`}
                       controls
                       className="w-full h-auto max-h-96"
                     ></video>

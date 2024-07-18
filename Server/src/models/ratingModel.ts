@@ -1,6 +1,6 @@
 // models/Rating.ts
-import mongoose, { Document, Model, Schema } from 'mongoose';
-import Post from './postModel';
+import mongoose, { Document, Model, Schema } from "mongoose";
+import Post from "./postModel";
 
 interface IRating extends Document {
   rating: number;
@@ -26,13 +26,13 @@ const ratingSchema: Schema<IRating> = new Schema(
     },
     post: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Post',
-      required: [true, 'Rating must belong to a post'],
+      ref: "Post",
+      required: [true, "Rating must belong to a post"],
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: [true, 'Rating must belong to a user'],
+      ref: "User",
+      required: [true, "Rating must belong to a user"],
     },
   },
   {
@@ -43,16 +43,18 @@ const ratingSchema: Schema<IRating> = new Schema(
 
 ratingSchema.index({ post: 1, user: 1 }, { unique: true });
 
-ratingSchema.statics.calcAverageRating = async function (postId: mongoose.Types.ObjectId): Promise<void> {
+ratingSchema.statics.calcAverageRating = async function (
+  postId: mongoose.Types.ObjectId
+): Promise<void> {
   const stats = await this.aggregate([
     {
       $match: { post: postId },
     },
     {
       $group: {
-        _id: '$post',
+        _id: "$post",
         nRating: { $sum: 1 },
-        avgRating: { $avg: '$rating' },
+        avgRating: { $avg: "$rating" },
       },
     },
   ]);
@@ -69,22 +71,25 @@ ratingSchema.statics.calcAverageRating = async function (postId: mongoose.Types.
   }
 };
 
-ratingSchema.post('save', function () {
+ratingSchema.post("save", function () {
   (this.constructor as IRatingModel).calcAverageRating(this.post);
 });
 
-ratingSchema.post('findOneAndUpdate', async function (doc) {
+ratingSchema.post("findOneAndUpdate", async function (doc) {
   if (doc) {
     await (doc.constructor as IRatingModel).calcAverageRating(doc.post);
   }
 });
 
-ratingSchema.post('findOneAndDelete', async function (doc) {
+ratingSchema.post("findOneAndDelete", async function (doc) {
   if (doc) {
     await (doc.constructor as IRatingModel).calcAverageRating(doc.post);
   }
 });
 
-const Rating: IRatingModel = mongoose.model<IRating, IRatingModel>('Rating', ratingSchema);
+const Rating: IRatingModel = mongoose.model<IRating, IRatingModel>(
+  "Rating",
+  ratingSchema
+);
 
 export default Rating;

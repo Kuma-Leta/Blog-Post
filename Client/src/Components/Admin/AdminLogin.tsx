@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import { BASE_URL } from "../../config";
+
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -15,7 +17,7 @@ const Login: React.FC = () => {
       console.log(email, password);
 
       const userCredential = await axios.post(
-        "http://localhost:5000/api/v1/admin/login",
+        `${BASE_URL}/api/v1/admin/login`,
         { email, password }
       );
 
@@ -24,11 +26,10 @@ const Login: React.FC = () => {
 
       localStorage.setItem("authToken", token);
 
-      // Redirect to appropriate dashboard based on role
       if (user.role === "admin") {
-        navigate("/admin/dashboard"); // Navigate to admin dashboard
+        navigate("/admin/dashboard");
       } else {
-        navigate("/"); // Navigate to default route
+        navigate("/");
       }
     } catch (error) {
       console.error("Login error:", error);

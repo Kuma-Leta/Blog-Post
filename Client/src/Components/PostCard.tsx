@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 import generic_image from "../../public/generic_user_place_holder.jpg";
+import { BASE_URL } from "../config";
 
 interface Post {
   _id: string;
@@ -84,7 +85,6 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
 
   const handleNextMedia = () => {
     if (currentMediaIndex < 1) {
-      // Assuming there are only two media (image and video)
       setCurrentMediaIndex(currentMediaIndex + 1);
     }
   };
@@ -93,11 +93,11 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
   const mediaItems = [
     {
       type: "image",
-      url: `http://localhost:5000/${post.imagePath}`,
+      url: `${BASE_URL}/${post.imagePath}`,
     },
     {
       type: "video",
-      url: `http://localhost:5000/${post.videoContent}`,
+      url: `${BASE_URL}/${post.videoContent}`,
     },
   ];
 
