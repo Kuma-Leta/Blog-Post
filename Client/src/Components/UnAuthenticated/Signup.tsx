@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import { MdEmail, MdLock, MdPerson } from "react-icons/md";
 import { BsFillImageFill } from "react-icons/bs";
 import LoadingSpinner from "./LoadingSpinner";
@@ -9,7 +8,7 @@ import SuccessMessage from "../Profile/UserProfile/SuccessMessage";
 import ErrorMessage from "../Profile/UserProfile/ErrorMessage";
 import SocialMediaIcons from "./SocialMediaIcons";
 
-import { BASE_URL } from "../../config";
+import api from "../../axiosConfig";
 
 const SignUp: React.FC = () => {
   const [name, setName] = useState("");
@@ -82,15 +81,11 @@ const SignUp: React.FC = () => {
         formData.append("photo", photo);
       }
 
-      const response = await axios.post(
-        `${BASE_URL}/api/v1/users/signup`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await api.post(`/users/signup`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.data) {
         setError(null);
@@ -215,8 +210,10 @@ const SignUp: React.FC = () => {
             </button>
           </div>
           <hr className="my-4" />
-          <div className="text-center">or SIGNUP VIA SOCIAL NETWORK</div>
-          <SocialMediaIcons />
+          {/* <div className="text-center">or SIGNUP VIA SOCIAL NETWORK</div> */}
+          <div className="bg-gray-900 py-2 px-4 rounded-full">
+            <SocialMediaIcons />
+          </div>
         </form>
       </div>
     </div>

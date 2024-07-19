@@ -5,6 +5,7 @@ import Modal from "./Modal";
 import Navbar from "./Navbar";
 
 import { BASE_URL } from "../../config";
+import api from "../../axiosConfig";
 
 interface Post {
   _id: string;
@@ -34,12 +35,12 @@ const CategoryPage: React.FC = () => {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        const response = await fetch(
-          `${BASE_URL}/api/v1/post/getAllposts?category=${category}&limit=${limit}&page=${currentPage}`
+        const response = await api.get(
+          `/post/getAllposts?category=${category}&limit=${limit}&page=${currentPage}`
         );
-        const data = await response.json();
+        const data = await response.data;
         console.log(data);
-        if (response.ok) {
+        if (response.status === 200) {
           const newPosts = data.data;
           if (Array.isArray(newPosts)) {
             setPosts((prevPosts = []) => {

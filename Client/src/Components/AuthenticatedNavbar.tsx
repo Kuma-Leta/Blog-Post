@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FaSignOutAlt } from "react-icons/fa";
+
 import { useUser } from "../UserContext";
 
 import logo from "../../public/DLogo.png";
@@ -10,6 +12,7 @@ import { BASE_URL } from "../config";
 interface NavLinkProps {
   to: string;
   onClick?: () => void;
+  className?: string; // Add this line
   children: React.ReactNode;
 }
 
@@ -135,8 +138,12 @@ const NavbarLoggedIn: React.FC = () => {
                     handleLogout();
                     closeDropdown();
                   }}
+                  className="flex items-center px-2 py-2 hover:bg-blue-200 transition duration-300"
                 >
-                  Logout
+                  <div className="flex items-center justify-center">
+                    <FaSignOutAlt className="mr-2 text-purple-700" />
+                    Logout
+                  </div>
                 </NavLink>
               </div>
             )}

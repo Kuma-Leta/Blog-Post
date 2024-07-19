@@ -3,6 +3,7 @@ import { FaTag } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
 import Modal from "./Modal";
 import { BASE_URL } from "../../config";
+import api from "../../axiosConfig";
 
 interface Post {
   _id: string;
@@ -34,11 +35,11 @@ const LatestPosts: React.FC = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const url = `${BASE_URL}/api/v1/post/getAllposts?page=${currentPage}&limit=${limit}`;
-      const response = await fetch(url);
-      const data = await response.json();
+      const url = `/post/getAllposts?page=${currentPage}&limit=${limit}`;
+      const response = await api.get(url);
+      const data = await response.data;
 
-      if (response.ok) {
+      if (response.status === 200) {
         const newPosts = data.data;
 
         const filteredPosts = newPosts.filter(

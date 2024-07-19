@@ -1,6 +1,5 @@
 import React from "react";
-import axios from "axios";
-import { BASE_URL } from "../../config";
+import api from "../../axiosConfig";
 
 interface DeletePostModalProps {
   postId: string;
@@ -15,12 +14,7 @@ const DeletePostModal: React.FC<DeletePostModalProps> = ({
 }) => {
   const handleDelete = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-      await axios.delete(`${BASE_URL}/api/v1/post/deletePost/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await api.delete(`/post/deletePost/${postId}`);
       onDeleteSuccess();
     } catch (error) {
       console.error("Error deleting post:", error);

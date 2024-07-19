@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import axios from "axios";
 import { MdEmail, MdLock } from "react-icons/md";
 import LoadingSpinner from "./LoadingSpinner";
 import { useUser } from "../../UserContext";
@@ -9,7 +8,7 @@ import SuccessMessage from "../Profile/UserProfile/SuccessMessage";
 import ErrorMessage from "../Profile/UserProfile/ErrorMessage";
 import SocialMediaIcons from "./SocialMediaIcons";
 
-import { BASE_URL } from "../../config";
+import api from "../../axiosConfig";
 
 const Login: React.FC = () => {
   const { setUser } = useUser();
@@ -26,10 +25,10 @@ const Login: React.FC = () => {
     event.preventDefault();
     setLoading(true);
     try {
-      const userCredential = await axios.post(
-        ` ${BASE_URL}/api/v1/users/login`,
-        { email, password }
-      );
+      const userCredential = await api.post(`/users/login`, {
+        email,
+        password,
+      });
 
       console.log(userCredential);
 
@@ -119,14 +118,16 @@ const Login: React.FC = () => {
             <div className="flex justify-between items-center">
               <Link
                 to="/forgotpassword"
-                className="text-sm text-blue-500 hover:underline"
+                className="text-sm text-purple-600 hover:underline"
               >
                 Forgot password?
               </Link>
             </div>
             <hr className="my-4" />
-            <div className="text-center">or SIGNUP VIA SOCIAL NETWORK</div>
-            <SocialMediaIcons />
+            <div className="text-center">or SIGNUP VIA: </div>
+            <div className="bg-gray-800 py-2 px-4 rounded-full">
+              <SocialMediaIcons />
+            </div>
           </form>
         )}
       </div>

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
-import axios, { AxiosProgressEvent } from "axios";
+import { AxiosProgressEvent } from "axios";
 import Navbar from "../Components/AuthenticatedNavbar";
 import { useNavigate } from "react-router-dom";
 
 import ErrorMessage from "../Components/Profile/UserProfile/ErrorMessage";
 import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage";
-import { BASE_URL } from "../config";
+import api from "../axiosConfig";
 
 const CreatePost: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -48,7 +48,6 @@ const CreatePost: React.FC = () => {
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${authToken}`,
         },
         onUploadProgress: (progressEvent: AxiosProgressEvent) => {
           const progress = Math.round(
@@ -58,11 +57,7 @@ const CreatePost: React.FC = () => {
         },
       };
 
-      const response = await axios.post(
-        `${BASE_URL}/api/v1/post/addPost`,
-        formData,
-        config
-      );
+      const response = await api.post(`/post/addPost`, formData, config);
       console.log(response);
       setMessage("Post added successfully");
 

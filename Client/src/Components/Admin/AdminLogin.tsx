@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api from "../../axiosConfig";
 
-import { BASE_URL } from "../../config";
+import { FaUser, FaLock } from "react-icons/fa";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -14,12 +14,10 @@ const Login: React.FC = () => {
     event.preventDefault();
 
     try {
-      console.log(email, password);
-
-      const userCredential = await axios.post(
-        `${BASE_URL}/api/v1/admin/login`,
-        { email, password }
-      );
+      const userCredential = await api.post(`/admin/login`, {
+        email,
+        password,
+      });
 
       const user = userCredential.data.data.user;
       const token = userCredential.data.token;
@@ -38,38 +36,44 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-100 to-blue-300 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 p-6 bg-white rounded-lg shadow-lg">
+        <div className="text-center">
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-4">
             Log in as Admin
           </h2>
           {error && (
-            <div className="mt-4 bg-red-100 border border-red-400 text-red-700 py-2 px-3 rounded">
+            <div className="mb-4 bg-red-100 border border-red-400 text-red-700 py-2 px-4 rounded-md shadow-sm">
               {error}
             </div>
           )}
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="rounded-md shadow-sm block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Email address"
-            required
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-3 rounded-md shadow-sm block w-full px-3 py-2 border border-gray-300 placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Password"
-            required
-          />
+        <form className="space-y-6" onSubmit={handleLogin}>
+          <div className="relative">
+            <FaUser className="absolute top-1/2 left-3 transform -translate-y-1/2 text-purple-500" />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-full shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
+              placeholder="Email address"
+              required
+            />
+          </div>
+          <div className="relative">
+            <FaLock className="absolute top-1/2 left-3 transform -translate-y-1/2 text-purple-500" />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-full shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm"
+              placeholder="Password"
+              required
+            />
+          </div>
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full shadow-md transition duration-300"
+            className="w-full py-2 px-4 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white rounded-full shadow-md transition duration-300 ease-in-out"
           >
             Log in
           </button>

@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import NavbarLoggedIn from "../Components/AuthenticatedNavbar";
-import axios from "axios";
 import { useUser } from "../UserContext";
 import UserProfileField from "../Components/Profile/UserProfile/UserProfileField";
 import UserProfilePhoto from "../Components/Profile/UserProfile/UserProfilePhoto";
@@ -12,7 +11,7 @@ import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage";
 import PasswordChangeForm from "../Components/Profile/UserProfile/PasswordChangeForm";
 import { FaUser, FaEnvelope, FaLock, FaCamera } from "react-icons/fa";
 
-import { BASE_URL } from "../config";
+import api from "../axiosConfig";
 
 export interface User {
   _id: string;
@@ -66,17 +65,7 @@ const UserProfile: React.FC = () => {
 
   const fetchUserData = async () => {
     try {
-      const authToken = localStorage.getItem("authToken");
-
-      if (!authToken) {
-        throw new Error("Authentication token not found");
-      }
-
-      const response = await axios.get(`${BASE_URL}/api/v1/users/me`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      const response = await api.get(`/users/me`);
 
       setCurrentUser(response.data.data.data);
       setPosts(response.data.data.data.posts);
@@ -143,17 +132,10 @@ const UserProfile: React.FC = () => {
     }
 
     try {
-      const authToken = localStorage.getItem("authToken");
-
-      if (!authToken) {
-        throw new Error("Authentication token not found");
-      }
-
       const { endpoint, data } = getEndpointAndData(field);
 
-      const response = await axios.patch(endpoint, data, {
+      const response = await api.patch(endpoint, data, {
         headers: {
-          Authorization: `Bearer ${authToken}`,
           ...(field === "photo" && { "Content-Type": "multipart/form-data" }),
         },
       });
@@ -192,7 +174,7 @@ const UserProfile: React.FC = () => {
   };
 
   const getEndpointAndData = (field: string) => {
-    let endpoint = "${BASE_URL}/api/v1/users/";
+    let endpoint = "/users/";
     let data: any = {};
 
     switch (field) {
@@ -236,11 +218,7 @@ const UserProfile: React.FC = () => {
 
       setShowDeleteModal(false);
 
-      await axios.delete("${BASE_URL}/api/v1/users/deleteMe", {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+      await api.delete("/users/deleteMe");
 
       localStorage.removeItem("authToken");
       setSuccessMessage("Account deleted successfully!");

@@ -1,34 +1,50 @@
 import React from "react";
 import {
-  IoLogoGoogle,
-  IoLogoFacebook,
-  IoLogoGithub,
-  IoLogoTwitter,
-  IoLogoLinkedin,
-} from "react-icons/io";
-import { FaApple } from "react-icons/fa";
+  FaFacebookF,
+  FaTwitter,
+  FaLinkedinIn,
+  FaInstagram,
+} from "react-icons/fa";
 
 const SocialMediaIcons: React.FC = () => {
   return (
-    <div className="mt-4 flex justify-center space-x-2">
-      <button className="hover:bg-red-500 hover:text-white p-2 rounded-full transition duration-300">
-        <IoLogoGoogle size={24} />
-      </button>
-      <button className="hover:bg-blue-600 hover:text-white p-2 rounded-full transition duration-300">
-        <IoLogoFacebook size={24} />
-      </button>
-      <button className="hover:bg-black hover:text-white p-2 rounded-full transition duration-300">
-        <IoLogoGithub size={24} />
-      </button>
-      <button className="hover:bg-gray-800 hover:text-white p-2 rounded-full transition duration-300">
-        <FaApple size={24} />
-      </button>
-      <button className="hover:bg-blue-400 hover:text-white p-2 rounded-full transition duration-300">
-        <IoLogoTwitter size={24} />
-      </button>
-      <button className="hover:bg-blue-600 hover:text-white p-2 rounded-full transition duration-300">
-        <IoLogoLinkedin size={24} />
-      </button>
+    <div className="flex justify-center space-x-6">
+      <a
+        href="https://www.facebook.com/DebbalTechnologies"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-white hover:text-blue-500"
+        aria-label="Facebook"
+      >
+        <FaFacebookF size={24} />
+      </a>
+      <a
+        href="https://twitter.com/DebbalTech"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-white hover:text-blue-400"
+        aria-label="Twitter"
+      >
+        <FaTwitter size={24} />
+      </a>
+      <a
+        href="https://www.linkedin.com/company/debbal-technologies"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-white hover:text-blue-700"
+        aria-label="LinkedIn"
+      >
+        <FaLinkedinIn size={24} />
+      </a>
+      <a
+        href="https://www.instagram.com/debbaltechnologies"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-white hover:text-pink-500"
+        aria-label="Instagram"
+      >
+        <FaInstagram size={24} />
+      </a>
     </div>
   );
 };

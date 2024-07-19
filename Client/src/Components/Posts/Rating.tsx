@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs";
-import axios from "axios";
 
-import { BASE_URL } from "../../config";
+import api from "../../axiosConfig";
 
 interface RatingProps {
   postId: string | undefined;
@@ -23,30 +22,14 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
   useEffect(() => {
     const fetchRating = async () => {
       try {
-        const token = localStorage.getItem("authToken");
-
-        const response = await axios.get(
-          `${BASE_URL}/api/v1/post/getPost/${postId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await api.get(`/post/getPost/${postId}`);
         const post = response.data.data.post;
         setAverageRating(post.averageRating);
         setRatingQuantity(post.ratingQuantity);
 
         setIsAuthor(post.user._id === user._id);
 
-        const ratingsResponse = await axios.get(
-          `${BASE_URL}/api/v1/rating/${postId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            },
-          }
-        );
+        const ratingsResponse = await api.get(`/rating/${postId}`);
         const allRatings = ratingsResponse.data.data.data;
 
         const userRating = allRatings.find((rating: any) => {
@@ -142,8 +125,6 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
 
   const submitRating = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-
       const ratingData = {
         post: postId,
         rating: selectedRating,
@@ -152,36 +133,17 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
       let response;
 
       if (userRating === null) {
-        response = await axios.post(`${BASE_URL}/api/v1/rating`, ratingData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        response = await api.post(`/rating`, ratingData);
 
         setRatingId(response.data.data.data._id);
       } else {
-        response = await axios.patch(
-          `${BASE_URL}/api/v1/rating/${ratingId}`,
-          ratingData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        response = await api.patch(`/rating/${ratingId}`, ratingData);
       }
 
       setUserRating(selectedRating);
       setShowRatingModal(false);
 
-      const postResponse = await axios.get(
-        `${BASE_URL}/api/v1/post/getPost/${postId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const postResponse = await api.get(`/post/getPost/${postId}`);
       const post = postResponse.data.data.post;
       setAverageRating(post.averageRating);
       setRatingQuantity(post.ratingQuantity);
@@ -200,24 +162,12 @@ const Rating: React.FC<RatingProps> = ({ postId, user }) => {
 
   const confirmDeleteRating = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-      await axios.delete(`${BASE_URL}/api/v1/rating/${ratingId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await api.delete(`/rating/${ratingId}`);
 
       setUserRating(null);
       setShowDeleteModal(false);
 
-      const response = await axios.get(
-        `${BASE_URL}/api/v1/post/getPost/${postId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get(`/post/getPost/${postId}`);
       const post = response.data.data.post;
       setAverageRating(post.averageRating);
       setRatingQuantity(post.ratingQuantity);

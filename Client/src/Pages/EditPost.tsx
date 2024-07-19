@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect } from "react";
-import axios, { AxiosProgressEvent } from "axios";
+import { AxiosProgressEvent } from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../Components/AuthenticatedNavbar";
 import { FiArrowLeft } from "react-icons/fi";
@@ -14,6 +14,7 @@ import {
 import SuccessMessage from "../Components/Profile/UserProfile/SuccessMessage";
 
 import { BASE_URL } from "../config";
+import api from "../axiosConfig";
 
 const EditPost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -48,14 +49,7 @@ const EditPost: React.FC = () => {
   useEffect(() => {
     const fetchPostData = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/api/v1/post/getPost/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-            },
-          }
-        );
+        const response = await api.get(`/post/getPost/${id}`);
 
         const post = response.data.data.post;
         setTitle(post.title);
@@ -81,12 +75,6 @@ const EditPost: React.FC = () => {
     setError(null);
 
     try {
-      const authToken = localStorage.getItem("authToken");
-
-      if (!authToken) {
-        throw new Error("Authentication token not found");
-      }
-
       const formData = new FormData();
       formData.append("title", title);
       formData.append("textContent", content);
@@ -101,7 +89,6 @@ const EditPost: React.FC = () => {
       const config = {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${authToken}`,
         },
         onUploadProgress: (progressEvent: AxiosProgressEvent) => {
           const progress = Math.round(
@@ -111,11 +98,7 @@ const EditPost: React.FC = () => {
         },
       };
 
-      await axios.patch(
-        `${BASE_URL}/api/v1/post/update/${id}`,
-        formData,
-        config
-      );
+      await api.patch(`/post/update/${id}`, formData, config);
 
       setMessage("Post updated successfully");
       setImageFile(null);
@@ -229,10 +212,14 @@ const EditPost: React.FC = () => {
               Category
             </label>
             <button
-              onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsCategoryDropdownOpen(!isCategoryDropdownOpen);
+              }}
               className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-semibold px-4 py-2 rounded-full w-full text-left flex justify-between items-center shadow-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300"
             >
-              {category || "Select a category"}{" "}
+              {category || "Select a category"}
               <svg
                 className={`w-5 h-5 transform transition-transform ${
                   isCategoryDropdownOpen ? "rotate-180" : "rotate-0"
@@ -250,6 +237,7 @@ const EditPost: React.FC = () => {
                 ></path>
               </svg>
             </button>
+
             {isCategoryDropdownOpen && (
               <ul className="absolute mt-2 w-full bg-white rounded-md shadow-lg z-10 max-h-48 overflow-y-auto border border-gray-300 transition duration-300">
                 {categories.map((categoryOption, index) => (

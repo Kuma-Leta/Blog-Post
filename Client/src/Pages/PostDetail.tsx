@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Navbar from "../Components/AuthenticatedNavbar";
 import { useUser } from "../UserContext";
 import { FaArrowLeft, FaEdit, FaTrash, FaArrowRight } from "react-icons/fa";
@@ -12,6 +11,7 @@ import "react-multi-carousel/lib/styles.css";
 
 import generic_image from "../../public/generic_user_place_holder.jpg";
 import { BASE_URL } from "../config";
+import api from "../axiosConfig";
 
 export interface Post {
   _id: string;
@@ -41,15 +41,7 @@ const PostDetail: React.FC = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const token = localStorage.getItem("authToken");
-        const response = await axios.get(
-          `${BASE_URL}/api/v1/post/getPost/${postId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await api.get(`/post/getPost/${postId}`);
 
         setPost(response.data.data.post);
         fetchRelatedPosts(response.data.data.post.category);
@@ -64,15 +56,15 @@ const PostDetail: React.FC = () => {
 
     const fetchRelatedPosts = async (category: string) => {
       try {
-        let url = `${BASE_URL}/api/v1/post/getAllposts`;
+        let url = `/post/getAllposts`;
         if (category && category !== "All") {
           url += `?category=${category}`;
         }
 
-        const response = await fetch(url);
-        const data = await response.json();
+        const response = await api.get(url);
+        const data = await response.data;
 
-        if (response.ok) {
+        if (response.status === 200) {
           setRelatedPosts(data.data);
         } else {
           console.error("Error fetching related posts:", data.message);
@@ -91,12 +83,7 @@ const PostDetail: React.FC = () => {
 
   const handleDelete = async (postId: string) => {
     try {
-      const token = localStorage.getItem("authToken");
-      await axios.delete(`${BASE_URL}/api/v1/post/deletePost/${postId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await api.delete(`/post/deletePost/${postId}`);
 
       setPostToDelete(null);
       setSuccessMessage("Post deleted successfully!");

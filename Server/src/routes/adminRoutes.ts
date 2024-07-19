@@ -1,5 +1,7 @@
 import express, { Request, Response, NextFunction, Router } from "express";
 import { login, protect, restrictTo } from "../Controllers/authController";
+import { deletePost, getAllPosts } from "../Controllers/PostsController";
+
 import { getAdminDashboard } from "../Controllers/adminController";
 
 import {
@@ -19,6 +21,9 @@ router.use(restrictTo("admin"));
 router.get("/dashboard", getAdminDashboard);
 
 router.route("/").get(getAllUsers);
+
+router.get("/getAllposts", getAllPosts);
+router.delete("/deletePost/:postId", protect, deletePost);
 
 router.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
 

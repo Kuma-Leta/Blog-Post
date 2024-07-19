@@ -6,6 +6,7 @@ import { FaChevronLeft, FaChevronRight, FaSearch } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
 
 import { BASE_URL } from "../../config";
+import api from "../../axiosConfig";
 
 interface Post {
   _id: string;
@@ -72,7 +73,7 @@ const PostsList: React.FC = () => {
     const fetchPostsFromUrl = async () => {
       setLoading(true);
       try {
-        let url = `${BASE_URL}/api/v1/post/getAllposts?page=${pageParam}&limit=9`;
+        let url = `/post/getAllposts?page=${pageParam}&limit=9`;
         if (categoryParam !== "All") {
           url += `&category=${categoryParam}`;
         }
@@ -80,8 +81,8 @@ const PostsList: React.FC = () => {
         if (searchParam) {
           url += `&search=${encodeURIComponent(searchParam)}`;
         }
-        const response = await fetch(url);
-        const data = await response.json();
+        const response = await api.get(url);
+        const data = await response.data;
         setPosts(data.data);
         setTotalPages(Math.ceil(data.totalPosts / 9));
         setLoading(false);
