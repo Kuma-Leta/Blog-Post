@@ -5,7 +5,6 @@ import PostCard from "../PostCard";
 import { FaChevronLeft, FaChevronRight, FaSearch } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
 
-import { BASE_URL } from "../../config";
 import api from "../../axiosConfig";
 
 interface Post {
