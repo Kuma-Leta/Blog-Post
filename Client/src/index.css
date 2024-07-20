@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+.hovered-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transform: scale(1.05);
+}
+
+.truncate-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.truncate-content {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.modal-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.category-container:hover .category-title,
+.category-container:hover .category-description,
+.category-container:hover .category-link {
+  color: white;
+}
+
+.flash {
+  animation: flashAnimation 0.5s alternate infinite;
+}
+
+@keyframes flashAnimation {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* Add to your global or main component styles */
+.main-content {
+  margin-left: 16rem; /* Adjust this value based on sidebar width */
+  padding: 1rem;
+}

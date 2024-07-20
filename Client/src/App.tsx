@@ -1,34 +1,34 @@
 import React from "react";
-import "./styles/index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AddPost from "./Components/Profile/addPost";
-// import DeletePost from "./Components/Profile/deletePost";
-import EditPost from "./Components/Profile/editPost";
-import PreviousPosts from "./Components/Profile/PreviousPosts";
-import AllPosts from "./Components/allPosts";
-import Login from "./Components/login";
-import Signup from "./Components/signup";
-import NotFound from "./Components/notFound";
-import HomePage from "./Components/home";
-import SystemOverview from "./Components/systemOverview";
+
+import AddPost from "./Pages/AddPost";
+import EditPost from "./Pages/EditPost";
+import NotFound from "./Pages/NotFound";
+import HomePage from "./Pages/Home";
+import SystemOverview from "./Components/UnAuthenticated/SystemOverview";
+import ForgotPassword from "./Components/ForgotPassword";
+import PostDetail from "./Pages/PostDetail";
+import UserProfile from "./Pages/UserProfile";
+import AuthenticationPage from "./Components/UnAuthenticated/AuthenticationPage ";
+import CategoryPage from "./Components/UnAuthenticated/CategoryPage";
+
+import AdminLogin from "./Components/Admin/AdminLogin";
+import AdminDashboard from "./Components/Admin/AdminDashboard";
+import PrivateRoute from "./Components/Admin/PrivateRoute";
+import Unauthorized from "./Components/Admin/UnAuthorized";
+
 import { PrivateRoutes } from "./privateRoutes";
+
 const App: React.FC = () => {
   return (
     <>
       <Router>
         <Routes>
           <Route path="/" element={<SystemOverview />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<AuthenticationPage />} />
+          <Route path="/login" element={<AuthenticationPage />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
 
-          <Route
-            path="/profile/addPost"
-            element={
-              <PrivateRoutes>
-                <AddPost />
-              </PrivateRoutes>
-            }
-          />
           <Route
             path="/home"
             element={
@@ -38,29 +38,45 @@ const App: React.FC = () => {
             }
           />
           <Route
-            path="/profile/editPost"
+            path="/profile/addPost"
+            element={
+              <PrivateRoutes>
+                <AddPost />
+              </PrivateRoutes>
+            }
+          />
+          <Route
+            path="/profile/editPost/:id"
             element={
               <PrivateRoutes>
                 <EditPost />
               </PrivateRoutes>
             }
           />
+
           <Route
-            path="/allPosts"
+            path="/profile/userProfile"
             element={
               <PrivateRoutes>
-                <AllPosts />
+                <UserProfile />
               </PrivateRoutes>
             }
           />
+
+          <Route path="/post/:postId" element={<PostDetail />} />
+          <Route path="/category/:category" element={<CategoryPage />} />
+
+          <Route path="/admin/login" element={<AdminLogin />} />
           <Route
-            path="/profile/previousPosts"
+            path="/admin/dashboard"
             element={
-              <PrivateRoutes>
-                <PreviousPosts />
-              </PrivateRoutes>
+              <PrivateRoute>
+                <AdminDashboard />
+              </PrivateRoute>
             }
           />
+          <Route path="/unauthorized" element={<Unauthorized />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
