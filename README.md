@@ -29,7 +29,7 @@ git clone https://github.com/username/blog-post-website.git
 cd blog-post-website
 ```
 
-2. \*\*Install dependencies for both client and server
+2. **Install dependencies for both client and server**
 
 ```sh
 # Install server dependencies
@@ -43,18 +43,46 @@ npm install
 
 ### Running the Application
 
-1. **Start the MongoDB server:**
+1. **Configure the environment variables:**
+
+You can toggle between using a local or remote MongoDB database by updating the `CONNECTION_STRING` in the `.env` file located in the `server` directory:
+
+```env
+NODE_ENV=development
+PORT=5000
+CONNECTION_STRING=mongodb://localhost:27017/blog
+# CONNECTION_STRING=mongodb+srv://<username>:<password>@cluster1.mongodb.net/blog
+JWT_SECRET=your_secret_key_here
+
+EMAIL_HOST=sandbox.smtp.mailtrap.io
+EMAIL_USERNAME=your_username_here
+EMAIL_PASSWORD=your_password_here
+EMAIL_PORT=2525
+JWT_EXPIRES_IN=90d
+
+# Alternative email settings
+# EMAIL_HOST=live.smtp.mailtrap.io
+# EMAIL_USERNAME=api
+# EMAIL_PASSWORD=your_alternative_password_here
+# EMAIL_PORT=587
+# JWT_EXPIRES_IN=90d
+```
+
+- For a local database, ensure `CONNECTION_STRING=mongodb://localhost:27017/blog` is uncommented.
+- For a remote database, uncomment and set `CONNECTION_STRING=mongodb+srv://<username>:<password>@cluster1.mongodb.net/blog` with your actual MongoDB Atlas credentials.
+
+2. **Start the MongoDB server:**
 
 Make sure MongoDB is running on your machine. If MongoDB is not installed locally, you can use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) for a cloud database.
 
-2. **Start the server:**
+3. **Start the server:**
 
 ```sh
 cd server
 npm run dev
 ```
 
-3. **Start the client:**
+4. **Start the client:**
 
 ```sh
 cd client
