@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import AddPost from "./Pages/AddPost";
 import EditPost from "./Pages/EditPost";
-import NotFound from "./Components/NotFound";
+import NotFound from "./Pages/NotFound";
 import HomePage from "./Pages/Home";
 import SystemOverview from "./Components/UnAuthenticated/SystemOverview";
 import ForgotPassword from "./Components/ForgotPassword";
