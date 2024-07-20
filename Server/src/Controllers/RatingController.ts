@@ -21,7 +21,7 @@ export const addRating = asyncWrapper(
     }
 
     const rating = await Rating.create(req.body);
-    console.log("rating: " + rating);
+    // console.log("rating: " + rating);
     res.status(200).json({
       status: "Success",
       data: {

@@ -58,7 +58,8 @@ npm run dev
 
 ```sh
 cd client
-npm start
+npm run build
+npm run preview
 ```
 
 The server should be running on `http://localhost:5000` and the client on `http://localhost:3000`.

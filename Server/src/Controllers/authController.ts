@@ -63,7 +63,7 @@ export const signup = asyncWrapper(
 
 export const login = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    console.log(req.body);
+    // console.log(req.body);
     const { email, password } = req.body;
 
     if (!email || !password) {

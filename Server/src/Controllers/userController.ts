@@ -21,7 +21,7 @@ export const getMe = (
 export const getAllUsers = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     // Execute the query with filters, sorting, and pagination
-    console.log(req.query);
+    // console.log(req.query);
     const features = new userAPIFeatures(User.find(), req.query)
       .filter()
       .sort()

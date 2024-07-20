@@ -20,8 +20,8 @@ export interface AuthenticatedRequest extends Request {
 
 export const addPost = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    console.log("Request body:", req.body);
-    console.log("Files:", req.files);
+    // console.log("Request body:", req.body);
+    // console.log("Files:", req.files);
 
     const files = req.files as {
       image?: Express.Multer.File[];
@@ -62,7 +62,7 @@ export const addPost = asyncWrapper(
 export const updatePost = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const postId = req.params.id;
-    console.log(req.body);
+    // console.log(req.body);
 
     // Find the existing post
     const post = await Post.findById(postId);
@@ -168,7 +168,7 @@ export const getPost: RequestHandler = asyncWrapper(async (req, res, next) => {
 
 export const deletePost: RequestHandler = asyncWrapper(
   async (req, res, next) => {
-    console.log("request: " + req.params.postId);
+    // console.log("request: " + req.params.postId);
 
     const post = await Post.findByIdAndDelete(req.params.postId);
 
@@ -185,7 +185,7 @@ export const deletePost: RequestHandler = asyncWrapper(
 
 export const getMyPost = asyncWrapper(
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    console.log(req.user.id);
+    // console.log(req.user.id);
     const myPost = await Post.find({ user: req.user._id });
 
     if (!myPost) {
