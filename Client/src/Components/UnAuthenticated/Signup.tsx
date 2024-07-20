@@ -210,7 +210,6 @@ const SignUp: React.FC = () => {
             </button>
           </div>
           <hr className="my-4" />
-          {/* <div className="text-center">or SIGNUP VIA SOCIAL NETWORK</div> */}
           <div className="bg-gray-900 py-2 px-4 rounded-full">
             <SocialMediaIcons />
           </div>

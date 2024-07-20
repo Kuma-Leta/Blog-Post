@@ -25,7 +25,7 @@ const PostsView: React.FC = () => {
         params: { page },
       });
       setPosts(response.data.data);
-      setTotalPages(Math.ceil(response.data.totalPosts / 9)); // Assuming 9 posts per page
+      setTotalPages(Math.ceil(response.data.totalPosts / 9));
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
@@ -51,7 +51,7 @@ const PostsView: React.FC = () => {
     try {
       await api.delete(`/admin/deletePost/${postId}`);
       setPosts(posts.filter((post) => post._id !== postId));
-      handleCloseModal(); // Close modals after deletion
+      handleCloseModal();
     } catch (error) {
       console.error("Error deleting post:", error);
     }

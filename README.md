@@ -2,13 +2,7 @@
 
 Welcome to the Blog-Post Website project! This is a collaborative project implemented using the MERN stack (MongoDB, Express, React, Node.js) with TypeScript. This repository will serve as the central hub for all development activities, including code, issues, and documentation.
 
-## Table of Contents
-
-- [Getting Started](#getting-started)
-- [Project Structure](#project-structure)
-- [Development Workflow](#development-workflow)
-- [Contributing](#contributing)
-- [License](#license)
+---
 
 ## Getting Started
 
@@ -92,99 +86,65 @@ npm run preview
 
 The server should be running on `http://localhost:5000` and the client on `http://localhost:3000`.
 
-## Project Structure
+---
 
-```plaintext
-blog-post-website/
-├── client/             # React front-end
-│   ├── public/
-│   └── src/
-│       ├── components/
-│       ├── pages/
-│       ├── services/
-│       ├── App.tsx
-│       └── main.tsx
-├── server/             # Express back-end
-│   ├── src/
-│       ├── controllers/
-│       ├── models/
-│       ├── routes/
-│       ├── services/
-│       └── app.ts
-│   └── index.ts
-├── .gitignore
-├── README.md
-└── package.json
-```
+## Admin Dashboard Setup
 
-## Development Workflow
+To access the admin dashboard:
 
-### 1. Creating Branches for Features
+1. **Navigate to the Admin Login Page:**
+   Open `http://localhost:5000/admin/login` in your browser.
 
-Create a new branch for each feature you are working on to avoid conflicts:
+2. **Add Admin Credentials:**
+   Manually add admin credentials to the database:
 
-```sh
-git checkout -b feature/branch-name
-```
+   - Go to the `users` collection in your MongoDB database.
+   - Insert a new user document with the following fields:
+     - `name`: Admin's name
+     - `email`: Admin's email address
+     - `password`: Admin's hashed password (see below for hashing instructions)
+     - `gender`: Admin's gender
+     - `role`: `admin`
 
-### 2. Making and Committing Changes
+3. **Hash Admin Password:**
+   To hash the password, use the `hashPassword.js` file located in the `server` directory. Update the password directly in the file before running it:
 
-Make changes in the branch and commit them with clear messages:
+   ```javascript
+   const bcrypt = require("bcrypt");
 
-```sh
-git add .
-git commit -m "Add feature description"
-```
+   const saltRounds = 10;
+   const plainPassword = "admin123"; // Replace with your password
 
-### 3. Pushing Changes to GitHub
+   bcrypt.hash(plainPassword, saltRounds, function (err, hash) {
+     if (err) {
+       console.error("Error hashing password:", err);
+     } else {
+       console.log("Hashed password:", hash);
+     }
+   });
+   ```
 
-Push the changes to the remote repository under the branch name:
+   1. Edit the `plainPassword` variable in the `hashPassword.js` file to the desired password.
+   2. Run the script:
 
-```sh
-git push origin feature/branch-name
-```
+   ```sh
+   cd server
+   node hashPassword.js
+   ```
 
-### 4. Creating Pull Requests
+   This command will output the hashed password. Copy this hashed password and use it in the `password` field for the admin user document.
 
-1. **Create a Pull Request (PR):**
+4. **Create Admin User:**
+   Add the hashed password and other details into the `users` collection. Your admin user document should look something like this:
 
-   - Go to the GitHub repository.
-   - Click on "Pull requests" > "New pull request".
-   - Select the branch with your changes.
-   - Compare and create a pull request.
-   - Add a description and request reviews from team members.
+   ```json
+   {
+     "name": "Admin Name",
+     "email": "admin@example.com",
+     "password": "<hashed-password>",
+     "gender": "Male",
+     "role": "admin"
+   }
+   ```
 
-2. **Review and Merge PR:**
-   - Team members review the pull request, suggest changes, or approve it.
-   - Once approved, the repository owner or the person assigned merges the pull request into the main branch.
-
-### 5. Resolving Conflicts
-
-If there are conflicts, resolve them before merging the pull request:
-
-1. **Pull the latest main branch into your feature branch:**
-
-```sh
-git checkout main
-git pull origin main
-git checkout feature/branch-name
-git merge main
-```
-
-2. **Resolve conflicts in your code editor and commit the resolved changes:**
-
-```sh
-git add .
-git commit -m "Resolve merge conflicts"
-git push origin feature/branch-name
-```
-
-## Contributing
-
-We welcome contributions from all team members! Here are some guidelines to follow:
-
-- **Frequent Pulls:** Regularly pull from the main branch to stay updated.
-- **Descriptive Commits:** Write clear and descriptive commit messages.
-- **Small Changes:** Make small, incremental changes to make reviews easier.
-- **Code Reviews:** Review code thoroughly to maintain code quality.
-- **Communication:** Use GitHub issues, pull request comments, and a communication tool (e.g., Slack) to coordinate and discuss changes.
+Once these steps are completed, you should be able to log in to the admin dashboard using the credentials you set up.

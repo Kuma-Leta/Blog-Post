@@ -12,7 +12,7 @@ import { BASE_URL } from "../config";
 interface NavLinkProps {
   to: string;
   onClick?: () => void;
-  className?: string; // Add this line
+  className?: string;
   children: React.ReactNode;
 }
 

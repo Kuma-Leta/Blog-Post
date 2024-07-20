@@ -70,8 +70,7 @@ html {
   }
 }
 
-/* Add to your global or main component styles */
 .main-content {
-  margin-left: 16rem; /* Adjust this value based on sidebar width */
+  margin-left: 16rem;
   padding: 1rem;
 }

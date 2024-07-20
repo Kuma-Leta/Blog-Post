@@ -3,11 +3,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import SideNavbar from "./SideNavbar";
 import api from "../../axiosConfig";
 import UsersView from "./UsersView";
-import PostsView from "./PostsView"; // Import the new PostsView component
+import PostsView from "./PostsView";
 
 const AdminDashboard: React.FC = () => {
   const [totalUsers, setTotalUsers] = useState(0);
-  const [totalPosts, setTotalPosts] = useState(0); // Added state for total posts
+  const [totalPosts, setTotalPosts] = useState(0);
   const [currentView, setCurrentView] = useState<
     "dashboard" | "users" | "posts"
   >("dashboard");
@@ -21,7 +21,7 @@ const AdminDashboard: React.FC = () => {
       setTotalUsers(userResponse.data.totalUsers);
 
       const postResponse = await api.get(`/admin/getAllposts`);
-      setTotalPosts(postResponse.data.totalPosts); // Set the total posts
+      setTotalPosts(postResponse.data.totalPosts);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -29,7 +29,7 @@ const AdminDashboard: React.FC = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const view = params.get("view") as "dashboard" | "users" | "posts"; // Updated type
+    const view = params.get("view") as "dashboard" | "users" | "posts";
     if (view) {
       setCurrentView(view);
     } else {
@@ -38,7 +38,7 @@ const AdminDashboard: React.FC = () => {
   }, [location.search, navigate]);
 
   useEffect(() => {
-    fetchData(); // Fetch both users and posts
+    fetchData();
   }, [currentView]);
 
   return (
@@ -49,8 +49,8 @@ const AdminDashboard: React.FC = () => {
           setCurrentView(view);
           navigate(`/admin/dashboard?view=${view}`);
         }}
-        fetchUsers={fetchData} // Update the fetch function
-        fetchPosts={fetchData} // Pass fetchData for posts as well
+        fetchUsers={fetchData}
+        fetchPosts={fetchData}
       />
       <div className="main-content flex-1 p-8 md:p-12 bg-gray-200 overflow-y-auto">
         {currentView === "dashboard" ? (
@@ -95,7 +95,7 @@ const AdminDashboard: React.FC = () => {
         ) : currentView === "users" ? (
           <UsersView />
         ) : (
-          <PostsView /> // Render PostsView for posts
+          <PostsView />
         )}
       </div>
     </div>

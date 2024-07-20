@@ -9,10 +9,10 @@ import {
 } from "react-icons/fa";
 
 interface SideNavbarProps {
-  currentView: "dashboard" | "users" | "posts"; // Updated type
-  setCurrentView: (view: "dashboard" | "users" | "posts") => void; // Updated type
+  currentView: "dashboard" | "users" | "posts";
+  setCurrentView: (view: "dashboard" | "users" | "posts") => void;
   fetchUsers: () => void;
-  fetchPosts?: () => void; // Optional fetchPosts function
+  fetchPosts?: () => void;
 }
 
 const SideNavbar: React.FC<SideNavbarProps> = ({
@@ -23,11 +23,8 @@ const SideNavbar: React.FC<SideNavbarProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  // Function to handle logout
   const handleLogout = () => {
-    // Clear authentication tokens or user session
-    localStorage.removeItem("authToken"); // Adjust if you use another method for tokens
-    // Redirect to login page or home page
+    localStorage.removeItem("authToken");
     navigate("/admin/login");
   };
 
@@ -64,7 +61,7 @@ const SideNavbar: React.FC<SideNavbarProps> = ({
         <button
           onClick={() => {
             setCurrentView("posts");
-            fetchPosts && fetchPosts(); // Fetch posts if the function is provided
+            fetchPosts && fetchPosts();
           }}
           className={`flex items-center py-2 px-4 text-gray-300 hover:bg-gray-700 hover:text-white transition duration-200 ease-in-out ${
             currentView === "posts" && "bg-gray-700 text-white"
