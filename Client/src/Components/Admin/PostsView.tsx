@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../../axiosConfig";
 import { BASE_URL } from "../../config";
+
 interface Post {
   _id: string;
   title: string;
@@ -144,7 +145,11 @@ const PostsView: React.FC = () => {
               alt={selectedPost.title}
               className="w-full h-60 object-cover mb-4"
             />
-            <p className="text-gray-700 mb-4">{selectedPost.textContent}</p>
+            {selectedPost.textContent.split("\n").map((paragraph, index) => (
+              <p key={index} className="text-gray-700 mb-4">
+                {paragraph}
+              </p>
+            ))}
             <button
               onClick={() => confirmDelete(selectedPost._id)}
               className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600"

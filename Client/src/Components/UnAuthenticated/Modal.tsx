@@ -98,7 +98,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, post }) => {
 
         <div className="p-4 text-left">
           <h3 className="text-xl font-semibold mb-2">Post Details</h3>
-          <p className="text-gray-700 mb-4">{post.textContent}</p>
+          {post.textContent.split("\n").map((paragraph, index) => (
+            <p key={index} className="text-gray-700 mb-4">
+              {paragraph}
+            </p>
+          ))}
           <div className="flex items-center text-gray-600 mb-2">
             <FaUser className="mr-2 text-purple-700" />
             <span>{post.author}</span>
